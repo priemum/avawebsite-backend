@@ -1,0 +1,11 @@
+{
+  "name": "avawebsite-backend",
+  "version": "1.0.0",
+  "description": "AVA Website backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kanaan Alahmad",
+  "license": "ISC"
+}
