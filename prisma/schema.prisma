@@ -23,16 +23,17 @@ model Team {
 model Users {
   ID           String     @id @default(uuid())
   Name         String
-  DOB          DateTime
+  DOB          DateTime?
   Email        String
-  PhoneNo      String
+  PhoneNo      String?
   ActiveStatus Boolean    @default(true)
-  Gender       String
+  Gender       String?
+  Password     String
   Image        Images?
-  Team         Team       @relation(fields: [teamID], references: [ID])
-  teamID       String
-  Role         Role       @relation(fields: [roleID], references: [ID])
-  roleID       String
+  Team         Team?      @relation(fields: [teamID], references: [ID])
+  teamID       String?
+  Role         Role?      @relation(fields: [roleID], references: [ID])
+  roleID       String?
   Articles     Articles[]
   CreatedAt    DateTime   @default(now())
   UpdatedAt    DateTime   @updatedAt
@@ -96,16 +97,35 @@ model Images {
   UpdatedAt DateTime @updatedAt
 }
 
-// model Address {
-//   ID        String    @id @default(uuid())
-//   Longitude Float
-//   Latitude  Float
-//   Address   Address   @relation(fields: [addressID], references: [ID])
-//   CreatedAt DateTime  @default(now())
-//   UpdatedAt DateTime  @updatedAt
-//   Address   Address[]
-//   addressID String
-// }
+model Address {
+  ID                  String                @id @default(uuid())
+  Longitude           Float
+  Latitude            Float
+  Address             Address?              @relation("SubAddress", fields: [addressID], references: [ID])
+  addressID           String?               @unique
+  Addresses           Address[]             @relation("SubAddress")
+  CreatedAt           DateTime              @default(now())
+  UpdatedAt           DateTime              @updatedAt
+  Address_Translation Address_Translation[]
+}
+
+model Unit {
+  ID               String             @id @default(uuid())
+  conversionRate   Int
+  ActiveStatus     Boolean            @default(true)
+  CreatedAt        DateTime           @default(now())
+  UpdatedAt        DateTime           @updatedAt
+  Unit_Translation Unit_Translation[]
+}
+
+model Currency {
+  ID                   String                 @id @default(uuid())
+  conversionRate       Int
+  ActiveStatus         Boolean                @default(true)
+  CreatedAt            DateTime               @default(now())
+  UpdatedAt            DateTime               @updatedAt
+  Currency_Translation Currency_Translation[]
+}
 
 //Localization Sub-Schema 
 model Languages {
@@ -115,6 +135,9 @@ model Languages {
   Articles_Translation Articles_Translation[]
   CreatedAt            DateTime               @default(now())
   UpdatedAt            DateTime               @updatedAt
+  Address_Translation  Address_Translation[]
+  Unit_Translation     Unit_Translation[]
+  Currency_Translation Currency_Translation[]
 }
 
 model Articles_Translation {
@@ -124,6 +147,39 @@ model Articles_Translation {
   Caption     String
   Language    Languages @relation(fields: [languagesID], references: [ID])
   languagesID String
+  CreatedAt   DateTime  @default(now())
+  UpdatedAt   DateTime  @updatedAt
+}
+
+model Address_Translation {
+  ID          String    @id @default(uuid())
+  Name        String
+  Language    Languages @relation(fields: [languagesID], references: [ID])
+  languagesID String
+  Address     Address   @relation(fields: [addressID], references: [ID])
+  addressID   String
+  CreatedAt   DateTime  @default(now())
+  UpdatedAt   DateTime  @updatedAt
+}
+
+model Unit_Translation {
+  ID          String    @id @default(uuid())
+  Name        String
+  Language    Languages @relation(fields: [languagesID], references: [ID])
+  languagesID String
+  Unit        Unit      @relation(fields: [unitID], references: [ID])
+  unitID      String
+  CreatedAt   DateTime  @default(now())
+  UpdatedAt   DateTime  @updatedAt
+}
+
+model Currency_Translation {
+  ID          String    @id @default(uuid())
+  Name        String
+  Language    Languages @relation(fields: [languagesID], references: [ID])
+  languagesID String
+  Currency    Currency  @relation(fields: [currencyID], references: [ID])
+  currencyID  String
   CreatedAt   DateTime  @default(now())
   UpdatedAt   DateTime  @updatedAt
 }
