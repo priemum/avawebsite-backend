@@ -1,8 +1,7 @@
 const allowedUpdatesList = [
-	{
-		role: ["Name", "ActiveStatus"],
-		users: ["Name", "PhoneNo", "Gender", "Password"],
-	},
+	{ name: "role", value: ["Name", "ActiveStatus"] },
+	{ name: "users", vaue: ["Name", "PhoneNo", "Gender", "Password"] },
+	,
 ];
 
 module.exports = {

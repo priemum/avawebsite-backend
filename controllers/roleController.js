@@ -1,6 +1,8 @@
 const bcrypt = require("bcryptjs");
 // const jwt = require("jsonwebtoken");
 const prisma = require("../prismaClient");
+const { Prisma } = require("@prisma/client");
+const { HandleError } = require("../middlewares/ErrorHandler");
 require("dotenv").config;
 
 const CreateRole = async (req, res) => {
@@ -69,15 +71,42 @@ const GetRoleByID = async (req, res) => {
 const UpdateRole = async (req, res) => {
 	try {
 		const id = req.params.id;
-
-		const Roles = await prisma.role.findUnique({
+		const updates = Object.keys(req.body);
+		const Role = await prisma.role.findUnique({
 			where: { ID: id },
 		});
-		if (!Roles) {
+		if (!Role) {
 			return res.status(404).send("No Roles Were Found!");
 		}
-		res.status(200).send(Roles);
+		updates.forEach((update) => (Role[update] = req.body[update]));
+		await prisma.role.update({
+			where: { ID: id },
+			data: Role,
+		});
+		res.status(200).send(Role);
 	} catch (error) {
+		return res.status(500).send(error.message);
+	}
+};
+
+const DeleteRole = async (req, res) => {
+	try {
+		const id = req.params.id;
+		const Role = await prisma.role.delete({
+			where: { ID: id },
+		});
+
+		// console.log("Role: ", Role);
+		res.status(200).send(Role);
+	} catch (error) {
+		if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error.code === "P2025") {
+				return res.status(404).send("Record Doesn't Exist!");
+			} else if (error.code === "P2021") {
+				return res.status(404).send("Table Doesn't Exist!");
+			}
+		}
+		console.log(error);
 		return res.status(500).send(error.message);
 	}
 };
@@ -88,4 +117,5 @@ module.exports = {
 	GetRoleByID,
 	GetAllActiveRoles,
 	UpdateRole,
+	DeleteRole,
 };
