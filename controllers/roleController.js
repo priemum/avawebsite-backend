@@ -29,7 +29,7 @@ const CreateRole = async (req, res) => {
 
 const GetAllRoles = async (req, res) => {
 	try {
-		const Roles = await prisma.role.findMany({});
+		const Roles = await prisma.role.findMany({ include: { Users: true } });
 		if (!Roles) {
 			return res.status(404).send("No Roles Were Found!");
 		}
@@ -106,7 +106,6 @@ const DeleteRole = async (req, res) => {
 				return res.status(404).send("Table Doesn't Exist!");
 			}
 		}
-		console.log(error);
 		return res.status(500).send(error.message);
 	}
 };

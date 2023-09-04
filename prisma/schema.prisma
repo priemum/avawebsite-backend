@@ -27,8 +27,9 @@ model Users {
   Email        String
   PhoneNo      String?
   ActiveStatus Boolean    @default(true)
-  Gender       String?
+  Gender       Gender?
   Password     String
+  refreshToken String?
   Image        Images?
   Team         Team?      @relation(fields: [teamID], references: [ID])
   teamID       String?
@@ -37,6 +38,11 @@ model Users {
   Articles     Articles[]
   CreatedAt    DateTime   @default(now())
   UpdatedAt    DateTime   @updatedAt
+}
+
+enum Gender {
+  Male
+  Female
 }
 
 model Role {
@@ -87,10 +93,10 @@ model Images {
   ID        String   @id @default(uuid())
   URL       String
   Alt       String
-  Width     Int
-  Height    Int
-  Size      Float
-  Type      String
+  Width     Int?
+  Height    Int?
+  Size      Float?
+  Type      String?
   user      Users    @relation(fields: [usersID], references: [ID])
   usersID   String   @unique
   CreatedAt DateTime @default(now())

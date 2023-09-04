@@ -5,6 +5,7 @@ const path = require("path");
 const cors = require("cors");
 const userRouter = require("./routes/api/UserRoute");
 const roleRouter = require("./routes/api/RoleRoute");
+const resourceRouter = require("./routes/api/ResourcesRoute");
 const port = process.env.PORT || 3500;
 const app = express();
 
@@ -15,10 +16,12 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 //serve static files
+// console.log(path.join(__dirname, "/public"));
 app.use("/public", express.static(path.join(__dirname, "/public")));
 
 app.use("/", userRouter);
 app.use("/", roleRouter);
+app.use("/", resourceRouter);
 app.listen(port, () => {
 	console.log(`Listening on port ${port}`);
 });

@@ -1,7 +1,18 @@
 const allowedUpdatesList = [
 	{ name: "role", value: ["Name", "ActiveStatus"] },
-	{ name: "users", vaue: ["Name", "PhoneNo", "Gender", "Password"] },
-	{ name: "resources", vaue: ["Name", "Description", "ActiveStatus"] },
+	{
+		name: "users",
+		value: [
+			"Name",
+			"Email",
+			"Gender",
+			"Password",
+			"PhoneNo",
+			"ActiveStatus",
+			"DOB",
+		],
+	},
+	{ name: "resources", value: ["Name", "Description", "ActiveStatus"] },
 	,
 ];
 
