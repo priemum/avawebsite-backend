@@ -13,6 +13,7 @@ const allowedUpdatesList = [
 		],
 	},
 	{ name: "resources", value: ["Name", "Description", "ActiveStatus"] },
+	{ name: "teams", value: ["Title", "Description", "ActiveStatus"] },
 	,
 ];
 

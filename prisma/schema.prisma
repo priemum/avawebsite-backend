@@ -12,12 +12,14 @@ datasource db {
 
 //AVA Real Estate Main Schema 
 model Team {
-  ID          String   @id @default(uuid())
-  Title       String
-  Description String
-  CreatedAt   DateTime @default(now())
-  UpdatedAt   DateTime @updatedAt
-  Users       Users[]
+  ID           String   @id @default(uuid())
+  Title        String
+  Description  String?
+  ActiveStatus Boolean  @default(true)
+  CreatedAt    DateTime @default(now())
+  UpdatedAt    DateTime @updatedAt
+  Users        Users[]
+  Image        Images?
 }
 
 model Users {
@@ -97,10 +99,12 @@ model Images {
   Height    Int?
   Size      Float?
   Type      String?
-  user      Users    @relation(fields: [usersID], references: [ID])
-  usersID   String   @unique
+  Team      Team?    @relation(fields: [teamID], references: [ID])
+  user      Users?   @relation(fields: [usersID], references: [ID])
+  usersID   String?  @unique
   CreatedAt DateTime @default(now())
   UpdatedAt DateTime @updatedAt
+  teamID    String?  @unique
 }
 
 model Address {

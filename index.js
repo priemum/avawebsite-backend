@@ -6,6 +6,7 @@ const cors = require("cors");
 const userRouter = require("./routes/api/UserRoute");
 const roleRouter = require("./routes/api/RoleRoute");
 const resourceRouter = require("./routes/api/ResourcesRoute");
+const teamRouter = require("./routes/api/TeamRoute");
 const port = process.env.PORT || 3500;
 const app = express();
 
@@ -22,6 +23,7 @@ app.use("/public", express.static(path.join(__dirname, "/public")));
 app.use("/", userRouter);
 app.use("/", roleRouter);
 app.use("/", resourceRouter);
+app.use("/", teamRouter);
 app.listen(port, () => {
 	console.log(`Listening on port ${port}`);
 });

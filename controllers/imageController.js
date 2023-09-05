@@ -2,7 +2,9 @@ const multer = require("multer");
 
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-		cb(null, `./public/images/${req.path}`);
+		const path = req.url.split("/")[1];
+		console.log(path);
+		cb(null, `./public/images/${path}`);
 	},
 	filename: function (req, file, cb) {
 		cb(null, Math.floor(new Date().getTime() / 1000) + "-" + file.originalname);

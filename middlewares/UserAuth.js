@@ -7,14 +7,12 @@ const saveUser = async (req, res, next) => {
 				throw new Error("Incorrect Gender input!");
 			}
 		}
-		console.log(req.body.Email);
 		if (req.method === "POST") {
-			const emailcheck = await prisma.users.findUnique({
+			const emailcheck = await prisma.users.findFirst({
 				where: {
 					Email: req.body.Email,
 				},
 			});
-			console.log(emailcheck);
 			if (emailcheck) {
 				throw new Error("Email Already Exists!");
 			}
