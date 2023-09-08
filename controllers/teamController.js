@@ -139,7 +139,6 @@ const UpdateTeam = async (req, res) => {
 				},
 			};
 		}
-		Team.Users = undefined;
 		await prisma.team.update({
 			where: { ID: id },
 			data: Team,

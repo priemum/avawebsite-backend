@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 // const jwt = require("jsonwebtoken");
 const prisma = require("../prismaClient");
 const { Prisma } = require("@prisma/client");
+const fs = require("fs");
 require("dotenv").config;
 
 //Create New User
@@ -21,7 +22,6 @@ const Register = async (req, res) => {
 		if (!Name || !Email || !Password) {
 			return res.status(400).send("Required Field Missing!!");
 		}
-		console.log(image);
 		const user = await prisma.users.create({
 			data: {
 				Name,
@@ -69,7 +69,7 @@ const GetAllUsers = async (req, res) => {
 	try {
 		const [Users, count] = await prisma.$transaction([
 			prisma.users.findMany({
-				include: { Image: true },
+				include: { Role: true, Team: true, Image: true },
 			}),
 			prisma.users.count(),
 		]);
@@ -94,7 +94,10 @@ const GetAllActiveUsers = async (req, res) => {
 			},
 		};
 		const [Users, count] = await prisma.$transaction([
-			prisma.users.findMany(query),
+			prisma.users.findMany({
+				where: { ActiveStatus: true },
+				include: { Role: true, Team: true, Image: true },
+			}),
 			prisma.users.count(query),
 		]);
 
@@ -115,6 +118,7 @@ const GetUserByID = async (req, res) => {
 			where: {
 				ID: req.params.id,
 			},
+			include: { Role: true, Team: true, Image: true },
 		};
 		const user = await prisma.users.findUnique(query);
 
@@ -133,14 +137,48 @@ const UpdateUser = async (req, res) => {
 	try {
 		const id = req.params.id;
 		const updates = Object.keys(req.body);
+		const image = req.file;
+		const Selected = {};
+
+		updates.forEach((item) => {
+			Selected[item] = true;
+		});
+		if (image) {
+			Selected["Image"] = true;
+		}
 		const User = await prisma.users.findUnique({
 			where: { ID: id },
+			select: Selected,
 		});
 		if (!User) {
 			return res.status(404).send("User was not Found!");
 		}
 		updates.forEach((update) => (User[update] = req.body[update]));
+		if (image) {
+			if (User.Image !== null) {
+				if (fs.existsSync(`.${User.Image.URL}`)) {
+					console.log(`.${User.Image.URL}`);
+					fs.unlinkSync(`.${User.Image.URL}`);
+				}
+				await prisma.images.delete({ where: { ID: User.Image.ID } });
+			}
+			User.Image = {
+				create: {
+					URL: `/public/images/users/${
+						Math.floor(new Date().getTime() / 1000) + "-" + image?.originalname
+					}`,
 
+					Alt: image?.originalname,
+					Size: image.size,
+					Type: image.mimetype,
+					teamID: undefined,
+				},
+			};
+		}
+		await prisma.users.update({
+			where: { ID: id },
+			data: User,
+		});
 		res.status(200).send(User);
 	} catch (error) {
 		if (error instanceof Prisma.PrismaClientKnownRequestError) {

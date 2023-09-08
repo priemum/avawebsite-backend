@@ -13,7 +13,7 @@ datasource db {
 //AVA Real Estate Main Schema 
 model Team {
   ID           String   @id @default(uuid())
-  Title        String
+  Title        String   @unique
   Description  String?
   ActiveStatus Boolean  @default(true)
   CreatedAt    DateTime @default(now())
@@ -26,7 +26,7 @@ model Users {
   ID           String     @id @default(uuid())
   Name         String
   DOB          DateTime?
-  Email        String
+  Email        String     @unique
   PhoneNo      String?
   ActiveStatus Boolean    @default(true)
   Gender       Gender?
@@ -49,7 +49,7 @@ enum Gender {
 
 model Role {
   ID             String           @id @default(uuid())
-  Name           String
+  Name           String?          @unique
   ActiveStatus   Boolean          @default(true)
   CreatedAt      DateTime         @default(now())
   UpdatedAt      DateTime         @updatedAt
@@ -59,7 +59,7 @@ model Role {
 
 model Resources {
   ID             String           @id @default(uuid())
-  Name           String
+  Name           String           @unique
   Description    String
   ActiveStatus   Boolean          @default(true)
   CreatedAt      DateTime         @default(now())
@@ -152,7 +152,7 @@ model Languages {
 
 model Articles_Translation {
   ID          String    @id @default(uuid())
-  Title       String
+  Title       String    @unique
   Description String
   Caption     String
   Language    Languages @relation(fields: [languagesID], references: [ID])

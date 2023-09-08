@@ -21,6 +21,7 @@ userRouter.put(
 	"/users/:id",
 	CheckAllowedUpdates("users"),
 	saveUser,
+	CheckImage,
 	UpdateUser,
 );
 userRouter.delete("/users/:id", DeleteUser);

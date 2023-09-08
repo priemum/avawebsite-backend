@@ -1,0 +1,45 @@
+const bcrypt = require("bcryptjs");
+const users = [
+	{
+		Name: "Kanaan Alahmad",
+		Email: "kanaan@avarealestate.ae",
+		Password: "admin@2023",
+		PhoneNo: "+971507440233",
+		ActiveStatus: true,
+		Gender: "Male",
+		DOB: new Date("2023-01-01 00:00:00"),
+		Role: "Super Admin",
+		Team: "Software Development",
+		CreatedAt: new Date(),
+		UpdatedAt: new Date(),
+	},
+	{
+		Name: "Moaz Abdulhalim",
+		Email: "moazabdulhalim@gmail.com",
+		Password: "admin@2023",
+		PhoneNo: "+963966776624",
+		ActiveStatus: true,
+		Gender: "Male",
+		DOB: new Date("2023-01-01 00:00:00"),
+		Role: "Super Admin",
+		Team: "Software Development",
+		CreatedAt: new Date(),
+		UpdatedAt: new Date(),
+	},
+	{
+		Name: "Kasra Malakouti",
+		Email: "kasra@avarealestate.ae",
+		Password: "admin@2023",
+		PhoneNo: "+971501108606",
+		ActiveStatus: true,
+		Gender: "Male",
+		DOB: new Date("2023-01-01 00:00:00"),
+		Role: "Super Admin",
+		Team: "Management",
+		CreatedAt: new Date(),
+		UpdatedAt: new Date(),
+	},
+];
+module.exports = {
+	users,
+};
