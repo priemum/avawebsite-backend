@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 // const jwt = require("jsonwebtoken");
 const prisma = require("../prismaClient");
 const { Prisma } = require("@prisma/client");
+const jwt = require("jsonwebtoken");
 const fs = require("fs");
 require("dotenv").config;
 
@@ -65,6 +66,7 @@ const Register = async (req, res) => {
 	}
 };
 
+//Get All Users////Done
 const GetAllUsers = async (req, res) => {
 	try {
 		const [Users, count] = await prisma.$transaction([
@@ -175,6 +177,9 @@ const UpdateUser = async (req, res) => {
 				},
 			};
 		}
+		if (updates.includes("Password")) {
+			User.Password = await bcrypt.hash(User.Password, 10);
+		}
 		await prisma.users.update({
 			where: { ID: id },
 			data: User,
@@ -193,6 +198,70 @@ const UpdateUser = async (req, res) => {
 	}
 };
 
+//Get Users By Team ID
+
+const GetUsersByTeamID = async (req, res) => {
+	try {
+		const id = req.params.id;
+		const [Team, Users, count] = await prisma.$transaction([
+			prisma.team.findUnique({ where: { ID: id } }),
+			prisma.users.findMany({
+				where: { teamID: id },
+				include: { Role: true, Team: true, Image: true },
+			}),
+			prisma.users.count({ where: { teamID: id } }),
+		]);
+		if (!Team) {
+			return res.status(404).send("Team was not found!");
+		}
+		return res.status(200).json({
+			count,
+			Users,
+		});
+	} catch (error) {
+		if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error.code === "P2025") {
+				return res.status(404).send("Record Doesn't Exist!");
+			} else if (error.code === "P2021") {
+				return res.status(404).send("Table Doesn't Exist!");
+			}
+		}
+		return res.status(500).send(error.message);
+	}
+};
+//Get Users By Role ID
+
+const GetUsersByRoleID = async (req, res) => {
+	try {
+		const id = req.params.id;
+		const [Role, Users, count] = await prisma.$transaction([
+			prisma.role.findUnique({ where: { ID: id } }),
+			prisma.users.findMany({
+				where: { roleID: id },
+				include: { Role: true, Team: true, Image: true },
+			}),
+			prisma.users.count({ where: { roleID: id } }),
+		]);
+		if (!Role) {
+			return res.status(404).send("Role was not found!");
+		}
+		return res.status(200).json({
+			count,
+			Users,
+		});
+	} catch (error) {
+		if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error.code === "P2025") {
+				return res.status(404).send("Record Doesn't Exist!");
+			} else if (error.code === "P2021") {
+				return res.status(404).send("Table Doesn't Exist!");
+			}
+		}
+		return res.status(500).send(error.message);
+	}
+};
+
+//Delete User
 const DeleteUser = async (req, res) => {
 	try {
 		const id = req.params.id;
@@ -215,6 +284,8 @@ module.exports = {
 	Register,
 	GetAllUsers,
 	GetAllActiveUsers,
+	GetUsersByTeamID,
+	GetUsersByRoleID,
 	GetUserByID,
 	UpdateUser,
 	DeleteUser,

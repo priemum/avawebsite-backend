@@ -103,7 +103,7 @@ const GetTeamByID = async (req, res) => {
 		return res.status(500).send(error.message);
 	}
 };
-
+// ToDO: Fix update image to match user update
 const UpdateTeam = async (req, res) => {
 	try {
 		const id = req.params.id;

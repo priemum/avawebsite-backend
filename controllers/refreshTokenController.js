@@ -10,7 +10,7 @@ const handleRefreshToken = async (req, res) => {
 	const foundUser = await prisma.user.findFirst({
 		where: { refreshToken: refreshToken },
 	});
-	if (!foundUser) return res.sendStatus(403); //Forbidden
+	if (!foundUser) return res.status(403).send("User Was not Found!"); //Forbidden
 	// evaluate jwt
 	jwt.verify(refreshToken, process.env.REFERSH_TOKEN_SECRET, (err, decoded) => {
 		if (err || foundUser.userName !== decoded.userName)

@@ -69,6 +69,28 @@ async function main() {
 			},
 		});
 	});
+	//Add Role Resources for Super Admin
+	const SuperAdminID = await prisma.role.findFirst({
+		where: { Name: "Super Admin" },
+		select: { ID: true },
+	});
+	const AllResources = await prisma.resources.findMany();
+	AllResources.map(async (resource) => {
+		await prisma.resources.update({
+			where: { Name: resource.Name },
+			data: {
+				Role_Resources: {
+					create: {
+						roleID: SuperAdminID.ID,
+						Create: true,
+						Update: true,
+						Read: true,
+						Delete: true,
+					},
+				},
+			},
+		});
+	});
 	// ------ USER ---------
 	// await prisma.user.upsert({
 	// 	where: { email: "kanaan@avarealestate.ae" },

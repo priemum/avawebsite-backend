@@ -79,6 +79,8 @@ model Role_Resources {
   UpdatedAt   DateTime  @updatedAt
   roleID      String
   resourcesID String
+
+  @@unique([roleID, resourcesID])
 }
 
 model Articles {
