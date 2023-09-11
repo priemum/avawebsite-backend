@@ -1,4 +1,5 @@
 const prisma = require("../prismaClient");
+
 const saveUser = async (req, res, next) => {
 	try {
 		const Gender = req.body.Gender;
@@ -23,6 +24,7 @@ const saveUser = async (req, res, next) => {
 		return res.status(409).send(error.message);
 	}
 };
+
 module.exports = {
 	saveUser,
 };

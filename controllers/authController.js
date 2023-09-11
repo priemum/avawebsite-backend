@@ -28,7 +28,7 @@ const Login = async (req, res) => {
 					{ userInfo: { email: user.Email } },
 					process.env.ACCESS_TOKEN_SECRET,
 					{
-						expiresIn: "30s",
+						expiresIn: "5m",
 					},
 				);
 				const refreshToken = jwt.sign(
@@ -59,14 +59,10 @@ const Login = async (req, res) => {
 				res.cookie("jwt", refreshToken, {
 					maxAge: 24 * 60 * 60 * 1000,
 					httpOnly: true,
-					sameSite: "None",
-					secure: true,
 				});
 				res.cookie("UserData", userData, {
 					maxAge: 24 * 60 * 60 * 1000,
 					httpOnly: true,
-					sameSite: "None",
-					secure: true,
 				});
 				//send user data
 				return res.status(201).send({ accessToken, user });
@@ -92,11 +88,10 @@ const handleLogout = async (req, res) => {
 		where: { refreshToken: refreshToken },
 	});
 	if (!foundUser) {
-		res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
+		//! added this option at production secure: true, sameSite: "None",
+		res.clearCookie("jwt", { httpOnly: true });
 		res.clearCookie("UserData", {
 			httpOnly: true,
-			sameSite: "None",
-			secure: true,
 		});
 		return res.status(204).send("cookie cleared");
 	}
@@ -109,21 +104,12 @@ const handleLogout = async (req, res) => {
 			refreshToken: null,
 		},
 	});
-	res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
+	//! added this option at production secure: true, sameSite: "None",
+	res.clearCookie("jwt", { httpOnly: true });
 	res.clearCookie("UserData", {
 		httpOnly: true,
-		sameSite: "None",
-		secure: true,
 	});
 	res.status(200).json("Logged out Successfully!");
-};
-
-const VerifyRole = async (req, res) => {
-	try {
-		const cookies = req.cookies;
-		if (!cookies?.jwt) return res.status(204).send("No Cookie was found"); //No content
-		const refreshToken = cookies.jwt;
-	} catch (error) {}
 };
 
 module.exports = {
