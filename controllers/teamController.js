@@ -109,15 +109,21 @@ const UpdateTeam = async (req, res) => {
 		const id = req.params.id;
 		const updates = Object.keys(req.body);
 		const image = req.file;
+		const Selected = { ID: true };
+		updates.forEach((item) => {
+			Selected[item] = true;
+		});
+		if (image) {
+			Selected["Image"] = true;
+		}
 		const Team = await prisma.team.findUnique({
 			where: { ID: id },
-			include: { Users: true, Image: true },
+			select: Selected,
 		});
 		if (!Team) {
 			return res.status(404).send("No Team Were Found!");
 		}
 		updates.forEach((update) => (Team[update] = req.body[update]));
-		console.log(Team);
 		if (image) {
 			if (Team.Image !== null) {
 				if (fs.existsSync(`.${Team.Image.URL}`)) {
@@ -139,19 +145,21 @@ const UpdateTeam = async (req, res) => {
 				},
 			};
 		}
+		if (updates.includes("ActiveStatus")) {
+			if (req.body.ActiveStatus.toLowerCase() === "false") {
+				Team.ActiveStatus = false;
+			} else {
+				Team.ActiveStatus = true;
+			}
+		}
 		await prisma.team.update({
 			where: { ID: id },
 			data: Team,
 		});
-		// if (image) {
-		// 	await prisma.team.update({
-		// 		where: { ID: id },
-		// 		data: {
-
-		// 		},
-		// 	});
-		// }
-		res.status(200).send(Team);
+		res.status(200).json({
+			Message: "Updated successfully",
+			Team,
+		});
 	} catch (error) {
 		return res.status(500).send(error.message);
 	}

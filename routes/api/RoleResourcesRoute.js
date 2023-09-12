@@ -25,32 +25,32 @@ roleResourceRouter.post(
 roleResourceRouter.get(
 	"/role-resource",
 	verifyJWT,
-	VerifyRole,
+	// VerifyRole,
 	GetAllRolesResource,
 );
 roleResourceRouter.get(
 	"/role-resource/:id",
 	verifyJWT,
-	VerifyRole,
+	// VerifyRole,
 	GetRoleResourceByID,
 );
 roleResourceRouter.get(
 	"/role-resource/role/:id",
 	verifyJWT,
-	VerifyRole,
+	// VerifyRole,
 	GetRoleResourceByRoleID,
 );
 roleResourceRouter.put(
 	"/role-resource/:id",
 	verifyJWT,
-	VerifyRole,
+	// VerifyRole,
 	CheckAllowedUpdates("role-resource"),
 	UpdateRoleResource,
 );
 roleResourceRouter.delete(
 	"/role-resource/:id",
 	verifyJWT,
-	VerifyRole,
+	// VerifyRole,
 	DeleteRoleResource,
 );
 

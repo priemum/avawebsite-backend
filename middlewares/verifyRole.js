@@ -32,12 +32,12 @@ const VerifyRole = async (req, res, next) => {
 		});
 
 		const path = req.url.split("/")[1];
-		console.log("path: ", path);
+		// console.log("path: ", path);
 		let pathAuth = "";
 		RoleResources.map((item) => {
 			if (item.resource.Name.toLowerCase() === path) pathAuth = item;
 		});
-		console.log(pathAuth.Read);
+		// console.log(pathAuth.Read);
 		switch (req.method) {
 			case "GET": {
 				if (!pathAuth.Read) {

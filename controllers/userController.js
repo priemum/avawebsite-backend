@@ -180,6 +180,14 @@ const UpdateUser = async (req, res) => {
 		if (updates.includes("Password")) {
 			User.Password = await bcrypt.hash(User.Password, 10);
 		}
+		//TODO:Fix String Input for Active Status
+		if (updates.includes("ActiveStatus")) {
+			if (req.body.ActiveStatus.toLowerCase() === "false") {
+				User.ActiveStatus = false;
+			} else {
+				User.ActiveStatus = true;
+			}
+		}
 		await prisma.users.update({
 			where: { ID: id },
 			data: User,
