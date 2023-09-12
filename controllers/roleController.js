@@ -29,7 +29,9 @@ const CreateRole = async (req, res) => {
 
 const GetAllRoles = async (req, res) => {
 	try {
-		const Roles = await prisma.role.findMany({ include: { Users: true } });
+		const Roles = await prisma.role.findMany({
+			include: { Users: true, Role_Resources: { include: { resource: true } } },
+		});
 		if (!Roles) {
 			return res.status(404).send("No Roles Were Found!");
 		}
@@ -43,6 +45,7 @@ const GetAllActiveRoles = async (req, res) => {
 	try {
 		const Roles = await prisma.role.findMany({
 			where: { ActiveStatus: true },
+			include: { Users: true, Role_Resources: { include: { resource: true } } },
 		});
 		if (!Roles) {
 			return res.status(404).send("No Roles Were Found!");
@@ -58,6 +61,7 @@ const GetRoleByID = async (req, res) => {
 		const id = req.params.id;
 		const Roles = await prisma.role.findUnique({
 			where: { ID: id },
+			include: { Role_Resources: { include: { resource: true } } },
 		});
 		if (!Roles) {
 			return res.status(404).send("No Roles Were Found!");

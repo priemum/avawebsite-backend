@@ -9,11 +9,14 @@ const allowedUpdatesList = [
 			"Password",
 			"PhoneNo",
 			"ActiveStatus",
+			"roleID",
+			"teamID",
 			"DOB",
 		],
 	},
 	{ name: "resources", value: ["Name", "Description", "ActiveStatus"] },
 	{ name: "teams", value: ["Title", "Description", "ActiveStatus"] },
+	{ name: "role-resource", value: ["Create", "Update", "Delete", "Read"] },
 	,
 ];
 

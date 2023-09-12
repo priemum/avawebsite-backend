@@ -8,14 +8,22 @@ const {
 	DeleteRole,
 } = require("../../controllers/roleController");
 const { CheckAllowedUpdates } = require("../../middlewares/AllowedUpdates");
+const verifyJWT = require("../../middlewares/verifyJWT");
+const VerifyRole = require("../../middlewares/verifyRole");
 
 const roleRouter = express.Router();
 
-roleRouter.post("/role", CreateRole);
-roleRouter.get("/role", GetAllRoles);
-roleRouter.get("/role/:id", GetRoleByID);
+roleRouter.post("/role", verifyJWT, VerifyRole, CreateRole);
+roleRouter.get("/role", verifyJWT, VerifyRole, GetAllRoles);
+roleRouter.get("/role/:id", verifyJWT, VerifyRole, GetRoleByID);
 roleRouter.get("/role-active", GetAllActiveRoles);
-roleRouter.put("/role/:id", CheckAllowedUpdates("role"), UpdateRole);
-roleRouter.delete("/role/:id", DeleteRole);
+roleRouter.put(
+	"/role/:id",
+	CheckAllowedUpdates("role"),
+	verifyJWT,
+	VerifyRole,
+	UpdateRole,
+);
+roleRouter.delete("/role/:id", verifyJWT, VerifyRole, DeleteRole);
 
 module.exports = roleRouter;

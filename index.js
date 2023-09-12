@@ -9,6 +9,7 @@ const resourceRouter = require("./routes/api/ResourcesRoute");
 const teamRouter = require("./routes/api/TeamRoute");
 const AuthRouter = require("./routes/api/AuthRoute");
 const credentials = require("./middlewares/credentials");
+const roleResourceRouter = require("./routes/api/RoleResourcesRoute");
 const port = process.env.PORT || 3500;
 const app = express();
 
@@ -28,6 +29,7 @@ app.use("/", userRouter);
 app.use("/", roleRouter);
 app.use("/", resourceRouter);
 app.use("/", teamRouter);
+app.use("/", roleResourceRouter);
 app.listen(port, () => {
 	console.log(`Listening on port ${port}`);
 });

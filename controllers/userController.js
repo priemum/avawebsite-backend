@@ -140,7 +140,7 @@ const UpdateUser = async (req, res) => {
 		const id = req.params.id;
 		const updates = Object.keys(req.body);
 		const image = req.file;
-		const Selected = {};
+		const Selected = { ID: true };
 
 		updates.forEach((item) => {
 			Selected[item] = true;
@@ -184,7 +184,10 @@ const UpdateUser = async (req, res) => {
 			where: { ID: id },
 			data: User,
 		});
-		res.status(200).send(User);
+		res.status(200).json({
+			Message: "Updated successfully",
+			User,
+		});
 	} catch (error) {
 		if (error instanceof Prisma.PrismaClientKnownRequestError) {
 			console.log(error.code);

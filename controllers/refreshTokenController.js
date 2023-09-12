@@ -6,7 +6,6 @@ const handleRefreshToken = async (req, res) => {
 	const cookies = req.cookies;
 	if (!cookies.jwt) return res.status(401).send("User Does not exist!");
 	const refreshToken = cookies.jwt;
-	console.log(refreshToken);
 	const foundUser = await prisma.users.findFirst({
 		where: { refreshToken: refreshToken },
 	});

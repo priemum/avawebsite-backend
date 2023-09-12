@@ -6,7 +6,7 @@ const Roles = [
 		UpdatedAt: new Date(),
 	},
 	{
-		Name: "SuperAdmin",
+		Name: "Super Admin",
 		ActiveStatus: true,
 		CreatedAt: new Date(),
 		UpdatedAt: new Date(),
