@@ -39,6 +39,19 @@ const users = [
 		CreatedAt: new Date(),
 		UpdatedAt: new Date(),
 	},
+	{
+		Name: "Admin",
+		Email: "info@avarealestate.ae",
+		Password: "admin@2023",
+		PhoneNo: "+971501108606",
+		ActiveStatus: true,
+		Gender: "Male",
+		DOB: new Date("2023-01-01 00:00:00"),
+		Role: "Admin",
+		Team: "Management",
+		CreatedAt: new Date(),
+		UpdatedAt: new Date(),
+	},
 ];
 module.exports = {
 	users,

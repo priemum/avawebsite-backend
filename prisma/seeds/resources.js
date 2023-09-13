@@ -76,13 +76,16 @@ const resources = [
 		CreatedAt: new Date(),
 		UpdatedAt: new Date(),
 	},
-	// user: kanaan, role super admin
-	// Role: Category , superadmin, crud
-	// Kanaan --> Role --> check request methode : Post --> Path : category ---> Resources --> Cr
-	// Resources ----> Role_Resources[] --->
 	{
 		Name: "Resources",
 		Description: "Resources Permission",
+		ActiveStatus: true,
+		CreatedAt: new Date(),
+		UpdatedAt: new Date(),
+	},
+	{
+		Name: "Role-Resource",
+		Description: "Role Resources Permission",
 		ActiveStatus: true,
 		CreatedAt: new Date(),
 		UpdatedAt: new Date(),

@@ -11,14 +11,37 @@ const CreateRole = async (req, res) => {
 		if (!Name) {
 			return res.status(400).send("Role Name is Missing!!");
 		}
-		const Role = await prisma.role.create({
-			data: {
-				Name,
-				ActiveStatus,
-			},
+
+		const result = await prisma.$transaction(async (prisma) => {
+			const Role = await prisma.role.create({
+				data: {
+					Name,
+					ActiveStatus,
+				},
+			});
+			const Resources = await prisma.resources.findMany({
+				select: { ID: true },
+			});
+			let data = [];
+			Resources.forEach(async (resource) => {
+				data.push({
+					Create: false,
+					Read: false,
+					Update: false,
+					Delete: false,
+					roleID: Role.ID,
+					resourcesID: resource.ID,
+				});
+			});
+			console.log("Data: ", data);
+			const RoleResources = await prisma.role_Resources.createMany({
+				data,
+			});
+			return { Role, RoleResources };
 		});
-		if (Role) {
-			return res.status(201).send(Role);
+
+		if (result) {
+			return res.status(201).send(result);
 		} else {
 			return res.status(409).send("Details are not correct");
 		}
@@ -96,12 +119,31 @@ const UpdateRole = async (req, res) => {
 const DeleteRole = async (req, res) => {
 	try {
 		const id = req.params.id;
-		const Role = await prisma.role.delete({
-			where: { ID: id },
-		});
 
-		// console.log("Role: ", Role);
-		res.status(200).send(Role);
+		const result = await prisma.$transaction(async (prisma) => {
+			const Role = await prisma.role.findUnique({
+				where: { ID: id },
+				include: {
+					Role_Resources: true,
+					Users: true,
+				},
+			});
+			if (Role.Users.length !== 0) {
+				throw new Error(
+					"Role cannot be deleted, There are users associated with it",
+				);
+			}
+			if (Role.Role_Resources.length >= 0) {
+				await prisma.role_Resources.deleteMany({
+					where: { roleID: Role.ID },
+				});
+			}
+			const DeletedRole = await prisma.role.delete({
+				where: { ID: id },
+			});
+			return { DeletedRole };
+		});
+		res.status(200).send(result);
 	} catch (error) {
 		if (error instanceof Prisma.PrismaClientKnownRequestError) {
 			if (error.code === "P2025") {
