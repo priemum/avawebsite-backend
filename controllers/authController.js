@@ -40,11 +40,11 @@ const Login = async (req, res) => {
 				);
 				let userData = {
 					Email: user.Email,
-					RoleID: user.Role.ID,
+					RoleID: user.Role.id,
 					RoleName: user.Role.Name,
 				};
 				user = await prisma.users.update({
-					where: { ID: user.ID },
+					where: { id: user.id },
 					data: { refreshToken: refreshToken },
 					include: {
 						Role: {
@@ -99,7 +99,7 @@ const handleLogout = async (req, res) => {
 	// Delete refreshToken in db
 
 	await prisma.users.update({
-		where: { ID: foundUser.ID },
+		where: { id: foundUser.id },
 		data: {
 			refreshToken: null,
 		},

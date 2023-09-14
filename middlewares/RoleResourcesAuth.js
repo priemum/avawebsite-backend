@@ -3,20 +3,18 @@ const prisma = require("../prismaClient");
 const CheckRoleResources = async (req, res, next) => {
 	try {
 		const { RoleID, ResourceID } = req.body;
-		console.log("Role: ", RoleID);
-		console.log("Resource: ", ResourceID);
 		if (!RoleID || !ResourceID) {
 			throw new Error("Role or Resource input must be provided!");
 		}
 		if (req.method === "POST") {
 			const RoleCheck = await prisma.role.findFirstOrThrow({
 				where: {
-					ID: RoleID,
+					id: RoleID,
 				},
 			});
 			const ResourceCheck = await prisma.resources.findFirstOrThrow({
 				where: {
-					ID: ResourceID,
+					id: ResourceID,
 				},
 			});
 		}

@@ -35,7 +35,7 @@ const Register = async (req, res) => {
 				Role: RoleID
 					? {
 							connect: {
-								ID: RoleID,
+								id: RoleID,
 							},
 					  }
 					: undefined,
@@ -118,7 +118,7 @@ const GetUserByID = async (req, res) => {
 	try {
 		const query = {
 			where: {
-				ID: req.params.id,
+				id: req.params.id,
 			},
 			include: { Role: true, Team: true, Image: true },
 		};
@@ -127,9 +127,7 @@ const GetUserByID = async (req, res) => {
 		if (!user) {
 			return res.status(404).send("No users were found!");
 		}
-		res.status(200).json({
-			user,
-		});
+		res.status(200).send(user);
 	} catch (error) {
 		res.status(500).send(error.message);
 	}
@@ -140,7 +138,7 @@ const UpdateUser = async (req, res) => {
 		const id = req.params.id;
 		const updates = Object.keys(req.body);
 		const image = req.file;
-		const Selected = { ID: true };
+		const Selected = { id: true };
 
 		updates.forEach((item) => {
 			Selected[item] = true;
@@ -149,7 +147,7 @@ const UpdateUser = async (req, res) => {
 			Selected["Image"] = true;
 		}
 		const User = await prisma.users.findUnique({
-			where: { ID: id },
+			where: { id: id },
 			select: Selected,
 		});
 		if (!User) {
@@ -162,7 +160,7 @@ const UpdateUser = async (req, res) => {
 					console.log(`.${User.Image.URL}`);
 					fs.unlinkSync(`.${User.Image.URL}`);
 				}
-				await prisma.images.delete({ where: { ID: User.Image.ID } });
+				await prisma.images.delete({ where: { id: User.Image.id } });
 			}
 			User.Image = {
 				create: {
@@ -189,7 +187,7 @@ const UpdateUser = async (req, res) => {
 			}
 		}
 		await prisma.users.update({
-			where: { ID: id },
+			where: { id: id },
 			data: User,
 		});
 		res.status(200).json({
@@ -215,7 +213,7 @@ const GetUsersByTeamID = async (req, res) => {
 	try {
 		const id = req.params.id;
 		const [Team, Users, count] = await prisma.$transaction([
-			prisma.team.findUnique({ where: { ID: id } }),
+			prisma.team.findUnique({ where: { id: id } }),
 			prisma.users.findMany({
 				where: { teamID: id },
 				include: { Role: true, Team: true, Image: true },
@@ -246,7 +244,7 @@ const GetUsersByRoleID = async (req, res) => {
 	try {
 		const id = req.params.id;
 		const [Role, Users, count] = await prisma.$transaction([
-			prisma.role.findUnique({ where: { ID: id } }),
+			prisma.role.findUnique({ where: { id: id } }),
 			prisma.users.findMany({
 				where: { roleID: id },
 				include: { Role: true, Team: true, Image: true },
@@ -277,7 +275,7 @@ const DeleteUser = async (req, res) => {
 	try {
 		const id = req.params.id;
 		const User = await prisma.users.delete({
-			where: { ID: id },
+			where: { id: id },
 		});
 		res.status(200).send(User);
 	} catch (error) {

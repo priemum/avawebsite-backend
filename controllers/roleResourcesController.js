@@ -47,7 +47,7 @@ const GetRoleResourceByID = async (req, res) => {
 	try {
 		const id = req.params.id;
 		const RolesResource = await prisma.role_Resources.findUnique({
-			where: { ID: id },
+			where: { id: id },
 			include: { Role: true, resource: true },
 		});
 		if (!RolesResource) {
@@ -79,12 +79,12 @@ const UpdateRoleResource = async (req, res) => {
 	try {
 		const id = req.params.id;
 		const updates = Object.keys(req.body);
-		const Selected = { ID: true };
+		const Selected = { id: true };
 		updates.forEach((item) => {
 			Selected[item] = true;
 		});
 		const RolesResource = await prisma.role_Resources.findUnique({
-			where: { ID: id },
+			where: { id: id },
 			select: Selected,
 		});
 		if (!RolesResource) {
@@ -112,11 +112,56 @@ const UpdateRoleResource = async (req, res) => {
 	}
 };
 
+//Bulk update rolre resources by role ID
+
+const UpdateRoleResourceByRoleID = async (req, res) => {
+	try {
+		const id = req.params.id;
+		const data = req.body.Role_Resources;
+		if (data.length === 0) {
+			throw new Error("No Data Were Sent!");
+		}
+		const result = await prisma.$transaction(async (prisma) => {
+			data.map(async (item) => {
+				await prisma.role_Resources.update({
+					where: {
+						id: item.id,
+					},
+					data: {
+						Create: item.Create,
+						Update: item.Update,
+						Delete: item.Delete,
+						Read: item.Read,
+					},
+				});
+			});
+			const UpdatedRole = await prisma.role.findUnique({
+				where: {
+					id: id,
+				},
+				include: { Role_Resources: { include: { resource: true } } },
+			});
+			return { UpdatedRole };
+		});
+		return res.status(200).send(result);
+	} catch (error) {
+		if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			console.log(error.code);
+			if (error.code === "P2025") {
+				return res.status(404).send("Record Doesn't Exist!");
+			} else if (error.code === "P2021") {
+				return res.status(404).send("Table Doesn't Exist!");
+			}
+		}
+		return res.status(500).send(error.message);
+	}
+};
+
 const DeleteRoleResource = async (req, res) => {
 	try {
 		const id = req.params.id;
 		const RolesResource = await prisma.role_Resources.delete({
-			where: { ID: id },
+			where: { id: id },
 			include: { Role: true, resource: true },
 		});
 
@@ -140,5 +185,6 @@ module.exports = {
 	GetRoleResourceByID,
 	GetRoleResourceByRoleID,
 	UpdateRoleResource,
+	UpdateRoleResourceByRoleID,
 	DeleteRoleResource,
 };

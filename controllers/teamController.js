@@ -92,7 +92,7 @@ const GetTeamByID = async (req, res) => {
 	try {
 		const id = req.params.id;
 		const Team = await prisma.team.findUnique({
-			where: { ID: id },
+			where: { id: id },
 			include: { Users: true, Image: true },
 		});
 		if (!Team) {
@@ -109,7 +109,7 @@ const UpdateTeam = async (req, res) => {
 		const id = req.params.id;
 		const updates = Object.keys(req.body);
 		const image = req.file;
-		const Selected = { ID: true };
+		const Selected = { id: true };
 		updates.forEach((item) => {
 			Selected[item] = true;
 		});
@@ -117,7 +117,7 @@ const UpdateTeam = async (req, res) => {
 			Selected["Image"] = true;
 		}
 		const Team = await prisma.team.findUnique({
-			where: { ID: id },
+			where: { id: id },
 			select: Selected,
 		});
 		if (!Team) {
@@ -130,7 +130,7 @@ const UpdateTeam = async (req, res) => {
 					console.log(`.${Team.Image.URL}`);
 					fs.unlinkSync(`.${Team.Image.URL}`);
 				}
-				await prisma.images.delete({ where: { ID: Team.Image.ID } });
+				await prisma.images.delete({ where: { id: Team.Image.id } });
 			}
 			Team.Image = {
 				create: {
@@ -153,7 +153,7 @@ const UpdateTeam = async (req, res) => {
 			}
 		}
 		await prisma.team.update({
-			where: { ID: id },
+			where: { id: id },
 			data: Team,
 		});
 		res.status(200).json({
@@ -169,12 +169,12 @@ const DeleteTeam = async (req, res) => {
 	try {
 		const id = req.params.id;
 		const Team = await prisma.team.findFirst({
-			where: { ID: id },
+			where: { id: id },
 			include: { Users: true, Image: true },
 		});
 		const imageURL = Team.Image?.URL;
-		const imageID = Team.Image?.ID;
-		const UserID = Team.Users?.ID;
+		const imageID = Team.Image?.id;
+		const UserID = Team.Users?.id;
 		let isImageDeleted = false;
 		if (imageID !== undefined) {
 			if (fs.existsSync(`.${imageURL}`)) {
@@ -184,12 +184,12 @@ const DeleteTeam = async (req, res) => {
 				isImageDeleted = true;
 			}
 		} else {
-			await prisma.team.delete({ where: { ID: Team.ID } });
+			await prisma.team.delete({ where: { id: Team.id } });
 		}
 		if (isImageDeleted) {
 			console.log("Deleting ...");
-			await prisma.images.delete({ where: { ID: imageID } });
-			await prisma.team.delete({ where: { ID: Team.ID } });
+			await prisma.images.delete({ where: { id: imageID } });
+			await prisma.team.delete({ where: { id: Team.id } });
 		}
 		// console.log("Role: ", Role);
 		res.status(200).json({

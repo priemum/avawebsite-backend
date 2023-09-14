@@ -12,7 +12,7 @@ datasource db {
 
 //AVA Real Estate Main Schema 
 model Team {
-  ID           String   @id @default(uuid())
+  id           String   @id @default(uuid())
   Title        String   @unique
   Description  String?
   ActiveStatus Boolean  @default(true)
@@ -23,7 +23,7 @@ model Team {
 }
 
 model Users {
-  ID           String     @id @default(uuid())
+  id           String     @id @default(uuid())
   Name         String
   DOB          DateTime?
   Email        String     @unique
@@ -33,9 +33,9 @@ model Users {
   Password     String
   refreshToken String?
   Image        Images?
-  Team         Team?      @relation(fields: [teamID], references: [ID])
+  Team         Team?      @relation(fields: [teamID], references: [id])
   teamID       String?
-  Role         Role?      @relation(fields: [roleID], references: [ID])
+  Role         Role?      @relation(fields: [roleID], references: [id])
   roleID       String?
   Articles     Articles[]
   CreatedAt    DateTime   @default(now())
@@ -48,7 +48,7 @@ enum Gender {
 }
 
 model Role {
-  ID             String           @id @default(uuid())
+  id             String           @id @default(uuid())
   Name           String?          @unique
   ActiveStatus   Boolean          @default(true)
   CreatedAt      DateTime         @default(now())
@@ -58,7 +58,7 @@ model Role {
 }
 
 model Resources {
-  ID             String           @id @default(uuid())
+  id             String           @id @default(uuid())
   Name           String           @unique
   Description    String
   ActiveStatus   Boolean          @default(true)
@@ -68,13 +68,13 @@ model Resources {
 }
 
 model Role_Resources {
-  ID          String    @id @default(uuid())
+  id          String    @id @default(uuid())
   Create      Boolean
   Read        Boolean
   Update      Boolean
   Delete      Boolean
-  Role        Role      @relation(fields: [roleID], references: [ID])
-  resource    Resources @relation(fields: [resourcesID], references: [ID])
+  Role        Role      @relation(fields: [roleID], references: [id])
+  resource    Resources @relation(fields: [resourcesID], references: [id])
   CreatedAt   DateTime  @default(now())
   UpdatedAt   DateTime  @updatedAt
   roleID      String
@@ -84,25 +84,25 @@ model Role_Resources {
 }
 
 model Articles {
-  ID           String   @id @default(uuid())
+  id           String   @id @default(uuid())
   MinRead      Int
   ActiveStatus Boolean  @default(true)
-  User         Users    @relation(fields: [usersID], references: [ID])
+  User         Users    @relation(fields: [usersID], references: [id])
   usersID      String
   CreatedAt    DateTime @default(now())
   UpdatedAt    DateTime @updatedAt
 }
 
 model Images {
-  ID        String   @id @default(uuid())
+  id        String   @id @default(uuid())
   URL       String
   Alt       String
   Width     Int?
   Height    Int?
   Size      Float?
   Type      String?
-  Team      Team?    @relation(fields: [teamID], references: [ID])
-  user      Users?   @relation(fields: [usersID], references: [ID])
+  Team      Team?    @relation(fields: [teamID], references: [id])
+  user      Users?   @relation(fields: [usersID], references: [id])
   usersID   String?  @unique
   CreatedAt DateTime @default(now())
   UpdatedAt DateTime @updatedAt
@@ -110,10 +110,10 @@ model Images {
 }
 
 model Address {
-  ID                  String                @id @default(uuid())
+  id                  String                @id @default(uuid())
   Longitude           Float
   Latitude            Float
-  Address             Address?              @relation("SubAddress", fields: [addressID], references: [ID])
+  Address             Address?              @relation("SubAddress", fields: [addressID], references: [id])
   addressID           String?               @unique
   Addresses           Address[]             @relation("SubAddress")
   CreatedAt           DateTime              @default(now())
@@ -122,7 +122,7 @@ model Address {
 }
 
 model Unit {
-  ID               String             @id @default(uuid())
+  id               String             @id @default(uuid())
   conversionRate   Int
   ActiveStatus     Boolean            @default(true)
   CreatedAt        DateTime           @default(now())
@@ -131,7 +131,7 @@ model Unit {
 }
 
 model Currency {
-  ID                   String                 @id @default(uuid())
+  id                   String                 @id @default(uuid())
   conversionRate       Int
   ActiveStatus         Boolean                @default(true)
   CreatedAt            DateTime               @default(now())
@@ -141,7 +141,7 @@ model Currency {
 
 //Localization Sub-Schema 
 model Languages {
-  ID                   String                 @id @default(uuid())
+  id                   String                 @id @default(uuid())
   Name                 String                 @unique
   Code                 String?                @unique
   Articles_Translation Articles_Translation[]
@@ -153,11 +153,11 @@ model Languages {
 }
 
 model Articles_Translation {
-  ID          String    @id @default(uuid())
+  id          String    @id @default(uuid())
   Title       String    @unique
   Description String
   Caption     String
-  Language    Languages @relation(fields: [languagesID], references: [ID])
+  Language    Languages @relation(fields: [languagesID], references: [id])
   languagesID String
   CreatedAt   DateTime  @default(now())
   UpdatedAt   DateTime  @updatedAt
@@ -166,31 +166,31 @@ model Articles_Translation {
 model Address_Translation {
   ID          String    @id @default(uuid())
   Name        String
-  Language    Languages @relation(fields: [languagesID], references: [ID])
+  Language    Languages @relation(fields: [languagesID], references: [id])
   languagesID String
-  Address     Address   @relation(fields: [addressID], references: [ID])
+  Address     Address   @relation(fields: [addressID], references: [id])
   addressID   String
   CreatedAt   DateTime  @default(now())
   UpdatedAt   DateTime  @updatedAt
 }
 
 model Unit_Translation {
-  ID          String    @id @default(uuid())
+  id          String    @id @default(uuid())
   Name        String
-  Language    Languages @relation(fields: [languagesID], references: [ID])
+  Language    Languages @relation(fields: [languagesID], references: [id])
   languagesID String
-  Unit        Unit      @relation(fields: [unitID], references: [ID])
+  Unit        Unit      @relation(fields: [unitID], references: [id])
   unitID      String
   CreatedAt   DateTime  @default(now())
   UpdatedAt   DateTime  @updatedAt
 }
 
 model Currency_Translation {
-  ID          String    @id @default(uuid())
+  id          String    @id @default(uuid())
   Name        String
-  Language    Languages @relation(fields: [languagesID], references: [ID])
+  Language    Languages @relation(fields: [languagesID], references: [id])
   languagesID String
-  Currency    Currency  @relation(fields: [currencyID], references: [ID])
+  Currency    Currency  @relation(fields: [currencyID], references: [id])
   currencyID  String
   CreatedAt   DateTime  @default(now())
   UpdatedAt   DateTime  @updatedAt

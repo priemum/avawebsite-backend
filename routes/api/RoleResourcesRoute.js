@@ -8,6 +8,7 @@ const {
 	UpdateRoleResource,
 	DeleteRoleResource,
 	GetRoleResourceByRoleID,
+	UpdateRoleResourceByRoleID,
 } = require("../../controllers/roleResourcesController");
 const { CheckRoleResources } = require("../../middlewares/RoleResourcesAuth");
 const verifyJWT = require("../../middlewares/verifyJWT");
@@ -25,32 +26,38 @@ roleResourceRouter.post(
 roleResourceRouter.get(
 	"/role-resource",
 	verifyJWT,
-	// VerifyRole,
+	VerifyRole,
 	GetAllRolesResource,
 );
 roleResourceRouter.get(
 	"/role-resource/:id",
 	verifyJWT,
-	// VerifyRole,
+	VerifyRole,
 	GetRoleResourceByID,
 );
 roleResourceRouter.get(
 	"/role-resource/role/:id",
 	verifyJWT,
-	// VerifyRole,
+	VerifyRole,
 	GetRoleResourceByRoleID,
 );
 roleResourceRouter.put(
 	"/role-resource/:id",
 	verifyJWT,
-	// VerifyRole,
+	VerifyRole,
 	CheckAllowedUpdates("role-resource"),
 	UpdateRoleResource,
+);
+roleResourceRouter.put(
+	"/role-resource/role/:id",
+	verifyJWT,
+	VerifyRole,
+	UpdateRoleResourceByRoleID,
 );
 roleResourceRouter.delete(
 	"/role-resource/:id",
 	verifyJWT,
-	// VerifyRole,
+	VerifyRole,
 	DeleteRoleResource,
 );
 

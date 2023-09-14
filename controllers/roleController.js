@@ -20,7 +20,7 @@ const CreateRole = async (req, res) => {
 				},
 			});
 			const Resources = await prisma.resources.findMany({
-				select: { ID: true },
+				select: { id: true },
 			});
 			let data = [];
 			Resources.forEach(async (resource) => {
@@ -29,8 +29,8 @@ const CreateRole = async (req, res) => {
 					Read: false,
 					Update: false,
 					Delete: false,
-					roleID: Role.ID,
-					resourcesID: resource.ID,
+					roleID: Role.id,
+					resourcesID: resource.id,
 				});
 			});
 			console.log("Data: ", data);
@@ -83,7 +83,7 @@ const GetRoleByID = async (req, res) => {
 	try {
 		const id = req.params.id;
 		const Roles = await prisma.role.findUnique({
-			where: { ID: id },
+			where: { id: id },
 			include: { Role_Resources: { include: { resource: true } } },
 		});
 		if (!Roles) {
@@ -100,14 +100,14 @@ const UpdateRole = async (req, res) => {
 		const id = req.params.id;
 		const updates = Object.keys(req.body);
 		const Role = await prisma.role.findUnique({
-			where: { ID: id },
+			where: { id: id },
 		});
 		if (!Role) {
 			return res.status(404).send("No Roles Were Found!");
 		}
 		updates.forEach((update) => (Role[update] = req.body[update]));
 		await prisma.role.update({
-			where: { ID: id },
+			where: { id: id },
 			data: Role,
 		});
 		res.status(200).send(Role);
@@ -122,7 +122,7 @@ const DeleteRole = async (req, res) => {
 
 		const result = await prisma.$transaction(async (prisma) => {
 			const Role = await prisma.role.findUnique({
-				where: { ID: id },
+				where: { id: id },
 				include: {
 					Role_Resources: true,
 					Users: true,
@@ -135,11 +135,11 @@ const DeleteRole = async (req, res) => {
 			}
 			if (Role.Role_Resources.length >= 0) {
 				await prisma.role_Resources.deleteMany({
-					where: { roleID: Role.ID },
+					where: { roleID: Role.id },
 				});
 			}
 			const DeletedRole = await prisma.role.delete({
-				where: { ID: id },
+				where: { id: id },
 			});
 			return { DeletedRole };
 		});

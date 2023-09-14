@@ -58,7 +58,7 @@ const GetResourceByID = async (req, res) => {
 	try {
 		const id = req.params.id;
 		const Resource = await prisma.resources.findUnique({
-			where: { ID: id },
+			where: { id: id },
 		});
 		if (!Resource) {
 			return res.status(404).send("No Resource Were Found!");
@@ -74,14 +74,14 @@ const UpdateResource = async (req, res) => {
 		const id = req.params.id;
 		const updates = Object.keys(req.body);
 		const Resource = await prisma.resources.findUnique({
-			where: { ID: id },
+			where: { id: id },
 		});
 		if (!Resource) {
 			return res.status(404).send("No Resource Were Found!");
 		}
 		updates.forEach((update) => (Resource[update] = req.body[update]));
 		await prisma.resources.update({
-			where: { ID: id },
+			where: { id: id },
 			data: Resource,
 		});
 		res.status(200).send(Resource);
@@ -94,7 +94,7 @@ const DeleteResource = async (req, res) => {
 	try {
 		const id = req.params.id;
 		const Resource = await prisma.resources.delete({
-			where: { ID: id },
+			where: { id: id },
 		});
 
 		// console.log("Role: ", Role);

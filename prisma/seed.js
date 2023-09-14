@@ -72,7 +72,7 @@ async function main() {
 	//Add Role Resources for Super Admin
 	const SuperAdminID = await prisma.role.findFirst({
 		where: { Name: "Super Admin" },
-		select: { ID: true },
+		select: { id: true },
 	});
 	const AllResources = await prisma.resources.findMany();
 	AllResources.map(async (resource) => {
@@ -81,7 +81,7 @@ async function main() {
 			data: {
 				Role_Resources: {
 					create: {
-						roleID: SuperAdminID.ID,
+						roleID: SuperAdminID.id,
 						Create: true,
 						Update: true,
 						Read: true,
