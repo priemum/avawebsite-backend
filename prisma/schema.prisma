@@ -84,29 +84,33 @@ model Role_Resources {
 }
 
 model Articles {
-  id           String   @id @default(uuid())
-  MinRead      Int
-  ActiveStatus Boolean  @default(true)
-  User         Users    @relation(fields: [usersID], references: [id])
-  usersID      String
-  CreatedAt    DateTime @default(now())
-  UpdatedAt    DateTime @updatedAt
+  id                   String                 @id @default(uuid())
+  MinRead              Int
+  ActiveStatus         Boolean                @default(true)
+  User                 Users                  @relation(fields: [usersID], references: [id])
+  usersID              String
+  Image                Images?                @relation(fields: [imagesId], references: [id])
+  CreatedAt            DateTime               @default(now())
+  UpdatedAt            DateTime               @updatedAt
+  Articles_Translation Articles_Translation[]
+  imagesId             String?
 }
 
 model Images {
-  id        String   @id @default(uuid())
+  id        String     @id @default(uuid())
   URL       String
   Alt       String
   Width     Int?
   Height    Int?
   Size      Float?
   Type      String?
-  Team      Team?    @relation(fields: [teamID], references: [id])
-  user      Users?   @relation(fields: [usersID], references: [id])
-  usersID   String?  @unique
-  CreatedAt DateTime @default(now())
-  UpdatedAt DateTime @updatedAt
-  teamID    String?  @unique
+  Team      Team?      @relation(fields: [teamID], references: [id])
+  user      Users?     @relation(fields: [usersID], references: [id])
+  usersID   String?    @unique
+  CreatedAt DateTime   @default(now())
+  UpdatedAt DateTime   @updatedAt
+  teamID    String?    @unique
+  Articles  Articles[]
 }
 
 model Address {
@@ -159,8 +163,10 @@ model Articles_Translation {
   Caption     String
   Language    Languages @relation(fields: [languagesID], references: [id])
   languagesID String
+  article     Articles  @relation(fields: [articlesId], references: [id])
   CreatedAt   DateTime  @default(now())
   UpdatedAt   DateTime  @updatedAt
+  articlesId  String
 }
 
 model Address_Translation {

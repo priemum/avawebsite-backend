@@ -11,13 +11,15 @@ const AuthRouter = require("./routes/api/AuthRoute");
 const credentials = require("./middlewares/credentials");
 const roleResourceRouter = require("./routes/api/RoleResourcesRoute");
 const languageRouter = require("./routes/api/LanguageRouter");
+const articleRouter = require("./routes/api/ArticlesRoute");
+const corsOptions = require("./config/corsOptions");
 const port = process.env.PORT || 3500;
 const app = express();
 
 //middleware
 app.use(credentials);
 app.use(cookieParser());
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -32,6 +34,7 @@ app.use("/", resourceRouter);
 app.use("/", teamRouter);
 app.use("/", roleResourceRouter);
 app.use("/", languageRouter);
+app.use("/", articleRouter);
 app.listen(port, () => {
 	console.log(`Listening on port ${port}`);
 });

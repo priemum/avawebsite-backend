@@ -17,9 +17,11 @@ const upload = multer({
 		fileSize: 1024 * 1024 * 6,
 	},
 	fileFilter(req, file, cb) {
-		if (!file.originalname.match(/\.(jpg|jpeg|png|JPG|JPEG|PNG)$/)) {
+		if (!file.originalname.match(/\.(jpg|jpeg|png|JPG|JPEG|PNG|webp)$/)) {
 			cb(null, false);
-			return cb(new Error("Please upload a (jpg or jpeg or Png) image "));
+			return cb(
+				new Error("Please upload a (jpg or jpeg or Png or Webp) image "),
+			);
 		}
 		if (file.size > 1024 * 1024 * 6) {
 			cb(null, false);
