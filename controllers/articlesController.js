@@ -5,121 +5,108 @@ const { Prisma } = require("@prisma/client");
 const { HandleError } = require("../middlewares/ErrorHandler");
 const fs = require("fs");
 require("dotenv").config;
-//! not done reached to checking the Lnaguages array
+
 const CreateArticle = async (req, res) => {
 	try {
-		const {
-			MinRead,
-			ActiveStatus,
-			Title,
-			Description,
-			Caption,
-			LanguageID,
-			AuthorID,
-		} = req.body;
+		const ArticleData = req.body;
 		const image = req.file;
-		if (!Title || !Description || !Caption || !MinRead) {
-			return res
-				.status(400)
-				.send(
-					"Missing information!! Title, Description, Caption and MinRead are requrired",
-				);
-		}
+		const data = [{}];
+		ArticleData.LanguageID.map((item, key) => {
+			data[key] = {
+				languagesID: item,
+				Title: ArticleData.Title[key],
+				Description: ArticleData.Description[key],
+				Caption: ArticleData.Caption[key],
+			};
+		});
 		const Results = await prisma.$transaction(async (prisma) => {
 			let Msg = "";
 			let Code = 201;
 			let Language = "";
-			LanguageID.map(async (lang) => {
-				Language = await prisma.languages.findUnique({
-					where: {
-						id: lang,
-					},
-				});
-				// console.log(Language);
-				if (!Language) {
-					console.log("Test: ", Language);
-					Msg = "Language must be selected!";
-					Code = 400;
-					return { Msg, Code };
-				}
-			});
 
-			const Author = await prisma.users.findUnique({
-				where: {
-					id: AuthorID,
+			const Article = await prisma.articles.create({
+				data: {
+					MinRead: parseInt(ArticleData.MinRead),
+					ActiveStatus:
+						String(ArticleData?.ActiveStatus).toLowerCase() === "true",
+					Image: image
+						? {
+								create: {
+									URL: `/public/images/article/${
+										Math.floor(new Date().getTime() / 1000) +
+										"-" +
+										image?.originalname
+									}`,
+									Alt: image?.originalname,
+									Size: image.size,
+									Type: image.mimetype,
+									user: undefined,
+								},
+						  }
+						: undefined,
+					User: {
+						connect: {
+							id: ArticleData.AuthorID,
+						},
+					},
+					Articles_Translation: {
+						createMany: { data },
+					},
+				},
+				include: {
+					Image: true,
+					Articles_Translation: {
+						include: {
+							Language: true,
+						},
+					},
 				},
 			});
-			if (!Author) {
-				Msg = "Author must be selected!";
-				Code = 400;
-				return { Msg, Code };
-			}
-			// const Article = await prisma.articles.create({
-			// 	data: {
-			// 		MinRead: parseInt(MinRead),
-			// 		ActiveStatus,
-			// 		Image: image
-			// 			? {
-			// 					create: {
-			// 						URL: `/public/images/article/${
-			// 							Math.floor(new Date().getTime() / 1000) +
-			// 							"-" +
-			// 							image?.originalname
-			// 						}`,
-			// 						Alt: image?.originalname,
-			// 						Size: image.size,
-			// 						Type: image.mimetype,
-			// 						user: undefined,
-			// 					},
-			// 			  }
-			// 			: undefined,
-			// 		// Articles_Translation: {
-			// 		// 	create: {
-			// 		// 		Caption,
-			// 		// 		Description,
-			// 		// 		Title,
-			// 		// 		Language: {
-			// 		// 			connect: {
-			// 		// 				id: LanguageID,
-			// 		// 			},
-			// 		// 		},
-			// 		// 	},
-			// 		// },
-			// 		User: {
-			// 			connect: {
-			// 				id: AuthorID,
-			// 			},
-			// 		},
-			// 	},
-			// });
-
-			return "Article";
+			return Article;
 		});
-		console.log(Results);
-		if (Results.Code === 400) {
-			return res.status(400).send(Results.Msg);
-		}
+
 		return res.status(201).send(Results);
 	} catch (error) {
+		if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error.code === "P2025") {
+				return res.status(404).send("Record Doesn't Exist!");
+			} else if (error.code === "P2021") {
+				return res.status(404).send("Table Doesn't Exist!");
+			} else if (error.code === "P2002") {
+				return res.status(404).send("Unique constraint failed, Field Exist!");
+			} else if (error.code === "P2003") {
+				return res
+					.status(404)
+					.send(
+						"Foreign key constraint failed, Connection Field Doesn't Exist!",
+					);
+			}
+		}
 		return res.status(500).send(error.message);
 	}
 };
 
 const GetAllArticles = async (req, res) => {
 	try {
-		const [Teams, count] = await prisma.$transaction([
-			prisma.team.findMany({
-				include: { Users: true, Image: true },
+		const [Articles, count] = await prisma.$transaction([
+			prisma.articles.findMany({
+				include: {
+					User: true,
+					Image: true,
+					Articles_Translation: {
+						include: { Language: true },
+					},
+				},
 			}),
-			prisma.team.count(),
+			prisma.articles.count(),
 		]);
 
-		if (!Teams) {
-			return res.status(404).send("No Teams Were Found!");
+		if (!Articles) {
+			return res.status(404).send("No Articles Were Found!");
 		}
 		res.status(200).json({
 			count,
-			Teams,
+			Articles,
 		});
 	} catch (error) {
 		return res.status(500).send(error.message);
@@ -128,19 +115,25 @@ const GetAllArticles = async (req, res) => {
 
 const GetAllActiveArticles = async (req, res) => {
 	try {
-		const [Teams, count] = await prisma.$transaction([
-			prisma.team.findMany({
+		const [Articles, count] = await prisma.$transaction([
+			prisma.articles.findMany({
 				where: { ActiveStatus: true },
-				include: { Users: true, Image: true },
+				include: {
+					User: true,
+					Image: true,
+					Articles_Translation: {
+						include: { Language: true },
+					},
+				},
 			}),
-			prisma.team.count({ where: { ActiveStatus: true } }),
+			prisma.articles.count({ where: { ActiveStatus: true } }),
 		]);
-		if (!Teams) {
-			return res.status(404).send("No Teams Were Found!");
+		if (!Articles) {
+			return res.status(404).send("No Articles Were Found!");
 		}
 		res.status(200).json({
 			count,
-			Teams,
+			Articles,
 		});
 	} catch (error) {
 		return res.status(500).send(error.message);
@@ -150,19 +143,25 @@ const GetAllActiveArticles = async (req, res) => {
 const GetArticleByID = async (req, res) => {
 	try {
 		const id = req.params.id;
-		const Team = await prisma.team.findUnique({
+		const Article = await prisma.articles.findUnique({
 			where: { id: id },
-			include: { Users: true, Image: true },
+			include: {
+				User: true,
+				Image: true,
+				Articles_Translation: {
+					include: { Language: true },
+				},
+			},
 		});
-		if (!Team) {
-			return res.status(404).send("No Team Were Found!");
+		if (!Article) {
+			return res.status(404).send("No Article Were Found!");
 		}
-		res.status(200).send(Team);
+		res.status(200).send(Article);
 	} catch (error) {
 		return res.status(500).send(error.message);
 	}
 };
-// ToDO: Fix update image to match user update
+// ToDO: Change update articles
 const UpdateArticle = async (req, res) => {
 	try {
 		const id = req.params.id;
@@ -223,7 +222,7 @@ const UpdateArticle = async (req, res) => {
 		return res.status(500).send(error.message);
 	}
 };
-
+// ToDO : check deleting conditions
 const DeleteArticle = async (req, res) => {
 	try {
 		const id = req.params.id;

@@ -8,7 +8,8 @@
 	"main": "index.js",
 	"scripts": {
 		"dev": "nodemon index.js",
-		"start": "node index.js"
+		"start": "node index.js",
+		"postinstall": "prisma generate"
 	},
 	"author": "Kanaan Alahmad",
 	"license": "ISC",

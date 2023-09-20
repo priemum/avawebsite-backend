@@ -24,7 +24,7 @@ articleRouter.post(
 	CreateArticle,
 );
 articleRouter.get("/article", verifyJWT, VerifyRole, GetAllArticles);
-articleRouter.get("/article/:id", verifyJWT, VerifyRole, GetArticleByID);
+articleRouter.get("/article/:id", GetArticleByID);
 articleRouter.get("/article-active", GetAllActiveArticles);
 articleRouter.put(
 	"/article/:id",
