@@ -158,7 +158,7 @@ model Languages {
 
 model Articles_Translation {
   id          String    @id @default(uuid())
-  Title       String    @unique
+  Title       String
   Description String    @db.Text
   Caption     String
   Language    Languages @relation(fields: [languagesID], references: [id])
