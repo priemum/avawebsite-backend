@@ -172,11 +172,12 @@ const UpdateArticle = async (req, res) => {
 		const image = req.file;
 		const Selected = { id: true };
 		updates.forEach((item) => {
-			Selected[item] = true;
+			if (item !== "AuthorID") Selected[item] = true;
 		});
 		if (image) {
 			Selected["Image"] = true;
 		}
+
 		const data = await prisma.articles.findUnique({
 			where: { id: id },
 			select: Selected,
@@ -186,7 +187,6 @@ const UpdateArticle = async (req, res) => {
 		}
 		updates.forEach((update) => (data[update] = req.body[update]));
 		data.MinRead = parseInt(data.MinRead);
-		console.log(data);
 		if (image) {
 			if (data.Image !== null) {
 				if (fs.existsSync(`.${data.Image.URL}`)) {
@@ -214,46 +214,26 @@ const UpdateArticle = async (req, res) => {
 			}
 		}
 		const result = await prisma.$transaction(async (prisma) => {
-			// const ArticleTranslations = await prisma.articles_Translation.findMany({
-			// 	where: { articlesId: id },
-			// 	select: { id: true },
-			// });
-			// console.log(ArticleTranslations);
-			// ArticleTranslations.map((item) => {
-			// 	prisma.articles_Translation.update({
-			// 		where: { id: item.id },
-			// 		data: data.Articles_Translation.find((x) => x.id === item.id),
-			// 	});
-			// data.Articles_Translation.map((lang) => {
-			// 	console.log(item.id);
-			// 	// console.log(lang.languagesID);
-			// 	prisma.articles_Translation.update({
-			// 		where: {
-			// 			AND: [{ id: item.id }, { languagesID: lang.languagesID }],
-			// 		},
-			// 		data: lang,
-			// 	});
-			// 	// console.log(lang);
-			// });
-			// });
+			data.Articles_Translation.map(async (item) => {
+				{
+					await prisma.articles_Translation.updateMany({
+						where: {
+							AND: [{ languagesID: item.languagesID }, { articlesId: id }],
+						},
+						data: {
+							Title: item.Title,
+							Description: item.Description,
+							Caption: item.Caption,
+						},
+					});
+				}
+			});
 			const UpdatedArticle = await prisma.articles.update({
 				where: { id: id },
 				data: {
 					MinRead: data?.MinRead,
 					ActiveStatus: data?.ActiveStatus,
 					Image: data?.Image,
-					Articles_Translation: {
-						updateMany: {
-							where: {
-								AND: [{ articlesId: id }],
-							},
-							data: {
-								Title: data.Articles_Translation.find(
-									(x) => x.languagesID == id,
-								),
-							},
-						},
-					},
 				},
 				include: {
 					Image: true,
@@ -280,13 +260,20 @@ const UpdateArticle = async (req, res) => {
 const DeleteArticle = async (req, res) => {
 	try {
 		const id = req.params.id;
-		const Team = await prisma.team.findFirst({
+		const Article = await prisma.articles.findFirst({
 			where: { id: id },
-			include: { Users: true, Image: true },
+			include: {
+				Image: true,
+				Articles_Translation: {
+					include: {
+						Language: true,
+					},
+				},
+			},
 		});
-		const imageURL = Team.Image?.URL;
-		const imageID = Team.Image?.id;
-		const UserID = Team.Users?.id;
+		const imageURL = Article.Image?.URL;
+		const imageID = Article.Image?.id;
+		const UserID = Article.Users?.id;
 		let isImageDeleted = false;
 		if (imageID !== undefined) {
 			if (fs.existsSync(`.${imageURL}`)) {
@@ -296,17 +283,29 @@ const DeleteArticle = async (req, res) => {
 				isImageDeleted = true;
 			}
 		} else {
-			await prisma.team.delete({ where: { id: Team.id } });
+			if (Article.Articles_Translation.length > 0) {
+				console.log("len: ", Article.Articles_Translation.length);
+				await prisma.articles_Translation.deleteMany({
+					where: { articlesId: id },
+				});
+			}
+			await prisma.articles.delete({ where: { id: Article.id } });
 		}
 		if (isImageDeleted) {
 			console.log("Deleting ...");
 			await prisma.images.delete({ where: { id: imageID } });
-			await prisma.team.delete({ where: { id: Team.id } });
+			if (Article.Articles_Translation.length > 0) {
+				console.log("len: ", Article.Articles_Translation.length);
+				await prisma.articles_Translation.deleteMany({
+					where: { articlesId: id },
+				});
+			}
+			await prisma.articles.delete({ where: { id: Article.id } });
 		}
 		// console.log("Role: ", Role);
 		res.status(200).json({
 			"Image Deleted: ": imageURL,
-			Team,
+			Article,
 		});
 	} catch (error) {
 		if (error instanceof Prisma.PrismaClientKnownRequestError) {
