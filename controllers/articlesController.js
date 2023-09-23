@@ -4,6 +4,7 @@ const prisma = require("../prismaClient");
 const { Prisma } = require("@prisma/client");
 const { HandleError } = require("../middlewares/ErrorHandler");
 const fs = require("fs");
+const { json } = require("express");
 require("dotenv").config;
 
 const CreateArticle = async (req, res) => {
@@ -33,6 +34,14 @@ const CreateArticle = async (req, res) => {
 					? data.ActiveStatus?.toLowerCase?.() === "true"
 					: false;
 		}
+		// const splitStr = (x) => {
+		// 	const y = x.split(":");
+		// 	return { [y[0].trim()]: y[1].trim() };
+		// };
+		// data.Articles_Translation.map((item) => {
+		// 	item = splitStr(item);
+		// });
+		// console.log(data.Articles_Translation);
 		const Article = await prisma.articles.create({
 			data: {
 				MinRead: data.MinRead,
@@ -159,50 +168,92 @@ const UpdateArticle = async (req, res) => {
 	try {
 		const id = req.params.id;
 		const ArticleData = req.body;
+		const updates = Object.keys(req.body);
 		const image = req.file;
-		const data = [{}];
-		// console.log(ArticleData);
-		// console.log(data);
-		ArticleData.LanguageID.map((item, key) => {
-			data[key] = {
-				languagesID: item,
-				Title: ArticleData?.Title[key],
-				Description: ArticleData?.Description[key],
-				Caption: ArticleData?.Caption[key],
-			};
+		const Selected = { id: true };
+		updates.forEach((item) => {
+			Selected[item] = true;
 		});
-		// console.log("Data: ", data);
-
-		const Results = await prisma.$transaction(async (prisma) => {
-			let Msg = "";
-			let Code = 201;
-			let Language = "";
-			let langID = [];
-			data.map((item) => {
-				langID.push(item.languagesID);
-			});
-			// console.log("lang: ", langID);
-			const Article = await prisma.articles.update({
+		if (image) {
+			Selected["Image"] = true;
+		}
+		const data = await prisma.articles.findUnique({
+			where: { id: id },
+			select: Selected,
+		});
+		if (!data) {
+			return res.status(404).send("Article was not Found!");
+		}
+		updates.forEach((update) => (data[update] = req.body[update]));
+		data.MinRead = parseInt(data.MinRead);
+		console.log(data);
+		if (image) {
+			if (data.Image !== null) {
+				if (fs.existsSync(`.${data.Image.URL}`)) {
+					fs.unlinkSync(`.${data.Image.URL}`);
+				}
+				await prisma.images.delete({ where: { id: data.Image.id } });
+			}
+			data.Image = {
+				create: {
+					URL: `/public/images/article/${
+						Math.floor(new Date().getTime() / 1000) + "-" + image?.originalname
+					}`,
+					Alt: image?.originalname,
+					Size: image.size,
+					Type: image.mimetype,
+					teamID: undefined,
+				},
+			};
+		}
+		if (updates.includes("ActiveStatus")) {
+			if (req.body.ActiveStatus.toLowerCase() === "false") {
+				data.ActiveStatus = false;
+			} else {
+				data.ActiveStatus = true;
+			}
+		}
+		const result = await prisma.$transaction(async (prisma) => {
+			// const ArticleTranslations = await prisma.articles_Translation.findMany({
+			// 	where: { articlesId: id },
+			// 	select: { id: true },
+			// });
+			// console.log(ArticleTranslations);
+			// ArticleTranslations.map((item) => {
+			// 	prisma.articles_Translation.update({
+			// 		where: { id: item.id },
+			// 		data: data.Articles_Translation.find((x) => x.id === item.id),
+			// 	});
+			// data.Articles_Translation.map((lang) => {
+			// 	console.log(item.id);
+			// 	// console.log(lang.languagesID);
+			// 	prisma.articles_Translation.update({
+			// 		where: {
+			// 			AND: [{ id: item.id }, { languagesID: lang.languagesID }],
+			// 		},
+			// 		data: lang,
+			// 	});
+			// 	// console.log(lang);
+			// });
+			// });
+			const UpdatedArticle = await prisma.articles.update({
 				where: { id: id },
 				data: {
-					MinRead: parseInt(ArticleData.MinRead),
-					ActiveStatus:
-						String(ArticleData?.ActiveStatus).toLowerCase() === "true",
-					Image: image
-						? {
-								create: {
-									URL: `/public/images/article/${
-										Math.floor(new Date().getTime() / 1000) +
-										"-" +
-										image?.originalname
-									}`,
-									Alt: image?.originalname,
-									Size: image.size,
-									Type: image.mimetype,
-									user: undefined,
-								},
-						  }
-						: undefined,
+					MinRead: data?.MinRead,
+					ActiveStatus: data?.ActiveStatus,
+					Image: data?.Image,
+					Articles_Translation: {
+						updateMany: {
+							where: {
+								AND: [{ articlesId: id }],
+							},
+							data: {
+								Title: data.Articles_Translation.find(
+									(x) => x.languagesID == id,
+								),
+							},
+						},
+					},
 				},
 				include: {
 					Image: true,
@@ -213,21 +264,14 @@ const UpdateArticle = async (req, res) => {
 					},
 				},
 			});
-			const Languages = await prisma.languages.findMany({
-				select: { id: true },
-			});
-			console.log("Lang: ", Languages);
-			// const Translations = await prisma.articles_Translation.upsert({});
-			Languages.map((language) => {
-				prisma.articles_Translation.update({
-					where: { languagesID: language.id },
-					data: data,
-				});
-			});
-			return { Article };
+
+			return UpdatedArticle;
 		});
 
-		return res.status(201).send(Results);
+		return res.status(200).json({
+			Message: "Updated successfully",
+			result,
+		});
 	} catch (error) {
 		return res.status(500).send(error.message);
 	}
