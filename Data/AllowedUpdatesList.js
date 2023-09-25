@@ -28,6 +28,7 @@ const allowedUpdatesList = [
 			"Title",
 			"Description",
 			"Caption",
+			"Articles_Translation",
 		],
 	},
 	{

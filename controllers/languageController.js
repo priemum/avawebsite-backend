@@ -31,7 +31,13 @@ const CreateLanguage = async (req, res) => {
 
 const GetAllLanguages = async (req, res) => {
 	try {
-		const Languages = await prisma.languages.findMany({});
+		const Languages = await prisma.languages.findMany({
+			orderBy: [
+				{
+					CreatedAt: "asc",
+				},
+			],
+		});
 		if (!Languages) {
 			return res.status(404).send("No Languages Were Found!");
 		}
@@ -45,6 +51,11 @@ const GetLanguageByID = async (req, res) => {
 	try {
 		const id = req.params.id;
 		const Language = await prisma.languages.findUnique({
+			orderBy: [
+				{
+					CreatedAt: "asc",
+				},
+			],
 			where: { id: id },
 		});
 		if (!Language) {

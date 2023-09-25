@@ -173,7 +173,7 @@ model Articles_Translation {
 }
 
 model Address_Translation {
-  ID          String    @id @default(uuid())
+  id          String    @id @default(uuid())
   Name        String
   Language    Languages @relation(fields: [languagesID], references: [id])
   languagesID String

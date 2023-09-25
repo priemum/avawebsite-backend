@@ -3,13 +3,7 @@ const { allowedUpdatesList } = require("../Data/AllowedUpdatesList");
 const CheckAllowedUpdates = (entity) => {
 	return async (req, res, next) => {
 		const updates = Object.keys(req.body);
-		console.log(req.body);
 		let allowedUpdates = [];
-		console.log("Updates: ", updates);
-		console.log(
-			"allowedUpdates: ",
-			allowedUpdatesList.find((item) => item.name == "article"),
-		);
 		allowedUpdatesList.map((item) => {
 			if (item.name == entity) {
 				allowedUpdates = item.value;

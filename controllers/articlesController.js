@@ -254,8 +254,6 @@ const UpdateArticle = async (req, res) => {
 		const result = await prisma.$transaction(async (prisma) => {
 			data.Articles_Translation.map(async (item) => {
 				{
-					console.log("data: ", item);
-					console.log("article ID: ", id);
 					await prisma.articles_Translation.updateMany({
 						where: {
 							AND: [{ languagesID: item.languagesID }, { articlesId: id }],
