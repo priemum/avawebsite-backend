@@ -13,6 +13,7 @@ const roleResourceRouter = require("./routes/api/RoleResourcesRoute");
 const languageRouter = require("./routes/api/LanguageRouter");
 const articleRouter = require("./routes/api/ArticlesRoute");
 const corsOptions = require("./config/corsOptions");
+const addressRouter = require("./routes/api/AddressRoute");
 const port = process.env.PORT || 3500;
 const app = express();
 
@@ -35,6 +36,7 @@ app.use("/", teamRouter);
 app.use("/", roleResourceRouter);
 app.use("/", languageRouter);
 app.use("/", articleRouter);
+// app.use("/", addressRouter);
 app.listen(port, () => {
 	console.log(`Listening on port ${port}`);
 });

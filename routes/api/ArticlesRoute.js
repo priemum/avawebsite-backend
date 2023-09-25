@@ -12,6 +12,7 @@ const {
 	GetAllActiveArticles,
 	UpdateArticle,
 	DeleteArticle,
+	GetArticleByUserID,
 } = require("../../controllers/articlesController");
 
 const articleRouter = express.Router();
@@ -25,12 +26,12 @@ articleRouter.post(
 );
 articleRouter.get("/article", verifyJWT, VerifyRole, GetAllArticles);
 articleRouter.get("/article/:id", GetArticleByID);
+articleRouter.get("/article/user/:id", GetArticleByUserID);
 articleRouter.get("/article-active", GetAllActiveArticles);
 articleRouter.put(
 	"/article/:id",
 	verifyJWT,
 	VerifyRole,
-	CheckAllowedUpdates("article"),
 	CheckImage,
 	UpdateArticle,
 );

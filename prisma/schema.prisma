@@ -111,6 +111,7 @@ model Images {
   UpdatedAt DateTime   @updatedAt
   teamID    String?    @unique
   Articles  Articles[]
+  Address   Address[]
 }
 
 model Address {
@@ -119,10 +120,12 @@ model Address {
   Latitude            Float
   Address             Address?              @relation("SubAddress", fields: [addressID], references: [id])
   addressID           String?               @unique
+  Image               Images                @relation(fields: [imagesId], references: [id])
   Addresses           Address[]             @relation("SubAddress")
   CreatedAt           DateTime              @default(now())
   UpdatedAt           DateTime              @updatedAt
   Address_Translation Address_Translation[]
+  imagesId            String
 }
 
 model Unit {

@@ -7,7 +7,7 @@ const fs = require("fs");
 const { json } = require("express");
 require("dotenv").config;
 
-const CreateArticle = async (req, res) => {
+const CreateAddress = async (req, res) => {
 	try {
 		const image = req.file;
 		// const data = [{}];
@@ -88,7 +88,7 @@ const CreateArticle = async (req, res) => {
 	}
 };
 
-const GetAllArticles = async (req, res) => {
+const GetAllAddresses = async (req, res) => {
 	try {
 		const [Articles, count] = await prisma.$transaction([
 			prisma.articles.findMany({
@@ -115,7 +115,7 @@ const GetAllArticles = async (req, res) => {
 	}
 };
 
-const GetAllActiveArticles = async (req, res) => {
+const GetAllActiveAddresses = async (req, res) => {
 	try {
 		const [Articles, count] = await prisma.$transaction([
 			prisma.articles.findMany({
@@ -142,7 +142,7 @@ const GetAllActiveArticles = async (req, res) => {
 	}
 };
 
-const GetArticleByID = async (req, res) => {
+const GetAddressByID = async (req, res) => {
 	try {
 		const id = req.params.id;
 
@@ -164,7 +164,7 @@ const GetArticleByID = async (req, res) => {
 		return res.status(500).send(error.message);
 	}
 };
-const GetArticleByUserID = async (req, res) => {
+const GetAddressByParentID = async (req, res) => {
 	try {
 		const id = req.params.id;
 		const [Articles, count] = await prisma.$transaction([
@@ -198,24 +198,20 @@ const GetArticleByUserID = async (req, res) => {
 	}
 };
 // ToDO: Change update articles
-const UpdateArticle = async (req, res) => {
+const UpdateAddress = async (req, res) => {
 	try {
 		const id = req.params.id;
 		const ArticleData = req.body;
 		const updates = Object.keys(req.body);
-		const image = req?.file;
+		const image = req.file;
 		const Selected = { id: true };
 		updates.forEach((item) => {
 			if (item !== "AuthorID") Selected[item] = true;
 		});
 		if (image) {
 			Selected["Image"] = true;
-		} else {
-			var index = updates.indexOf("Image");
-			if (index !== -1) {
-				updates.splice(index, 1);
-			}
 		}
+
 		const data = await prisma.articles.findUnique({
 			where: { id: id },
 			select: Selected,
@@ -254,16 +250,14 @@ const UpdateArticle = async (req, res) => {
 		const result = await prisma.$transaction(async (prisma) => {
 			data.Articles_Translation.map(async (item) => {
 				{
-					console.log("data: ", item);
-					console.log("article ID: ", id);
 					await prisma.articles_Translation.updateMany({
 						where: {
 							AND: [{ languagesID: item.languagesID }, { articlesId: id }],
 						},
 						data: {
-							Title: item?.Title,
-							Description: item?.Description,
-							Caption: item?.Caption,
+							Title: item.Title,
+							Description: item.Description,
+							Caption: item.Caption,
 						},
 					});
 				}
@@ -297,7 +291,7 @@ const UpdateArticle = async (req, res) => {
 	}
 };
 // ToDO : check deleting conditions
-const DeleteArticle = async (req, res) => {
+const DeleteAddress = async (req, res) => {
 	try {
 		const id = req.params.id;
 		const Article = await prisma.articles.findFirst({
@@ -360,11 +354,11 @@ const DeleteArticle = async (req, res) => {
 };
 
 module.exports = {
-	CreateArticle,
-	GetAllArticles,
-	GetArticleByID,
-	GetArticleByUserID,
-	GetAllActiveArticles,
-	UpdateArticle,
-	DeleteArticle,
+	CreateAddress,
+	GetAllAddresses,
+	GetAddressByID,
+	GetAddressByParentID,
+	GetAllActiveAddresses,
+	UpdateAddress,
+	DeleteAddress,
 };
