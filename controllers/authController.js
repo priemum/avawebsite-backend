@@ -77,6 +77,34 @@ const Login = async (req, res) => {
 	}
 };
 
+const GetProfile = async (req, res) => {
+	const cookies = req.cookies;
+	if (!cookies.jwt) return res.status(401).send("User Does not exist!");
+	const refreshToken = cookies.jwt;
+	const foundUser = await prisma.users.findFirst({
+		where: { refreshToken: refreshToken },
+		include: {
+			Articles: {
+				include: {
+					Articles_Translation: {
+						include: {
+							Language: true,
+						},
+					},
+					Image: true,
+				},
+			},
+			Image: true,
+			Role: true,
+			Team: true,
+		},
+	});
+	if (!foundUser) {
+		return res.status(404).send("User Doesn't Exist!");
+	}
+	return res.status(200).send(foundUser);
+};
+
 const handleLogout = async (req, res) => {
 	// On client, also delete the accessToken
 
@@ -115,4 +143,5 @@ const handleLogout = async (req, res) => {
 module.exports = {
 	Login,
 	handleLogout,
+	GetProfile,
 };
