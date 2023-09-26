@@ -21,11 +21,7 @@ const CreateTeam = async (req, res) => {
 				Image: image
 					? {
 							create: {
-								URL: `/public/images/team/${
-									Math.floor(new Date().getTime() / 1000) +
-									"-" +
-									image?.originalname
-								}`,
+								URL: image.path,
 								Alt: image?.originalname,
 								Size: image.size,
 								Type: image.mimetype,
