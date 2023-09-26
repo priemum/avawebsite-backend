@@ -33,7 +33,25 @@ const allowedUpdatesList = [
 	},
 	{
 		name: "address",
-		value: ["Longitude", "Latitude", "Address", "Image", "Name"],
+		value: [
+			"Longitude",
+			"Latitude",
+			"Address",
+			"ActiveStatus",
+			"Image",
+			"Name",
+			"Address_Translation",
+		],
+	},
+	{
+		name: "unit",
+		value: [
+			"conversionRate",
+			"ActiveStatus",
+			"Name",
+			"Image",
+			"Unit_Translation",
+		],
 	},
 	,
 ];

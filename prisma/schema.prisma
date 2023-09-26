@@ -131,7 +131,7 @@ model Address {
 
 model Unit {
   id               String             @id @default(uuid())
-  conversionRate   Int
+  conversionRate   Float
   ActiveStatus     Boolean            @default(true)
   CreatedAt        DateTime           @default(now())
   UpdatedAt        DateTime           @updatedAt
