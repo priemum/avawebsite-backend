@@ -232,9 +232,7 @@ const UpdateArticle = async (req, res) => {
 			}
 			data.Image = {
 				create: {
-					URL: `/public/images/article/${
-						Math.floor(new Date().getTime() / 1000) + "-" + image?.originalname
-					}`,
+					URL: image.path,
 					Alt: image?.originalname,
 					Size: image.size,
 					Type: image.mimetype,

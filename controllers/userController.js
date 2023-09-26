@@ -160,9 +160,7 @@ const UpdateUser = async (req, res) => {
 			}
 			User.Image = {
 				create: {
-					URL: `/public/images/users/${
-						Math.floor(new Date().getTime() / 1000) + "-" + image?.originalname
-					}`,
+					URL: image.path,
 
 					Alt: image?.originalname,
 					Size: image.size,

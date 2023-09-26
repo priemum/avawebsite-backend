@@ -130,10 +130,7 @@ const UpdateTeam = async (req, res) => {
 			}
 			Team.Image = {
 				create: {
-					URL: `/public/images/team/${
-						Math.floor(new Date().getTime() / 1000) + "-" + image?.originalname
-					}`,
-
+					URL: image.path,
 					Alt: image?.originalname,
 					Size: image.size,
 					Type: image.mimetype,
