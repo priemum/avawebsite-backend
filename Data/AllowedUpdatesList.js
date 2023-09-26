@@ -53,6 +53,16 @@ const allowedUpdatesList = [
 			"Unit_Translation",
 		],
 	},
+	{
+		name: "currency",
+		value: [
+			"conversionRate",
+			"ActiveStatus",
+			"Name",
+			"Image",
+			"Currency_Translation",
+		],
+	},
 	,
 ];
 

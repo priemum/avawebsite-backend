@@ -7,7 +7,7 @@ const fs = require("fs");
 const { json } = require("express");
 require("dotenv").config;
 
-const CreateUnit = async (req, res) => {
+const CreateCurrency = async (req, res) => {
 	try {
 		const data = req.body;
 		data.conversionRate = parseFloat(data.conversionRate);
@@ -18,25 +18,25 @@ const CreateUnit = async (req, res) => {
 				data.ActiveStatus = true;
 			}
 		}
-		const Unit = await prisma.unit.create({
+		const Currency = await prisma.currency.create({
 			data: {
 				conversionRate: data.conversionRate,
 				ActiveStatus: data?.ActiveStatus,
-				Unit_Translation: {
+				Currency_Translation: {
 					createMany: {
-						data: data.Unit_Translation,
+						data: data.Currency_Translation,
 					},
 				},
 			},
 			include: {
-				Unit_Translation: {
+				Currency_Translation: {
 					include: {
 						Language: true,
 					},
 				},
 			},
 		});
-		return res.status(201).send(Unit);
+		return res.status(201).send(Currency);
 	} catch (error) {
 		if (error instanceof Prisma.PrismaClientKnownRequestError) {
 			if (error.code === "P2025") {
@@ -57,12 +57,12 @@ const CreateUnit = async (req, res) => {
 	}
 };
 
-const GetAllUnits = async (req, res) => {
+const GetAllCurrencies = async (req, res) => {
 	try {
-		const [Unit, count] = await prisma.$transaction([
-			prisma.unit.findMany({
+		const [Currency, count] = await prisma.$transaction([
+			prisma.currency.findMany({
 				include: {
-					Unit_Translation: {
+					Currency_Translation: {
 						include: { Language: true },
 					},
 				},
@@ -70,65 +70,65 @@ const GetAllUnits = async (req, res) => {
 			prisma.currency.count(),
 		]);
 
-		if (!Unit) {
-			return res.status(404).send("No Units Were Found!");
+		if (!Currency) {
+			return res.status(404).send("No Currency Were Found!");
 		}
 		res.status(200).json({
 			count,
-			Unit,
+			Currency,
 		});
 	} catch (error) {
 		return res.status(500).send(error.message);
 	}
 };
 
-const GetAllActiveUnits = async (req, res) => {
+const GetAllActiveCurrencies = async (req, res) => {
 	try {
-		const [Unit, count] = await prisma.$transaction([
-			prisma.unit.findMany({
+		const [Currency, count] = await prisma.$transaction([
+			prisma.currency.findMany({
 				where: { ActiveStatus: true },
 				include: {
-					Unit_Translation: {
+					Currency_Translation: {
 						include: { Language: true },
 					},
 				},
 			}),
 			prisma.currency.count({ where: { ActiveStatus: true } }),
 		]);
-		if (!Unit) {
-			return res.status(404).send("No Units Were Found!");
+		if (!Currency) {
+			return res.status(404).send("No Currency Were Found!");
 		}
 		res.status(200).json({
 			count,
-			Unit,
+			Currency,
 		});
 	} catch (error) {
 		return res.status(500).send(error.message);
 	}
 };
 
-const GetUnitByID = async (req, res) => {
+const GetCurrencyByID = async (req, res) => {
 	try {
 		const id = req.params.id;
 
-		const Unit = await prisma.unit.findUnique({
+		const Currency = await prisma.currency.findUnique({
 			where: { id: id },
 			include: {
-				Unit_Translation: {
+				Currency_Translation: {
 					include: { Language: true },
 				},
 			},
 		});
-		if (!Unit) {
-			return res.status(404).send("No Units Were Found!");
+		if (!Currency) {
+			return res.status(404).send("No Currencies Were Found!");
 		}
-		res.status(200).send(Unit);
+		res.status(200).send(Currency);
 	} catch (error) {
 		return res.status(500).send(error.message);
 	}
 };
 
-const UpdateUnit = async (req, res) => {
+const UpdateCurrency = async (req, res) => {
 	try {
 		const id = req.params.id;
 		const updates = Object.keys(req.body);
@@ -137,12 +137,12 @@ const UpdateUnit = async (req, res) => {
 		updates.forEach((item) => {
 			Selected[item] = true;
 		});
-		const data = await prisma.unit.findUnique({
+		const data = await prisma.currency.findUnique({
 			where: { id: id },
 			select: Selected,
 		});
 		if (!data) {
-			return res.status(404).send("Unit was not Found!");
+			return res.status(404).send("Currency was not Found!");
 		}
 		updates.forEach((update) => (data[update] = req.body[update]));
 		data.conversionRate = parseFloat(data.conversionRate);
@@ -154,12 +154,12 @@ const UpdateUnit = async (req, res) => {
 			}
 		}
 		const result = await prisma.$transaction(async (prisma) => {
-			data.Unit_Translation &&
-				data.Unit_Translation.map(async (item) => {
+			data.Currency_Translation &&
+				data.Currency_Translation.map(async (item) => {
 					{
-						await prisma.unit_Translation.updateMany({
+						await prisma.currency_Translation.updateMany({
 							where: {
-								AND: [{ languagesID: item.languagesID }, { unitID: id }],
+								AND: [{ languagesID: item.languagesID }, { currencyID: id }],
 							},
 							data: {
 								Name: item.Name,
@@ -167,14 +167,14 @@ const UpdateUnit = async (req, res) => {
 						});
 					}
 				});
-			const UpdatedUnit = await prisma.unit.update({
+			const UpdatedCurrency = await prisma.currency.update({
 				where: { id: id },
 				data: {
 					conversionRate: data?.conversionRate || undefined,
 					ActiveStatus: data?.ActiveStatus,
 				},
 				include: {
-					Unit_Translation: {
+					Currency_Translation: {
 						include: {
 							Language: true,
 						},
@@ -182,7 +182,7 @@ const UpdateUnit = async (req, res) => {
 				},
 			});
 
-			return UpdatedUnit;
+			return UpdatedCurrency;
 		});
 
 		return res.status(200).json({
@@ -194,31 +194,31 @@ const UpdateUnit = async (req, res) => {
 	}
 };
 // ToDO : check deleting conditions
-const DeleteUnit = async (req, res) => {
+const DeleteCurrency = async (req, res) => {
 	try {
 		const id = req.params.id;
-		const Unit = await prisma.unit.findFirst({
+		const Currency = await prisma.currency.findFirst({
 			where: { id: id },
 			include: {
-				Unit_Translation: {
+				Currency_Translation: {
 					include: {
 						Language: true,
 					},
 				},
 			},
 		});
-		if (!Unit) {
-			return res.status(404).send("Unit Does not Exist!");
+		if (!Currency) {
+			return res.status(404).send("Currency Does not Exist!");
 		}
 
-		if (Unit.Unit_Translation.length > 0) {
-			await prisma.unit_Translation.deleteMany({
-				where: { unitID: id },
+		if (Currency.Currency_Translation.length > 0) {
+			await prisma.currency_Translation.deleteMany({
+				where: { currencyID: id },
 			});
 		}
-		await prisma.unit.delete({ where: { id: Unit.id } });
+		await prisma.currency.delete({ where: { id: Currency.id } });
 		// console.log("Role: ", Role);
-		res.status(200).send(Unit);
+		res.status(200).send(Currency);
 	} catch (error) {
 		if (error instanceof Prisma.PrismaClientKnownRequestError) {
 			if (error.code === "P2025") {
@@ -232,10 +232,10 @@ const DeleteUnit = async (req, res) => {
 };
 
 module.exports = {
-	CreateUnit,
-	GetAllUnits,
-	GetUnitByID,
-	GetAllActiveUnits,
-	UpdateUnit,
-	DeleteUnit,
+	CreateCurrency,
+	GetAllCurrencies,
+	GetCurrencyByID,
+	GetAllActiveCurrencies,
+	UpdateCurrency,
+	DeleteCurrency,
 };
