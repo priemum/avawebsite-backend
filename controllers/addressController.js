@@ -15,9 +15,7 @@ const CreateAddress = async (req, res) => {
 		if (image) {
 			data.Image = {
 				create: {
-					URL: `/public/images/article/${
-						Math.floor(new Date().getTime() / 1000) + "-" + image?.originalname
-					}`,
+					URL: image.path,
 					Alt: image?.originalname,
 					Size: image.size,
 					Type: image.mimetype,
@@ -25,49 +23,49 @@ const CreateAddress = async (req, res) => {
 				},
 			};
 		}
-
-		// data.ActiveStatus =
-		data.MinRead = parseInt(data.MinRead);
+		data.Longitude = parseFloat(data.Longitude);
+		data.Latitude = parseFloat(data.Latitude);
 		if (data.ActiveStatus) {
-			data.ActiveStatus =
-				data.ActiveStatus?.toLowerCase?.() === "true"
-					? data.ActiveStatus?.toLowerCase?.() === "true"
-					: false;
+			if (req.body.ActiveStatus.toLowerCase() === "false") {
+				data.ActiveStatus = false;
+			} else {
+				data.ActiveStatus = true;
+			}
 		}
-		// const splitStr = (x) => {
-		// 	const y = x.split(":");
-		// 	return { [y[0].trim()]: y[1].trim() };
-		// };
-		// data.Articles_Translation.map((item) => {
-		// 	item = splitStr(item);
-		// });
-		// console.log(data.Articles_Translation);
-		const Article = await prisma.articles.create({
+		const Address = await prisma.address.create({
 			data: {
-				MinRead: data.MinRead,
-				ActiveStatus: data.ActiveStatus,
-				Articles_Translation: {
+				Longitude: data.Longitude,
+				Latitude: data.Latitude,
+				ActiveStatus: data?.ActiveStatus,
+				Address_Translation: {
 					createMany: {
-						data: data.Articles_Translation,
+						data: data.Address_Translation,
+					},
+				},
+				Address: data?.AddressID && {
+					connect: {
+						id: data?.AddressID,
 					},
 				},
 				Image: data?.Image,
-				User: {
-					connect: {
-						id: data.AuthorID,
-					},
-				},
 			},
 			include: {
 				Image: true,
-				Articles_Translation: {
+				Addresses: {
+					include: {
+						Address_Translation: {
+							include: { Language: true },
+						},
+					},
+				},
+				Address_Translation: {
 					include: {
 						Language: true,
 					},
 				},
 			},
 		});
-		return res.status(201).send(Article);
+		return res.status(201).send(Address);
 	} catch (error) {
 		if (error instanceof Prisma.PrismaClientKnownRequestError) {
 			if (error.code === "P2025") {
@@ -75,7 +73,7 @@ const CreateAddress = async (req, res) => {
 			} else if (error.code === "P2021") {
 				return res.status(404).send("Table Doesn't Exist!");
 			} else if (error.code === "P2002") {
-				return res.status(404).send("Unique constraint failed, Field Exist!");
+				return res.status(404).send(error.message);
 			} else if (error.code === "P2003") {
 				return res
 					.status(404)
@@ -90,25 +88,31 @@ const CreateAddress = async (req, res) => {
 
 const GetAllAddresses = async (req, res) => {
 	try {
-		const [Articles, count] = await prisma.$transaction([
-			prisma.articles.findMany({
+		const [Address, count] = await prisma.$transaction([
+			prisma.address.findMany({
 				include: {
-					User: true,
 					Image: true,
-					Articles_Translation: {
+					Address_Translation: {
 						include: { Language: true },
+					},
+					Addresses: {
+						include: {
+							Address_Translation: {
+								include: { Language: true },
+							},
+						},
 					},
 				},
 			}),
-			prisma.articles.count(),
+			prisma.address.count(),
 		]);
 
-		if (!Articles) {
-			return res.status(404).send("No Articles Were Found!");
+		if (!Address) {
+			return res.status(404).send("No Addresses Were Found!");
 		}
 		res.status(200).json({
 			count,
-			Articles,
+			Address,
 		});
 	} catch (error) {
 		return res.status(500).send(error.message);
@@ -117,25 +121,31 @@ const GetAllAddresses = async (req, res) => {
 
 const GetAllActiveAddresses = async (req, res) => {
 	try {
-		const [Articles, count] = await prisma.$transaction([
-			prisma.articles.findMany({
+		const [Address, count] = await prisma.$transaction([
+			prisma.address.findMany({
 				where: { ActiveStatus: true },
 				include: {
-					User: true,
 					Image: true,
-					Articles_Translation: {
+					Address_Translation: {
 						include: { Language: true },
+					},
+					Addresses: {
+						include: {
+							Address_Translation: {
+								include: { Language: true },
+							},
+						},
 					},
 				},
 			}),
-			prisma.articles.count({ where: { ActiveStatus: true } }),
+			prisma.address.count({ where: { ActiveStatus: true } }),
 		]);
-		if (!Articles) {
-			return res.status(404).send("No Articles Were Found!");
+		if (!Address) {
+			return res.status(404).send("No Address Were Found!");
 		}
 		res.status(200).json({
 			count,
-			Articles,
+			Address,
 		});
 	} catch (error) {
 		return res.status(500).send(error.message);
@@ -146,20 +156,27 @@ const GetAddressByID = async (req, res) => {
 	try {
 		const id = req.params.id;
 
-		const Article = await prisma.articles.findUnique({
+		const Address = await prisma.address.findUnique({
 			where: { id: id },
 			include: {
-				User: true,
 				Image: true,
-				Articles_Translation: {
+				Address_Translation: {
 					include: { Language: true },
+				},
+				Addresses: {
+					include: {
+						_count: true,
+						Address_Translation: {
+							include: { Language: true },
+						},
+					},
 				},
 			},
 		});
-		if (!Article) {
-			return res.status(404).send("No Article Were Found!");
+		if (!Address) {
+			return res.status(404).send("No Address Were Found!");
 		}
-		res.status(200).send(Article);
+		res.status(200).send(Address);
 	} catch (error) {
 		return res.status(500).send(error.message);
 	}
@@ -167,31 +184,32 @@ const GetAddressByID = async (req, res) => {
 const GetAddressByParentID = async (req, res) => {
 	try {
 		const id = req.params.id;
-		const [Articles, count] = await prisma.$transaction([
-			prisma.articles.findMany({
+		const [Address, count] = await prisma.$transaction([
+			prisma.address.findMany({
 				where: {
-					usersID: id,
+					addressID: id,
 				},
 				include: {
-					User: true,
 					Image: true,
-					Articles_Translation: {
+					Address_Translation: {
 						include: { Language: true },
 					},
 				},
 			}),
-			prisma.articles.count({
+			prisma.address.count({
 				where: {
-					usersID: id,
+					addressID: id,
 				},
 			}),
 		]);
-		if (!Articles) {
-			return res.status(404).send("No Article Were Found For this User!");
+		if (!Address) {
+			return res
+				.status(404)
+				.send("No Sub Addresses Were Found For this Address!");
 		}
 		res.status(200).json({
 			count,
-			Articles,
+			Address,
 		});
 	} catch (error) {
 		return res.status(500).send(error.message);
@@ -201,26 +219,26 @@ const GetAddressByParentID = async (req, res) => {
 const UpdateAddress = async (req, res) => {
 	try {
 		const id = req.params.id;
-		const ArticleData = req.body;
 		const updates = Object.keys(req.body);
 		const image = req.file;
 		const Selected = { id: true };
 		updates.forEach((item) => {
-			if (item !== "AuthorID") Selected[item] = true;
+			if (item !== "AddressID") Selected[item] = true;
 		});
 		if (image) {
 			Selected["Image"] = true;
 		}
 
-		const data = await prisma.articles.findUnique({
+		const data = await prisma.address.findUnique({
 			where: { id: id },
 			select: Selected,
 		});
 		if (!data) {
-			return res.status(404).send("Article was not Found!");
+			return res.status(404).send("Address was not Found!");
 		}
 		updates.forEach((update) => (data[update] = req.body[update]));
-		data.MinRead = parseInt(data.MinRead);
+		data.Longitude = parseFloat(data.Longitude);
+		data.Latitude = parseFloat(data.Latitude);
 		if (image) {
 			if (data.Image !== null) {
 				if (fs.existsSync(`.${data.Image.URL}`)) {
@@ -230,9 +248,7 @@ const UpdateAddress = async (req, res) => {
 			}
 			data.Image = {
 				create: {
-					URL: `/public/images/article/${
-						Math.floor(new Date().getTime() / 1000) + "-" + image?.originalname
-					}`,
+					URL: image.path,
 					Alt: image?.originalname,
 					Size: image.size,
 					Type: image.mimetype,
@@ -247,39 +263,52 @@ const UpdateAddress = async (req, res) => {
 				data.ActiveStatus = true;
 			}
 		}
+
 		const result = await prisma.$transaction(async (prisma) => {
-			data.Articles_Translation.map(async (item) => {
-				{
-					await prisma.articles_Translation.updateMany({
-						where: {
-							AND: [{ languagesID: item.languagesID }, { articlesId: id }],
-						},
-						data: {
-							Title: item.Title,
-							Description: item.Description,
-							Caption: item.Caption,
-						},
-					});
-				}
-			});
-			const UpdatedArticle = await prisma.articles.update({
+			data.Address_Translation &&
+				data.Address_Translation.map(async (item) => {
+					{
+						await prisma.Address_Translation.updateMany({
+							where: {
+								AND: [{ languagesID: item.languagesID }, { addressID: id }],
+							},
+							data: {
+								Name: item.Name,
+							},
+						});
+					}
+				});
+			const UpdatedAddress = await prisma.address.update({
 				where: { id: id },
 				data: {
-					MinRead: data?.MinRead,
+					Longitude: data?.Longitude || undefined,
+					Latitude: data?.Latitude || undefined,
 					ActiveStatus: data?.ActiveStatus,
 					Image: data?.Image,
+					Address: data?.AddressID && {
+						connect: {
+							id: data?.AddressID,
+						},
+					},
 				},
 				include: {
 					Image: true,
-					Articles_Translation: {
+					Address_Translation: {
 						include: {
 							Language: true,
+						},
+					},
+					Addresses: {
+						include: {
+							Address_Translation: {
+								include: { Language: true },
+							},
 						},
 					},
 				},
 			});
 
-			return UpdatedArticle;
+			return UpdatedAddress;
 		});
 
 		return res.status(200).json({
@@ -294,20 +323,27 @@ const UpdateAddress = async (req, res) => {
 const DeleteAddress = async (req, res) => {
 	try {
 		const id = req.params.id;
-		const Article = await prisma.articles.findFirst({
+		const Address = await prisma.address.findFirst({
 			where: { id: id },
 			include: {
 				Image: true,
-				Articles_Translation: {
+				Address_Translation: {
 					include: {
 						Language: true,
 					},
 				},
+				Addresses: {
+					include: {
+						Address_Translation: {
+							include: { Language: true },
+						},
+					},
+				},
 			},
 		});
-		const imageURL = Article.Image?.URL;
-		const imageID = Article.Image?.id;
-		const UserID = Article.Users?.id;
+		const imageURL = Address.Image?.URL;
+		const imageID = Address.Image?.id;
+		// const UserID = Address.Users?.id;
 		let isImageDeleted = false;
 		if (imageID !== undefined) {
 			if (fs.existsSync(`.${imageURL}`)) {
@@ -317,29 +353,35 @@ const DeleteAddress = async (req, res) => {
 				isImageDeleted = true;
 			}
 		} else {
-			if (Article.Articles_Translation.length > 0) {
-				console.log("len: ", Article.Articles_Translation.length);
-				await prisma.articles_Translation.deleteMany({
-					where: { articlesId: id },
+			if (Address.Address_Translation.length > 0) {
+				await prisma.address_Translation.deleteMany({
+					where: { addressID: id },
 				});
 			}
-			await prisma.articles.delete({ where: { id: Article.id } });
+			await prisma.address.delete({ where: { id: Article.id } });
 		}
 		if (isImageDeleted) {
-			console.log("Deleting ...");
-			await prisma.images.delete({ where: { id: imageID } });
-			if (Article.Articles_Translation.length > 0) {
-				console.log("len: ", Article.Articles_Translation.length);
-				await prisma.articles_Translation.deleteMany({
-					where: { articlesId: id },
+			if (Address.Address_Translation.length > 0) {
+				await prisma.address_Translation.deleteMany({
+					where: { addressID: id },
 				});
 			}
-			await prisma.articles.delete({ where: { id: Article.id } });
+			if (Address.Addresses > 0) {
+				await prisma.address.deleteMany({
+					where: {
+						addressID: id,
+					},
+				});
+			}
+
+			await prisma.address.delete({ where: { id: Address.id } });
+			console.log("Deleting ...");
+			await prisma.images.delete({ where: { id: imageID } });
 		}
 		// console.log("Role: ", Role);
 		res.status(200).json({
 			"Image Deleted: ": imageURL,
-			Article,
+			Address,
 		});
 	} catch (error) {
 		if (error instanceof Prisma.PrismaClientKnownRequestError) {

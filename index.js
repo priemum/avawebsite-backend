@@ -36,7 +36,7 @@ app.use("/", teamRouter);
 app.use("/", roleResourceRouter);
 app.use("/", languageRouter);
 app.use("/", articleRouter);
-// app.use("/", addressRouter);
+app.use("/", addressRouter);
 app.listen(port, () => {
 	console.log(`Listening on port ${port}`);
 });

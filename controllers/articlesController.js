@@ -252,26 +252,27 @@ const UpdateArticle = async (req, res) => {
 			}
 		}
 		const result = await prisma.$transaction(async (prisma) => {
-			data.Articles_Translation.map(async (item) => {
-				{
-					await prisma.articles_Translation.updateMany({
-						where: {
-							AND: [{ languagesID: item.languagesID }, { articlesId: id }],
-						},
-						data: {
-							Title: item?.Title,
-							Description: item?.Description,
-							Caption: item?.Caption,
-						},
-					});
-				}
-			});
+			data.Articles_Translation &&
+				data.Articles_Translation.map(async (item) => {
+					{
+						await prisma.articles_Translation.updateMany({
+							where: {
+								AND: [{ languagesID: item.languagesID }, { articlesId: id }],
+							},
+							data: {
+								Title: item?.Title,
+								Description: item?.Description,
+								Caption: item?.Caption,
+							},
+						});
+					}
+				});
 			const UpdatedArticle = await prisma.articles.update({
 				where: { id: id },
 				data: {
-					MinRead: data?.MinRead,
-					ActiveStatus: data?.ActiveStatus,
-					Image: data?.Image,
+					MinRead: data?.MinRead || undefined,
+					ActiveStatus: data?.ActiveStatus || undefined,
+					Image: data?.Image || undefined,
 				},
 				include: {
 					Image: true,

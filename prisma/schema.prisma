@@ -118,8 +118,9 @@ model Address {
   id                  String                @id @default(uuid())
   Longitude           Float
   Latitude            Float
+  ActiveStatus        Boolean               @default(true)
   Address             Address?              @relation("SubAddress", fields: [addressID], references: [id])
-  addressID           String?               @unique
+  addressID           String?
   Image               Images                @relation(fields: [imagesId], references: [id])
   Addresses           Address[]             @relation("SubAddress")
   CreatedAt           DateTime              @default(now())

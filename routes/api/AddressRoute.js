@@ -26,7 +26,7 @@ addressRouter.post(
 );
 addressRouter.get("/address", verifyJWT, VerifyRole, GetAllAddresses);
 addressRouter.get("/address/:id", GetAddressByID);
-// addressRouter.get("/address/user/:id", GetAddressByParentID);
+addressRouter.get("/address/sub-address/:id", GetAddressByParentID);
 addressRouter.get("/address-active", GetAllActiveAddresses);
 addressRouter.put(
 	"/address/:id",
