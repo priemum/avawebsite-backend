@@ -68,6 +68,17 @@ const allowedUpdatesList = [
 		value: ["ViewTag", "ActiveStatus", "Name", "Developer_Translation"],
 	},
 	,
+	{
+		name: "category",
+		value: [
+			"ParentID",
+			"ActiveStatus",
+			"Name",
+			"Description",
+			"Category_Translation",
+		],
+	},
+	,
 ];
 
 module.exports = {

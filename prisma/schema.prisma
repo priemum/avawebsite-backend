@@ -166,6 +166,7 @@ model Developer {
 
 model Category {
   id                   String                 @id @default(uuid())
+  ActiveStatus         Boolean                @default(true)
   Parent               Category?              @relation("SubCategory", fields: [ParentID], references: [id])
   CreatedAt            DateTime               @default(now())
   UpdatedAt            DateTime               @updatedAt
