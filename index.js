@@ -16,6 +16,7 @@ const corsOptions = require("./config/corsOptions");
 const addressRouter = require("./routes/api/AddressRoute");
 const unitRouter = require("./routes/api/UnitRoute");
 const currencyRouter = require("./routes/api/CurrencyRoute");
+const developerRouter = require("./routes/api/developerRoute");
 const port = process.env.PORT || 3500;
 const app = express();
 
@@ -41,6 +42,7 @@ app.use("/", articleRouter);
 app.use("/", addressRouter);
 app.use("/", unitRouter);
 app.use("/", currencyRouter);
+app.use("/", developerRouter);
 app.listen(port, () => {
 	console.log(`Listening on port ${port}`);
 });

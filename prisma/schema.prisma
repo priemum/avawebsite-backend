@@ -40,6 +40,7 @@ model Users {
   Articles     Articles[]
   CreatedAt    DateTime   @default(now())
   UpdatedAt    DateTime   @updatedAt
+  Jobs         Jobs[]
 }
 
 enum Gender {
@@ -97,21 +98,25 @@ model Articles {
 }
 
 model Images {
-  id        String     @id @default(uuid())
-  URL       String
-  Alt       String
-  Width     Int?
-  Height    Int?
-  Size      Float?
-  Type      String?
-  Team      Team?      @relation(fields: [teamID], references: [id])
-  user      Users?     @relation(fields: [usersID], references: [id])
-  usersID   String?    @unique
-  CreatedAt DateTime   @default(now())
-  UpdatedAt DateTime   @updatedAt
-  teamID    String?    @unique
-  Articles  Articles[]
-  Address   Address[]
+  id              String         @id @default(uuid())
+  URL             String
+  Alt             String
+  Width           Int?
+  Height          Int?
+  Size            Float?
+  Type            String?
+  Team            Team?          @relation(fields: [teamID], references: [id])
+  user            Users?         @relation(fields: [usersID], references: [id])
+  Property        Property?      @relation(fields: [propertyId], references: [id])
+  Announcements   Announcements? @relation(fields: [announcementsId], references: [id])
+  usersID         String?        @unique
+  CreatedAt       DateTime       @default(now())
+  UpdatedAt       DateTime       @updatedAt
+  teamID          String?        @unique
+  Articles        Articles[]
+  Address         Address[]
+  propertyId      String?
+  announcementsId String?
 }
 
 model Address {
@@ -127,6 +132,7 @@ model Address {
   UpdatedAt           DateTime              @updatedAt
   Address_Translation Address_Translation[]
   imagesId            String
+  Property            Property[]
 }
 
 model Unit {
@@ -147,17 +153,187 @@ model Currency {
   Currency_Translation Currency_Translation[]
 }
 
-//Localization Sub-Schema 
-model Languages {
+//Added New
+model Developer {
+  id                    String                  @id @default(uuid())
+  ActiveStatus          Boolean                 @default(true)
+  ViewTag               Boolean                 @default(false)
+  CreatedAt             DateTime                @default(now())
+  UpdatedAt             DateTime                @updatedAt
+  Developer_Translation Developer_Translation[]
+  Property              Property[]
+}
+
+model Category {
   id                   String                 @id @default(uuid())
-  Name                 String                 @unique
-  Code                 String?                @unique
-  Articles_Translation Articles_Translation[]
+  Parent               Category?              @relation("SubCategory", fields: [ParentID], references: [id])
   CreatedAt            DateTime               @default(now())
   UpdatedAt            DateTime               @updatedAt
-  Address_Translation  Address_Translation[]
-  Unit_Translation     Unit_Translation[]
-  Currency_Translation Currency_Translation[]
+  Category_Translation Category_Translation[]
+  SubCategory          Category[]             @relation("SubCategory")
+  ParentID             String?
+  Property             Property[]
+}
+
+model Property {
+  id                   String                 @id @default(uuid())
+  Price                Float
+  Bedrooms             Int
+  Bacloney             Boolean                @default(false)
+  BalconySize          Float?
+  RentMin              Float                  @default(0)
+  RentMax              Float?
+  Handover             String?
+  FurnishingStatus     String?
+  VacantStatus         String?
+  Longitude            Float?
+  Latitude             Float?
+  ActiveStatus         Boolean                @default(true)
+  Purpose              String
+  PermitNumber         String
+  DEDNo                String
+  ReraNo               String
+  BRNNo                String
+  Developer            Developer              @relation(fields: [developerId], references: [id])
+  Category             Category               @relation(fields: [categoryId], references: [id])
+  Address              Address                @relation(fields: [addressId], references: [id])
+  CreatedAt            DateTime               @default(now())
+  UpdatedAt            DateTime               @updatedAt
+  Property_Translation Property_Translation[]
+  developerId          String
+  categoryId           String
+  addressId            String
+  Aminities            Aminities[]
+  Images               Images[]
+}
+
+model Aminities {
+  id                    String                  @id @default(uuid())
+  Properties            Property[]
+  CreatedAt             DateTime                @default(now())
+  UpdatedAt             DateTime                @updatedAt
+  Aminities_Translation Aminities_Translation[]
+}
+
+model Announcements {
+  id                        String                      @id @default(uuid())
+  StartDate                 DateTime                    @default(now())
+  EndDate                   DateTime
+  Link                      String?
+  Rank                      Int?
+  Type                      String?
+  ActiveStatus              Boolean                     @default(true)
+  CreatedAt                 DateTime                    @default(now())
+  UpdatedAt                 DateTime                    @updatedAt
+  Announcements_Translation Announcements_Translation[]
+  Images                    Images[]
+}
+
+model ListWithUs {
+  id                 String           @id @default(uuid())
+  Title              String
+  Bedrooms           Int
+  Bacloney           Boolean          @default(false)
+  Price              Float
+  Type               String
+  Purpose            String
+  Owner              GuestInformation @relation(fields: [guestInformationId], references: [id])
+  CreatedAt          DateTime         @default(now())
+  UpdatedAt          DateTime         @updatedAt
+  guestInformationId String
+}
+
+model Feedback {
+  id                 String           @id @default(uuid())
+  Subject            String
+  Message            String
+  Guest              GuestInformation @relation(fields: [guestInformationId], references: [id])
+  CreatedAt          DateTime         @default(now())
+  UpdatedAt          DateTime         @updatedAt
+  guestInformationId String
+}
+
+model GuestInformation {
+  id           String         @id @default(uuid())
+  FullName     String
+  Email        String
+  IPAddress    String
+  PhoneNo      String?
+  Gender       Gender
+  CreatedAt    DateTime       @default(now())
+  UpdatedAt    DateTime       @updatedAt
+  ListWithUs   ListWithUs[]
+  Feedback     Feedback[]
+  EnquiryForm  EnquiryForm[]
+  Applicantion Applicantion[]
+}
+
+model EnquiryForm {
+  id                 String           @id @default(uuid())
+  Type               String
+  Purpose            String
+  Bedrooms           Int
+  PriceMin           Float?           @default(0)
+  PriceMax           Float?
+  Message            String
+  Guest              GuestInformation @relation(fields: [guestInformationId], references: [id])
+  CreatedAt          DateTime         @default(now())
+  UpdatedAt          DateTime         @updatedAt
+  guestInformationId String
+}
+
+model Applicantion {
+  id                 String           @id @default(uuid())
+  YearsOfExp         Float
+  AreaSpecialty      String?
+  CVURL              String
+  CVFileType         String
+  Message            String
+  LinkedInURL        String?
+  Field              String
+  EnglishLvl         String
+  ArabicLevel        String
+  OtherLanguages     String
+  Applicant          GuestInformation @relation(fields: [guestInformationId], references: [id])
+  Job                Jobs             @relation(fields: [jobsId], references: [id])
+  CreatedAt          DateTime         @default(now())
+  UpdatedAt          DateTime         @updatedAt
+  guestInformationId String
+  jobsId             String
+}
+
+model Jobs {
+  id               String             @id @default(uuid())
+  Location         String
+  Type             String
+  WeekHours        String
+  Expired          Boolean            @default(false)
+  ActiveStatus     Boolean            @default(true)
+  Author           Users              @relation(fields: [usersId], references: [id])
+  CreatedAt        DateTime           @default(now())
+  UpdatedAt        DateTime           @updatedAt
+  Jobs_Translation Jobs_Translation[]
+  Applicantion     Applicantion[]
+  usersId          String
+}
+
+//Localization Sub-Schema 
+model Languages {
+  id                        String                      @id @default(uuid())
+  Name                      String                      @unique
+  Code                      String?                     @unique
+  Articles_Translation      Articles_Translation[]
+  CreatedAt                 DateTime                    @default(now())
+  UpdatedAt                 DateTime                    @updatedAt
+  Address_Translation       Address_Translation[]
+  Unit_Translation          Unit_Translation[]
+  Currency_Translation      Currency_Translation[]
+  Developer_Translation     Developer_Translation[]
+  Category_Translation      Category_Translation[]
+  Property_Translation      Property_Translation[]
+  Announcements_Translation Announcements_Translation[]
+  Jobs_Translation          Jobs_Translation[]
+  Aminities_Translation     Aminities_Translation[]
 }
 
 model Articles_Translation {
@@ -204,4 +380,76 @@ model Currency_Translation {
   currencyID  String
   CreatedAt   DateTime  @default(now())
   UpdatedAt   DateTime  @updatedAt
+}
+
+model Developer_Translation {
+  id          String    @id @default(uuid())
+  Name        String
+  Language    Languages @relation(fields: [languagesID], references: [id])
+  languagesID String
+  Developer   Developer @relation(fields: [developerID], references: [id])
+  developerID String
+  CreatedAt   DateTime  @default(now())
+  UpdatedAt   DateTime  @updatedAt
+}
+
+model Category_Translation {
+  id          String    @id @default(uuid())
+  Name        String
+  Description String
+  Language    Languages @relation(fields: [languagesID], references: [id])
+  languagesID String
+  Category    Category  @relation(fields: [categoryID], references: [id])
+  categoryID  String
+  CreatedAt   DateTime  @default(now())
+  UpdatedAt   DateTime  @updatedAt
+}
+
+model Property_Translation {
+  id          String    @id @default(uuid())
+  Name        String
+  Description String
+  Language    Languages @relation(fields: [languagesID], references: [id])
+  languagesID String
+  Property    Property  @relation(fields: [propertyID], references: [id])
+  propertyID  String
+  CreatedAt   DateTime  @default(now())
+  UpdatedAt   DateTime  @updatedAt
+}
+
+model Announcements_Translation {
+  id              String        @id @default(uuid())
+  Title           String
+  Description     String
+  ButtonName      String?
+  Language        Languages     @relation(fields: [languagesID], references: [id])
+  languagesID     String
+  Announcements   Announcements @relation(fields: [announcementsID], references: [id])
+  announcementsID String
+  CreatedAt       DateTime      @default(now())
+  UpdatedAt       DateTime      @updatedAt
+}
+
+model Jobs_Translation {
+  id          String    @id @default(uuid())
+  Title       String
+  Description String
+  Language    Languages @relation(fields: [languagesID], references: [id])
+  languagesID String
+  Jobs        Jobs      @relation(fields: [jobsId], references: [id])
+  jobsId      String
+  CreatedAt   DateTime  @default(now())
+  UpdatedAt   DateTime  @updatedAt
+}
+
+model Aminities_Translation {
+  id          String    @id @default(uuid())
+  Name        String
+  Description String
+  Aminitie    Aminities @relation(fields: [aminitiesID], references: [id])
+  Language    Languages @relation(fields: [languagesID], references: [id])
+  languagesID String
+  CreatedAt   DateTime  @default(now())
+  UpdatedAt   DateTime  @updatedAt
+  aminitiesID String
 }

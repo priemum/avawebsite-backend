@@ -16,13 +16,7 @@ const {
 
 const currencyRouter = express.Router();
 
-currencyRouter.post(
-	"/currency",
-	verifyJWT,
-	VerifyRole,
-	CheckImage,
-	CreateCurrency,
-);
+currencyRouter.post("/currency", verifyJWT, VerifyRole, CreateCurrency);
 currencyRouter.get("/currency", verifyJWT, VerifyRole, GetAllCurrencies);
 currencyRouter.get("/currency/:id", verifyJWT, VerifyRole, GetCurrencyByID);
 currencyRouter.get("/currency-active", GetAllActiveCurrencies);
@@ -30,7 +24,6 @@ currencyRouter.put(
 	"/currency/:id",
 	verifyJWT,
 	VerifyRole,
-	CheckImage,
 	CheckAllowedUpdates("currency"),
 	UpdateCurrency,
 );

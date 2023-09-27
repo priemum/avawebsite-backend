@@ -63,6 +63,10 @@ const allowedUpdatesList = [
 			"Currency_Translation",
 		],
 	},
+	{
+		name: "developer",
+		value: ["ViewTag", "ActiveStatus", "Name", "Developer_Translation"],
+	},
 	,
 ];
 

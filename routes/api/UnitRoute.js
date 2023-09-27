@@ -11,19 +11,19 @@ const {
 	GetUnitByID,
 	UpdateUnit,
 	DeleteUnit,
+	GetAllUnits,
 } = require("../../controllers/unitController");
 
 const unitRouter = express.Router();
 
-unitRouter.post("/unit", verifyJWT, VerifyRole, CheckImage, CreateUnit);
-unitRouter.get("/unit", verifyJWT, VerifyRole, GetAllActiveUnits);
+unitRouter.post("/unit", verifyJWT, VerifyRole, CreateUnit);
+unitRouter.get("/unit", verifyJWT, VerifyRole, GetAllUnits);
 unitRouter.get("/unit/:id", verifyJWT, VerifyRole, GetUnitByID);
 unitRouter.get("/unit-active", GetAllActiveUnits);
 unitRouter.put(
 	"/unit/:id",
 	verifyJWT,
 	VerifyRole,
-	CheckImage,
 	CheckAllowedUpdates("unit"),
 	UpdateUnit,
 );
