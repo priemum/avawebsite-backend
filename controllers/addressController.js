@@ -358,7 +358,7 @@ const DeleteAddress = async (req, res) => {
 					where: { addressID: id },
 				});
 			}
-			await prisma.address.delete({ where: { id: Article.id } });
+			await prisma.address.delete({ where: { id: Address.id } });
 		}
 		if (isImageDeleted) {
 			if (Address.Address_Translation.length > 0) {

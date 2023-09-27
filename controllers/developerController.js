@@ -10,6 +10,18 @@ require("dotenv").config;
 const CreateDeveloper = async (req, res) => {
 	try {
 		const data = req.body;
+		const image = req.file;
+		if (image) {
+			data.Image = {
+				create: {
+					URL: image.path,
+					Alt: image?.originalname,
+					Size: image.size,
+					Type: image.mimetype,
+					user: undefined,
+				},
+			};
+		}
 		if (data.ActiveStatus) {
 			if (req.body.ActiveStatus.toLowerCase() === "false") {
 				data.ActiveStatus = false;
@@ -33,8 +45,10 @@ const CreateDeveloper = async (req, res) => {
 						data: data.Developer_Translation,
 					},
 				},
+				Image: data?.Image,
 			},
 			include: {
+				Image: true,
 				Property: true,
 				Developer_Translation: {
 					include: {
@@ -69,6 +83,7 @@ const GetAllDevelopers = async (req, res) => {
 		const [Developer, count] = await prisma.$transaction([
 			prisma.developer.findMany({
 				include: {
+					Image: true,
 					Developer_Translation: {
 						include: { Language: true },
 					},
@@ -96,6 +111,7 @@ const GetAllActiveDevelopers = async (req, res) => {
 			prisma.developer.findMany({
 				where: { ActiveStatus: true },
 				include: {
+					Image: true,
 					Developer_Translation: {
 						include: { Language: true },
 					},
@@ -122,6 +138,7 @@ const GetAllActiveViewDevelopers = async (req, res) => {
 			prisma.developer.findMany({
 				where: { AND: [{ ActiveStatus: true }, { ViewTag: true }] },
 				include: {
+					Image: true,
 					Developer_Translation: {
 						include: { Language: true },
 					},
@@ -151,6 +168,7 @@ const GetDeveloperByID = async (req, res) => {
 		const Developer = await prisma.developer.findUnique({
 			where: { id: id },
 			include: {
+				Image: true,
 				Developer_Translation: {
 					include: { Language: true },
 				},
@@ -170,10 +188,14 @@ const UpdateDeveloper = async (req, res) => {
 	try {
 		const id = req.params.id;
 		const updates = Object.keys(req.body);
+		const image = req.file;
 		const Selected = { id: true };
 		updates.forEach((item) => {
 			Selected[item] = true;
 		});
+		if (image) {
+			Selected["Image"] = true;
+		}
 		const data = await prisma.developer.findUnique({
 			where: { id: id },
 			select: Selected,
@@ -196,6 +218,31 @@ const UpdateDeveloper = async (req, res) => {
 				data.ViewTag = true;
 			}
 		}
+		if (image) {
+			if (data.Image !== null) {
+				if (fs.existsSync(`.${data.Image.URL}`)) {
+					fs.unlinkSync(`.${data.Image.URL}`);
+				}
+				await prisma.images.delete({ where: { id: data.Image.id } });
+			}
+			data.Image = {
+				create: {
+					URL: image.path,
+					Alt: image?.originalname,
+					Size: image.size,
+					Type: image.mimetype,
+					teamID: undefined,
+				},
+			};
+		}
+		if (updates.includes("ActiveStatus")) {
+			if (req.body.ActiveStatus.toLowerCase() === "false") {
+				data.ActiveStatus = false;
+			} else {
+				data.ActiveStatus = true;
+			}
+		}
+
 		const result = await prisma.$transaction(async (prisma) => {
 			data.Developer_Translation &&
 				data.Developer_Translation.map(async (item) => {
@@ -213,16 +260,17 @@ const UpdateDeveloper = async (req, res) => {
 			const UpdatedDeveloper = await prisma.developer.update({
 				where: { id: id },
 				data: {
-					ViewTag: data?.ViewTag || undefined,
+					ViewTag: data?.ViewTag,
 					ActiveStatus: data?.ActiveStatus,
+					Image: data?.Image,
 				},
 				include: {
+					Image: true,
 					Developer_Translation: {
 						include: {
 							Language: true,
 						},
 					},
-					Property: true,
 				},
 			});
 
@@ -244,6 +292,7 @@ const DeleteDeveloper = async (req, res) => {
 		const Developer = await prisma.developer.findFirst({
 			where: { id: id },
 			include: {
+				Image: true,
 				Developer_Translation: {
 					include: {
 						Language: true,
@@ -255,15 +304,42 @@ const DeleteDeveloper = async (req, res) => {
 		if (!Developer) {
 			return res.status(404).send("Developer Does not Exist!");
 		}
-
-		if (Developer.Developer_Translation.length > 0) {
-			await prisma.developer_Translation.deleteMany({
-				where: { developerID: id },
-			});
+		const imageURL = Developer.Image?.URL;
+		const imageID = Developer.Image?.id;
+		// const UserID = Address.Users?.id;
+		let isImageDeleted = false;
+		if (imageID !== undefined) {
+			console.log(imageURL);
+			if (fs.existsSync(`${imageURL}`)) {
+				fs.unlinkSync(`${imageURL}`);
+				isImageDeleted = true;
+			} else {
+				isImageDeleted = true;
+			}
+		} else {
+			if (Developer.Developer_Translation.length > 0) {
+				await prisma.developer_Translation.deleteMany({
+					where: { developerID: id },
+				});
+			}
+			await prisma.developer.delete({ where: { id: Developer.id } });
 		}
-		await prisma.developer.delete({ where: { id: Developer.id } });
+		if (isImageDeleted) {
+			if (Developer.Developer_Translation.length > 0) {
+				await prisma.developer_Translation.deleteMany({
+					where: { developerID: id },
+				});
+			}
+
+			await prisma.developer.delete({ where: { id: Developer.id } });
+			console.log("Deleting ...");
+			await prisma.images.delete({ where: { id: imageID } });
+		}
 		// console.log("Role: ", Role);
-		res.status(200).send(Developer);
+		res.status(200).json({
+			"Image Deleted: ": imageURL,
+			Developer,
+		});
 	} catch (error) {
 		if (error instanceof Prisma.PrismaClientKnownRequestError) {
 			if (error.code === "P2025") {

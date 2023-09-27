@@ -117,6 +117,7 @@ model Images {
   Address         Address[]
   propertyId      String?
   announcementsId String?
+  Developer       Developer[]
 }
 
 model Address {
@@ -158,10 +159,12 @@ model Developer {
   id                    String                  @id @default(uuid())
   ActiveStatus          Boolean                 @default(true)
   ViewTag               Boolean                 @default(false)
+  Image                 Images?                 @relation(fields: [imagesId], references: [id])
   CreatedAt             DateTime                @default(now())
   UpdatedAt             DateTime                @updatedAt
   Developer_Translation Developer_Translation[]
   Property              Property[]
+  imagesId              String?
 }
 
 model Category {

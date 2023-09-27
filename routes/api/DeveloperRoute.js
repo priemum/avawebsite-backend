@@ -33,6 +33,7 @@ developerRouter.put(
 	verifyJWT,
 	VerifyRole,
 	CheckAllowedUpdates("developer"),
+	CheckImage,
 	UpdateDeveloper,
 );
 developerRouter.delete(
