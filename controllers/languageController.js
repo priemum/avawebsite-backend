@@ -51,11 +51,6 @@ const GetLanguageByID = async (req, res) => {
 	try {
 		const id = req.params.id;
 		const Language = await prisma.languages.findUnique({
-			orderBy: [
-				{
-					CreatedAt: "asc",
-				},
-			],
 			where: { id: id },
 		});
 		if (!Language) {
