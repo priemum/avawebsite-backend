@@ -78,6 +78,22 @@ const allowedUpdatesList = [
 			"Category_Translation",
 		],
 	},
+	{
+		name: "announcement",
+		value: [
+			"ParentID",
+			"ActiveStatus",
+			"StartDate",
+			"EndDate",
+			"Link",
+			"Rank",
+			"Type",
+			"Title",
+			"Description",
+			"ButtonName",
+			"Category_Translation",
+		],
+	},
 	,
 ];
 

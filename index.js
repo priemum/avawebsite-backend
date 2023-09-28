@@ -18,6 +18,7 @@ const unitRouter = require("./routes/api/UnitRoute");
 const currencyRouter = require("./routes/api/CurrencyRoute");
 const developerRouter = require("./routes/api/developerRoute");
 const categoryRouter = require("./routes/api/CategoryRoute");
+const announcementRouter = require("./routes/api/AnnouncementRoute");
 const port = process.env.PORT || 3500;
 const app = express();
 
@@ -45,6 +46,7 @@ app.use("/", unitRouter);
 app.use("/", currencyRouter);
 app.use("/", developerRouter);
 app.use("/", categoryRouter);
+app.use("/", announcementRouter);
 app.listen(port, () => {
 	console.log(`Listening on port ${port}`);
 });
