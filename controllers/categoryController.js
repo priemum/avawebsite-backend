@@ -204,26 +204,24 @@ const UpdateCategory = async (req, res) => {
 		const image = req.file;
 		const Selected = { id: true };
 		updates.forEach((item) => {
-			if (item !== "AddressID") Selected[item] = true;
+			Selected[item] = true;
 		});
 		if (image) {
 			Selected["Image"] = true;
 		}
 
-		const data = await prisma.address.findUnique({
+		const data = await prisma.category.findUnique({
 			where: { id: id },
 			select: Selected,
 		});
 		if (!data) {
-			return res.status(404).send("Address was not Found!");
+			return res.status(404).send("Category was not Found!");
 		}
 		updates.forEach((update) => (data[update] = req.body[update]));
-		data.Longitude = parseFloat(data.Longitude);
-		data.Latitude = parseFloat(data.Latitude);
 		if (image) {
 			if (data.Image !== null) {
-				if (fs.existsSync(`.${data.Image.URL}`)) {
-					fs.unlinkSync(`.${data.Image.URL}`);
+				if (fs.existsSync(`${data.Image.URL}`)) {
+					fs.unlinkSync(`${data.Image.URL}`);
 				}
 				await prisma.images.delete({ where: { id: data.Image.id } });
 			}
@@ -246,48 +244,51 @@ const UpdateCategory = async (req, res) => {
 		}
 
 		const result = await prisma.$transaction(async (prisma) => {
-			data.Address_Translation &&
-				data.Address_Translation.map(async (item) => {
+			data.Category_Translation &&
+				data.Category_Translation.map(async (item) => {
 					{
-						await prisma.Address_Translation.updateMany({
+						await prisma.category_Translation.updateMany({
 							where: {
-								AND: [{ languagesID: item.languagesID }, { addressID: id }],
+								AND: [{ languagesID: item.languagesID }, { categoryID: id }],
 							},
 							data: {
 								Name: item.Name,
+								Description: item.Description,
 							},
 						});
 					}
 				});
-			const UpdatedAddress = await prisma.address.update({
+			const UpdatedCategory = await prisma.category.update({
 				where: { id: id },
 				data: {
-					Longitude: data?.Longitude || undefined,
-					Latitude: data?.Latitude || undefined,
 					ActiveStatus: data?.ActiveStatus,
-					Address: data?.AddressID && {
+					Parent: data?.ParentID && {
 						connect: {
-							id: data?.AddressID,
+							id: data?.ParentID,
 						},
 					},
 				},
 				include: {
-					Address_Translation: {
+					_count: true,
+					Category_Translation: {
 						include: {
 							Language: true,
 						},
 					},
-					Addresses: {
+					Parent: true,
+					SubCategory: {
 						include: {
-							Address_Translation: {
-								include: { Language: true },
+							Category_Translation: {
+								include: {
+									Language: true,
+								},
 							},
 						},
 					},
 				},
 			});
 
-			return UpdatedAddress;
+			return UpdatedCategory;
 		});
 
 		return res.status(200).json({
