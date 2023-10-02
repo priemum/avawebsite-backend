@@ -256,7 +256,7 @@ const GetAllActiveProperties = async (req, res) => {
 		return res.status(500).send(error.message);
 	}
 };
-
+//Get Property By ID
 const GetPropertyByID = async (req, res) => {
 	try {
 		const id = req.params.id;
@@ -308,6 +308,371 @@ const GetPropertyByID = async (req, res) => {
 	}
 };
 
+// Get Property by Category ID
+const GetPropertiesByCategoryID = async (req, res) => {
+	try {
+		const id = req.params.id;
+
+		const [Properties, count] = await prisma.$transaction([
+			prisma.property.findMany({
+				where: { categoryId: id },
+				include: {
+					Images: true,
+					Aminities: true,
+					Category: {
+						include: {
+							Category_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+							Parent: true,
+						},
+					},
+					Developer: {
+						include: {
+							Developer_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+						},
+					},
+					Address: {
+						include: {
+							Address_Translation: {
+								include: { Language: true },
+							},
+						},
+					},
+					Property_Translation: {
+						include: {
+							Language: true,
+						},
+					},
+				},
+			}),
+			prisma.property.count({ where: { categoryId: id } }),
+		]);
+		if (!Properties) {
+			return res
+				.status(404)
+				.send("No Properties Were Found Under This Category!");
+		}
+		res.status(200).json({
+			count,
+			Properties,
+		});
+	} catch (error) {
+		return res.status(500).send(error.message);
+	}
+};
+
+// Get Active Properties By Category ID
+const GetActivePropertiesByCategoryID = async (req, res) => {
+	try {
+		const id = req.params.id;
+		const [Properties, count] = await prisma.$transaction([
+			prisma.property.findMany({
+				where: { AND: [{ ActiveStatus: true }, { categoryId: id }] },
+				include: {
+					Images: true,
+					Aminities: true,
+					Category: {
+						include: {
+							Category_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+							Parent: true,
+						},
+					},
+					Developer: {
+						include: {
+							Developer_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+						},
+					},
+					Address: {
+						include: {
+							Address_Translation: {
+								include: { Language: true },
+							},
+						},
+					},
+					Property_Translation: {
+						include: {
+							Language: true,
+						},
+					},
+				},
+			}),
+			prisma.property.count({
+				where: { AND: [{ ActiveStatus: true }, { categoryId: id }] },
+			}),
+		]);
+		if (!Properties) {
+			return res
+				.status(404)
+				.send("No Active Properties Were Found Under This Category!");
+		}
+		res.status(200).json({
+			count,
+			Properties,
+		});
+	} catch (error) {
+		return res.status(500).send(error.message);
+	}
+};
+// Get Property by Developer ID
+const GetPropertiesByDeveloperID = async (req, res) => {
+	try {
+		const id = req.params.id;
+
+		const [Properties, count] = await prisma.$transaction([
+			prisma.property.findMany({
+				where: { developerId: id },
+				include: {
+					Images: true,
+					Aminities: true,
+					Category: {
+						include: {
+							Category_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+							Parent: true,
+						},
+					},
+					Developer: {
+						include: {
+							Developer_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+						},
+					},
+					Address: {
+						include: {
+							Address_Translation: {
+								include: { Language: true },
+							},
+						},
+					},
+					Property_Translation: {
+						include: {
+							Language: true,
+						},
+					},
+				},
+			}),
+			prisma.property.count({ where: { developerId: id } }),
+		]);
+		if (!Properties) {
+			return res
+				.status(404)
+				.send("No Properties Were Found Under This Developer!");
+		}
+		res.status(200).json({
+			count,
+			Properties,
+		});
+	} catch (error) {
+		return res.status(500).send(error.message);
+	}
+};
+
+// Get Active Properties By Address ID
+const GetActivePropertiesByDeveloperID = async (req, res) => {
+	try {
+		const id = req.params.id;
+
+		const [Properties, count] = await prisma.$transaction([
+			prisma.property.findMany({
+				where: { AND: [{ developerId: id }, { ActiveStatus: true }] },
+				include: {
+					Images: true,
+					Aminities: true,
+					Category: {
+						include: {
+							Category_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+							Parent: true,
+						},
+					},
+					Developer: {
+						include: {
+							Developer_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+						},
+					},
+					Address: {
+						include: {
+							Address_Translation: {
+								include: { Language: true },
+							},
+						},
+					},
+					Property_Translation: {
+						include: {
+							Language: true,
+						},
+					},
+				},
+			}),
+			prisma.property.count({
+				where: { AND: [{ developerId: id }, { ActiveStatus: true }] },
+			}),
+		]);
+		if (!Properties) {
+			return res
+				.status(404)
+				.send("No Active Properties Were Found Under This Developer!");
+		}
+		res.status(200).json({
+			count,
+			Properties,
+		});
+	} catch (error) {
+		return res.status(500).send(error.message);
+	}
+};
+
+// Get Property by Category ID
+const GetPropertiesByAddressID = async (req, res) => {
+	try {
+		const id = req.params.id;
+
+		const [Properties, count] = await prisma.$transaction([
+			prisma.property.findMany({
+				where: { addressId: id },
+				include: {
+					Images: true,
+					Aminities: true,
+					Category: {
+						include: {
+							Category_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+							Parent: true,
+						},
+					},
+					Developer: {
+						include: {
+							Developer_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+						},
+					},
+					Address: {
+						include: {
+							Address_Translation: {
+								include: { Language: true },
+							},
+						},
+					},
+					Property_Translation: {
+						include: {
+							Language: true,
+						},
+					},
+				},
+			}),
+			prisma.property.count({ where: { addressId: id } }),
+		]);
+		if (!Properties) {
+			return res
+				.status(404)
+				.send("No Properties Were Found Under This Address!");
+		}
+		res.status(200).json({
+			count,
+			Properties,
+		});
+	} catch (error) {
+		return res.status(500).send(error.message);
+	}
+};
+
+// Get Active Properties By Address ID
+const GetActivePropertiesByAddressID = async (req, res) => {
+	try {
+		const id = req.params.id;
+
+		const [Properties, count] = await prisma.$transaction([
+			prisma.property.findMany({
+				where: { AND: [{ addressId: id }, { ActiveStatus: true }] },
+				include: {
+					Images: true,
+					Aminities: true,
+					Category: {
+						include: {
+							Category_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+							Parent: true,
+						},
+					},
+					Developer: {
+						include: {
+							Developer_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+						},
+					},
+					Address: {
+						include: {
+							Address_Translation: {
+								include: { Language: true },
+							},
+						},
+					},
+					Property_Translation: {
+						include: {
+							Language: true,
+						},
+					},
+				},
+			}),
+			prisma.property.count({
+				where: { AND: [{ addressId: id }, { ActiveStatus: true }] },
+			}),
+		]);
+		if (!Properties) {
+			return res
+				.status(404)
+				.send("No Active Properties Were Found Under This Address!");
+		}
+		res.status(200).json({
+			count,
+			Properties,
+		});
+	} catch (error) {
+		return res.status(500).send(error.message);
+	}
+};
+
+//Update Property
 const UpdateProperty = async (req, res) => {
 	try {
 		const id = req.params.id;
@@ -563,6 +928,12 @@ module.exports = {
 	CreateProperty,
 	GetAllProperties,
 	GetPropertyByID,
+	GetPropertiesByCategoryID,
+	GetActivePropertiesByCategoryID,
+	GetPropertiesByAddressID,
+	GetActivePropertiesByAddressID,
+	GetActivePropertiesByDeveloperID,
+	GetPropertiesByDeveloperID,
 	GetAllActiveProperties,
 	UpdateProperty,
 	DeleteProperty,

@@ -12,6 +12,12 @@ const {
 	GetAllActiveProperties,
 	UpdateProperty,
 	DeleteProperty,
+	GetPropertiesByCategoryID,
+	GetActivePropertiesByCategoryID,
+	GetPropertiesByAddressID,
+	GetActivePropertiesByAddressID,
+	GetPropertiesByDeveloperID,
+	GetActivePropertiesByDeveloperID,
 } = require("../../controllers/propertiesController");
 
 const propertyRouter = express.Router();
@@ -25,6 +31,21 @@ propertyRouter.post(
 );
 propertyRouter.get("/property", verifyJWT, VerifyRole, GetAllProperties);
 propertyRouter.get("/property/:id", GetPropertyByID);
+propertyRouter.get("/property/category/:id", GetPropertiesByCategoryID);
+propertyRouter.get(
+	"/property-active/category/:id",
+	GetActivePropertiesByCategoryID,
+);
+propertyRouter.get("/property/address/:id", GetPropertiesByAddressID);
+propertyRouter.get(
+	"/property-active/address/:id",
+	GetActivePropertiesByAddressID,
+);
+propertyRouter.get("/property/developer/:id", GetPropertiesByDeveloperID);
+propertyRouter.get(
+	"/property-active/developer/:id",
+	GetActivePropertiesByDeveloperID,
+);
 propertyRouter.get("/property-active", GetAllActiveProperties);
 propertyRouter.put(
 	"/property/:id",

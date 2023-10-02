@@ -116,7 +116,7 @@ model Images {
   Articles        Articles[]
   Address         Address[]
   propertyId      String?
-  announcementsId String?
+  announcementsId String?        @unique
   Developer       Developer[]
   Aminities       Aminities[]
 }
@@ -233,7 +233,7 @@ model Announcements {
   CreatedAt                 DateTime                    @default(now())
   UpdatedAt                 DateTime                    @updatedAt
   Announcements_Translation Announcements_Translation[]
-  Images                    Images[]
+  Images                    Images?
 }
 
 model ListWithUs {
