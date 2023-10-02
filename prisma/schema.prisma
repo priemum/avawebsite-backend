@@ -118,6 +118,7 @@ model Images {
   propertyId      String?
   announcementsId String?
   Developer       Developer[]
+  Aminities       Aminities[]
 }
 
 model Address {
@@ -214,9 +215,11 @@ model Property {
 model Aminities {
   id                    String                  @id @default(uuid())
   Properties            Property[]
+  Image                 Images?                 @relation(fields: [imagesId], references: [id])
   CreatedAt             DateTime                @default(now())
   UpdatedAt             DateTime                @updatedAt
   Aminities_Translation Aminities_Translation[]
+  imagesId              String?
 }
 
 model Announcements {

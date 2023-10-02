@@ -94,6 +94,10 @@ const allowedUpdatesList = [
 			"Category_Translation",
 		],
 	},
+	{
+		name: "aminities",
+		value: ["Name", "Description", "Image", "Aminities_Translation"],
+	},
 	,
 ];
 
