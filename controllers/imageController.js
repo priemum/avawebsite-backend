@@ -30,4 +30,23 @@ const upload = multer({
 		cb(undefined, true);
 	},
 }).single("Image");
-module.exports = { upload };
+const uploadMultiple = multer({
+	storage: storage,
+	limits: {
+		fileSize: 1024 * 1024 * 6,
+	},
+	fileFilter(req, file, cb) {
+		if (!file.originalname.match(/\.(jpg|jpeg|png|JPG|JPEG|PNG|webp)$/)) {
+			cb(null, false);
+			return cb(
+				new Error("Please upload a (jpg or jpeg or Png or Webp) image "),
+			);
+		}
+		if (file.size > 1024 * 1024 * 6) {
+			cb(null, false);
+			return cb(new multer.MulterError("File is Larger than 6 MB "));
+		}
+		cb(undefined, true);
+	},
+}).array("Images");
+module.exports = { upload, uploadMultiple };

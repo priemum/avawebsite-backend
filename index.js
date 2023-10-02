@@ -20,6 +20,7 @@ const developerRouter = require("./routes/api/developerRoute");
 const categoryRouter = require("./routes/api/CategoryRoute");
 const announcementRouter = require("./routes/api/AnnouncementRoute");
 const aminitiesRouter = require("./routes/api/AminitiesRoute");
+const propertyRouter = require("./routes/api/PropertyRoute");
 
 const port = process.env.PORT || 3500;
 const app = express();
@@ -50,6 +51,7 @@ app.use("/", developerRouter);
 app.use("/", categoryRouter);
 app.use("/", announcementRouter);
 app.use("/", aminitiesRouter);
+app.use("/", propertyRouter);
 app.listen(port, () => {
 	console.log(`Listening on port ${port}`);
 });
