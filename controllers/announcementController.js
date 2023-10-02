@@ -45,10 +45,10 @@ const CreateAnnouncement = async (req, res) => {
 						data: data.Announcements_Translation,
 					},
 				},
-				Images: data?.Image,
+				Image: data?.Image,
 			},
 			include: {
-				Images: true,
+				Image: true,
 				Announcements_Translation: {
 					include: {
 						Language: true,
@@ -82,7 +82,7 @@ const GetAllAnnouncements = async (req, res) => {
 		const [Announcement, count] = await prisma.$transaction([
 			prisma.announcements.findMany({
 				include: {
-					Images: true,
+					Image: true,
 					Announcements_Translation: {
 						include: { Language: true },
 					},
@@ -136,7 +136,7 @@ const GetAnnouncementByID = async (req, res) => {
 		const Announcement = await prisma.announcements.findUnique({
 			where: { id: id },
 			include: {
-				Images: true,
+				Image: true,
 				Announcements_Translation: {
 					include: { Language: true },
 				},
@@ -228,10 +228,10 @@ const UpdateAnnouncement = async (req, res) => {
 					Rank: data?.Rank || undefined,
 					Type: data?.Type || undefined,
 					ActiveStatus: data?.ActiveStatus,
-					Images: data?.Image,
+					Image: data?.Image,
 				},
 				include: {
-					Images: true,
+					Image: true,
 					Announcements_Translation: {
 						include: {
 							Language: true,
@@ -258,7 +258,7 @@ const DeleteAnnouncement = async (req, res) => {
 		const Announcement = await prisma.announcements.findFirst({
 			where: { id: id },
 			include: {
-				Images: true,
+				Image: true,
 				Announcements_Translation: {
 					include: {
 						Language: true,
@@ -269,8 +269,8 @@ const DeleteAnnouncement = async (req, res) => {
 		if (!Announcement) {
 			return res.status(404).send("Announcement was not found!");
 		}
-		const imageURL = Announcement.Images?.URL;
-		const imageID = Announcement.Images?.id;
+		const imageURL = Announcement.Image?.URL;
+		const imageID = Announcement.Image?.id;
 		// const UserID = Address.Users?.id;
 		let isImageDeleted = false;
 		if (imageID !== undefined) {

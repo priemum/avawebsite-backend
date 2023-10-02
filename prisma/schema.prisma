@@ -108,7 +108,7 @@ model Images {
   Team            Team?          @relation(fields: [teamID], references: [id])
   user            Users?         @relation(fields: [usersID], references: [id])
   Property        Property?      @relation(fields: [propertyId], references: [id])
-  Announcements   Announcements? @relation(fields: [announcementsId], references: [id])
+  Announcements   Announcements? @relation(fields: [announcementsID], references: [id])
   usersID         String?        @unique
   CreatedAt       DateTime       @default(now())
   UpdatedAt       DateTime       @updatedAt
@@ -116,7 +116,7 @@ model Images {
   Articles        Articles[]
   Address         Address[]
   propertyId      String?
-  announcementsId String?        @unique
+  announcementsID String?        @unique
   Developer       Developer[]
   Aminities       Aminities[]
 }
@@ -233,7 +233,7 @@ model Announcements {
   CreatedAt                 DateTime                    @default(now())
   UpdatedAt                 DateTime                    @updatedAt
   Announcements_Translation Announcements_Translation[]
-  Images                    Images?
+  Image                     Images?
 }
 
 model ListWithUs {
