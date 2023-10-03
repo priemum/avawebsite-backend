@@ -9,19 +9,18 @@ require("dotenv").config;
 //Create New User
 const Register = async (req, res) => {
 	try {
-		const {
-			Name,
-			Email,
-			Password,
-			PhoneNo,
-			ActiveStatus,
-			Gender,
-			DOB,
-			RoleID,
-		} = req.body;
+		let { Name, Email, Password, PhoneNo, ActiveStatus, Gender, DOB, RoleID } =
+			req.body;
 		const image = req.file;
 		if (!Name || !Email || !Password) {
 			return res.status(400).send("Required Field Missing!!");
+		}
+		if (ActiveStatus) {
+			if (req.body.ActiveStatus.toLowerCase() === "false") {
+				ActiveStatus = false;
+			} else {
+				ActiveStatus = true;
+			}
 		}
 		const user = await prisma.users.create({
 			data: {
@@ -29,7 +28,7 @@ const Register = async (req, res) => {
 				Email,
 				Password: await bcrypt.hash(Password, 10),
 				ActiveStatus,
-				Gender,
+				Gender: Gender || undefined,
 				DOB,
 				PhoneNo,
 				Role: RoleID

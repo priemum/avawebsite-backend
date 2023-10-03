@@ -681,16 +681,12 @@ const UpdateProperty = async (req, res) => {
 		const Selected = { id: true };
 		updates.forEach((item) => {
 			if (
-				item !== "AddressID" ||
-				item !== "DeveloperID" ||
+				item !== "AddressID" &&
+				item !== "DeveloperID" &&
 				item !== "CategoryID"
 			)
 				Selected[item] = true;
 		});
-		if (images) {
-			Selected["Images"] = true;
-		}
-
 		const data = await prisma.property.findUnique({
 			where: { id: id },
 			select: Selected,
@@ -698,24 +694,19 @@ const UpdateProperty = async (req, res) => {
 		if (!data) {
 			return res.status(404).send("Property was not Found!");
 		}
-		updates.forEach((update) => (data[update] = req.body[update]));
-		data.Price = parseFloat(data.Price);
-		data.Bedrooms = parseInt(data.Bedrooms);
-		data.BalconySize = parseFloat(data.BalconySize);
-		data.RentMin = parseFloat(data.RentMin);
-		data.RentMax = parseFloat(data.RentMax);
-		data.Longitude = parseFloat(data.Longitude);
-		data.Latitude = parseFloat(data.Latitude);
-		console.log(data.Images);
 		if (images) {
-			console.log(images);
+			data.Images = [];
+		}
+		updates.forEach((update) => (data[update] = req.body[update]));
+		data.Price = parseFloat(data?.Price);
+		data.Bedrooms = parseInt(data?.Bedrooms);
+		data.BalconySize = parseFloat(data?.BalconySize);
+		data.RentMin = parseFloat(data?.RentMin);
+		data.RentMax = parseFloat(data?.RentMax);
+		data.Longitude = parseFloat(data?.Longitude);
+		data.Latitude = parseFloat(data?.Latitude);
+		if (images) {
 			images.map(async (image) => {
-				if (image !== null) {
-					if (fs.existsSync(`${data.Images.URL}`)) {
-						fs.unlinkSync(`${data.Images.URL}`);
-					}
-					await prisma.images.delete({ where: { id: data.Images.id } });
-				}
 				data.Images.push({
 					URL: image.path,
 					Alt: image?.originalname,
@@ -740,7 +731,7 @@ const UpdateProperty = async (req, res) => {
 			}
 		}
 		const result = await prisma.$transaction(async (prisma) => {
-			data.Property_Translation &&
+			if (data.Property_Translation !== undefined) {
 				data.Property_Translation.map(async (item) => {
 					{
 						await prisma.property_Translation.updateMany({
@@ -754,7 +745,8 @@ const UpdateProperty = async (req, res) => {
 						});
 					}
 				});
-			const UpdatedProperty = await prisma.address.update({
+			}
+			const UpdatedProperty = await prisma.property.update({
 				where: { id: id },
 				data: {
 					Price: data.Price || undefined,
@@ -774,7 +766,7 @@ const UpdateProperty = async (req, res) => {
 					DEDNo: data.DEDNo || undefined,
 					ReraNo: data.ReraNo || undefined,
 					BRNNo: data.BRNNo || undefined,
-					Property_Translation: {
+					Property_Translation: data?.Property_Translation && {
 						createMany: {
 							data: data.Property_Translation,
 						},
@@ -848,7 +840,88 @@ const UpdateProperty = async (req, res) => {
 		return res.status(500).send(error.message);
 	}
 };
-// ToDO : check deleting conditions
+
+//Delete All Images for a Property
+
+const DeletePropertyImages = async (req, res) => {
+	try {
+		const id = req.params.id;
+		const result = await prisma.$transaction(async (prisma) => {
+			const Images = await prisma.images.findMany({
+				where: {
+					propertyId: id,
+				},
+			});
+			if (Images.length > 0) {
+				Images.map(async (image) => {
+					if (fs.existsSync(image.URL)) {
+						fs.unlinkSync(image.URL);
+					}
+				});
+				await prisma.images.deleteMany({
+					where: {
+						propertyId: id,
+					},
+				});
+			} else {
+				return {
+					Message: "No Images Were Found for This Property!",
+					Images,
+				};
+			}
+			return {
+				Message: "Images Deleted Successfully ",
+				Images,
+			};
+		});
+
+		// if (Images.count === 0) {
+		// 	return res.status(404).send("No Images were Found!");
+		// }
+		return res.status(200).send(result);
+	} catch (error) {
+		return res.status(500).send(error.message);
+	}
+};
+const DeleteImageByID = async (req, res) => {
+	try {
+		const id = req.params.id;
+		const result = await prisma.$transaction(async (prisma) => {
+			const Image = await prisma.images.findUnique({
+				where: {
+					id: id,
+				},
+			});
+			if (Image) {
+				if (fs.existsSync(Image.URL)) {
+					fs.unlinkSync(Image.URL);
+				}
+				await prisma.images.delete({
+					where: {
+						id: id,
+					},
+				});
+			} else {
+				return {
+					Message: "No Image Were Found for This Property!",
+					Image,
+				};
+			}
+			return {
+				Message: "Image Deleted Successfully ",
+				Image,
+			};
+		});
+
+		// if (Images.count === 0) {
+		// 	return res.status(404).send("No Images were Found!");
+		// }
+		return res.status(200).send(result);
+	} catch (error) {
+		return res.status(500).send(error.message);
+	}
+};
+// Delete Property
 const DeleteProperty = async (req, res) => {
 	try {
 		const id = req.params.id;
@@ -936,5 +1009,7 @@ module.exports = {
 	GetPropertiesByDeveloperID,
 	GetAllActiveProperties,
 	UpdateProperty,
+	DeletePropertyImages,
+	DeleteImageByID,
 	DeleteProperty,
 };

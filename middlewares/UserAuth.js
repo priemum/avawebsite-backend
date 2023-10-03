@@ -4,6 +4,7 @@ const saveUser = async (req, res, next) => {
 	try {
 		const Gender = req.body.Gender;
 		if (Gender) {
+			console.log("Gender: ", Gender);
 			if (Gender !== "Male" && Gender !== "Female") {
 				throw new Error("Incorrect Gender input!");
 			}
