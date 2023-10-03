@@ -194,7 +194,9 @@ model Property {
   Longitude            Float?
   Latitude             Float?
   ActiveStatus         Boolean                @default(true)
-  Purpose              String
+  Purpose              Purpose?
+  RentFrequency        RentFrequency?
+  CompletionStatus     CompletionStatus?
   PermitNumber         String
   DEDNo                String
   ReraNo               String
@@ -210,6 +212,23 @@ model Property {
   addressId            String
   Aminities            Aminities[]
   Images               Images[]
+}
+
+enum Purpose {
+  Rent
+  Buy
+}
+
+enum RentFrequency {
+  Yearly
+  Monthly
+  Weekly
+  Daily
+}
+
+enum CompletionStatus {
+  Ready
+  OffPlan
 }
 
 model Aminities {
@@ -228,12 +247,17 @@ model Announcements {
   EndDate                   DateTime
   Link                      String?
   Rank                      Int?
-  Type                      String?
+  Type                      AnnouncementType?
   ActiveStatus              Boolean                     @default(true)
   CreatedAt                 DateTime                    @default(now())
   UpdatedAt                 DateTime                    @updatedAt
   Announcements_Translation Announcements_Translation[]
   Image                     Images?
+}
+
+enum AnnouncementType {
+  Normal
+  Popup
 }
 
 model ListWithUs {

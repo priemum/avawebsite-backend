@@ -13,6 +13,7 @@ const {
 	UpdateAnnouncement,
 	DeleteAnnouncement,
 } = require("../../controllers/announcementController");
+const { saveAnnouncement } = require("../../middlewares/announcementAuth");
 
 const announcementRouter = express.Router();
 
@@ -21,6 +22,7 @@ announcementRouter.post(
 	verifyJWT,
 	VerifyRole,
 	CheckImage,
+	saveAnnouncement,
 	CreateAnnouncement,
 );
 announcementRouter.get(
