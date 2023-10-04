@@ -96,7 +96,15 @@ const GetProfile = async (req, res) => {
 					},
 				},
 				Image: true,
-				Role: true,
+				Role: {
+					include: {
+						Role_Resources: {
+							include: {
+								resource: true,
+							},
+						},
+					},
+				},
 				Team: true,
 			},
 		});
