@@ -21,6 +21,7 @@ const categoryRouter = require("./routes/api/CategoryRoute");
 const announcementRouter = require("./routes/api/AnnouncementRoute");
 const aminitiesRouter = require("./routes/api/AminitiesRoute");
 const propertyRouter = require("./routes/api/PropertyRoute");
+const guestRouter = require("./routes/api/GuestInfoRoute");
 
 const port = process.env.PORT || 3500;
 const app = express();
@@ -29,7 +30,7 @@ const app = express();
 app.use(credentials);
 app.use(cookieParser());
 app.use(cors(corsOptions));
-
+app.set("trust proxy", true);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 //serve static files
@@ -52,6 +53,7 @@ app.use("/", categoryRouter);
 app.use("/", announcementRouter);
 app.use("/", aminitiesRouter);
 app.use("/", propertyRouter);
+app.use("/", guestRouter);
 app.listen(port, () => {
 	console.log(`Listening on port ${port}`);
 });
