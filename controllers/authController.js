@@ -78,31 +78,99 @@ const Login = async (req, res) => {
 };
 
 const GetProfile = async (req, res) => {
-	const cookies = req.cookies;
-	if (!cookies.jwt) return res.status(401).send("User Does not exist!");
-	const refreshToken = cookies.jwt;
-	const foundUser = await prisma.users.findFirst({
-		where: { refreshToken: refreshToken },
-		include: {
-			Articles: {
-				include: {
-					Articles_Translation: {
-						include: {
-							Language: true,
+	try {
+		const cookies = req.cookies;
+		if (!cookies.jwt) return res.status(401).send("User Does not exist!");
+		const refreshToken = cookies.jwt;
+		const foundUser = await prisma.users.findFirst({
+			where: { refreshToken: refreshToken },
+			include: {
+				Articles: {
+					include: {
+						Articles_Translation: {
+							include: {
+								Language: true,
+							},
 						},
+						Image: true,
 					},
-					Image: true,
 				},
+				Image: true,
+				Role: true,
+				Team: true,
 			},
-			Image: true,
-			Role: true,
-			Team: true,
-		},
-	});
-	if (!foundUser) {
-		return res.status(404).send("User Doesn't Exist!");
+		});
+		if (!foundUser) {
+			return res.status(404).send("User Doesn't Exist!");
+		}
+		return res.status(200).send(foundUser);
+	} catch (error) {
+		return res.status(500).send(error.message);
 	}
-	return res.status(200).send(foundUser);
+};
+
+// update Profile
+const updateProfile = async (req, res) => {
+	try {
+		const cookies = req.cookies;
+		if (!cookies.jwt) return res.status(401).send("User Does not exist!");
+		const refreshToken = cookies.jwt;
+		const updates = Object.keys(req.body);
+		const image = req.file;
+		const Selected = { id: true };
+
+		updates.forEach((item) => {
+			Selected[item] = true;
+		});
+		if (image) {
+			Selected["Image"] = true;
+		}
+		const User = await prisma.users.findFirst({
+			where: { refreshToken: refreshToken },
+			select: Selected,
+		});
+		if (!User) {
+			return res.status(404).send("User was not Found!");
+		}
+		updates.forEach((update) => (User[update] = req.body[update]));
+		if (image) {
+			if (User.Image !== null) {
+				if (fs.existsSync(`${User.Image.URL}`)) {
+					fs.unlinkSync(`${User.Image.URL}`);
+				}
+				await prisma.images.delete({ where: { id: User.Image.id } });
+			}
+			User.Image = {
+				create: {
+					URL: image.path,
+					Alt: image?.originalname,
+					Size: image.size,
+					Type: image.mimetype,
+					teamID: undefined,
+				},
+			};
+		}
+		if (updates.includes("Password")) {
+			User.Password = await bcrypt.hash(User.Password, 10);
+		}
+		if (updates.includes("ActiveStatus")) {
+			if (req.body.ActiveStatus.toLowerCase() === "false") {
+				User.ActiveStatus = false;
+			} else {
+				User.ActiveStatus = true;
+			}
+		}
+		await prisma.users.update({
+			where: { id: User.id },
+			data: User,
+		});
+		res.status(200).json({
+			Message: "Updated successfully",
+			User,
+		});
+	} catch (error) {
+		return res.status(500).send(error.message);
+	}
 };
 
 const handleLogout = async (req, res) => {
@@ -144,4 +212,5 @@ module.exports = {
 	Login,
 	handleLogout,
 	GetProfile,
+	updateProfile,
 };

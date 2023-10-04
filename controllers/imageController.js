@@ -2,8 +2,11 @@ const multer = require("multer");
 
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-		const path = req.url.split("/")[1];
+		let path = req.url.split("/")[1];
 		console.log(path);
+		if (path === "auth") {
+			path = "users";
+		}
 		cb(null, `./public/images/${path}`);
 	},
 	filename: function (req, file, cb) {
