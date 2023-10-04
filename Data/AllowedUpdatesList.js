@@ -11,6 +11,7 @@ const allowedUpdatesList = [
 			"ActiveStatus",
 			"roleID",
 			"teamID",
+			"addressId",
 			"DOB",
 		],
 	},

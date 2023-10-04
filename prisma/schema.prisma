@@ -31,6 +31,7 @@ model Users {
   ActiveStatus Boolean    @default(true)
   Gender       Gender?
   Password     String
+  Address      Address?   @relation(fields: [addressId], references: [id])
   refreshToken String?
   Image        Images?
   Team         Team?      @relation(fields: [teamID], references: [id])
@@ -41,6 +42,7 @@ model Users {
   CreatedAt    DateTime   @default(now())
   UpdatedAt    DateTime   @updatedAt
   Jobs         Jobs[]
+  addressId    String?
 }
 
 enum Gender {
@@ -95,6 +97,7 @@ model Articles {
   UpdatedAt            DateTime               @updatedAt
   Articles_Translation Articles_Translation[]
   imagesId             String?
+  MetaData             MetaData[]
 }
 
 model Images {
@@ -135,6 +138,7 @@ model Address {
   Address_Translation Address_Translation[]
   imagesId            String
   Property            Property[]
+  Users               Users[]
 }
 
 model Unit {
@@ -212,6 +216,7 @@ model Property {
   addressId            String
   Aminities            Aminities[]
   Images               Images[]
+  MetaData             MetaData[]
 }
 
 enum Purpose {
@@ -346,6 +351,18 @@ model Jobs {
   Jobs_Translation Jobs_Translation[]
   Applicantion     Applicantion[]
   usersId          String
+}
+
+model MetaData {
+  id         String   @id @default(uuid())
+  Name       String
+  Content    String
+  Property   Property @relation(fields: [propertyId], references: [id])
+  Article    Articles @relation(fields: [articlesId], references: [id])
+  CreatedAt  DateTime @default(now())
+  UpdatedAt  DateTime @updatedAt
+  propertyId String
+  articlesId String
 }
 
 //Localization Sub-Schema 

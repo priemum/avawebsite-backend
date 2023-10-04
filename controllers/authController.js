@@ -105,6 +105,15 @@ const GetProfile = async (req, res) => {
 						},
 					},
 				},
+				Address: {
+					include: {
+						Address_Translation: {
+							include: {
+								Language: true,
+							},
+						},
+					},
+				},
 				Team: true,
 			},
 		});

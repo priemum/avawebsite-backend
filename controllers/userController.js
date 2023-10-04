@@ -38,6 +38,13 @@ const Register = async (req, res) => {
 							},
 					  }
 					: undefined,
+				Address: AddressID
+					? {
+							connect: {
+								id: AddressID,
+							},
+					  }
+					: undefined,
 				Image: image
 					? {
 							create: {
@@ -49,7 +56,19 @@ const Register = async (req, res) => {
 					  }
 					: undefined,
 			},
-			include: { Role: true, Image: true },
+			include: {
+				Role: true,
+				Image: true,
+				Address: {
+					include: {
+						Address_Translation: {
+							include: {
+								Language: true,
+							},
+						},
+					},
+				},
+			},
 		});
 		if (user) {
 			return res.status(201).send(user);
@@ -66,7 +85,30 @@ const GetAllUsers = async (req, res) => {
 	try {
 		const [Users, count] = await prisma.$transaction([
 			prisma.users.findMany({
-				include: { Role: true, Team: true, Image: true },
+				include: {
+					Role: true,
+					Team: true,
+					Image: true,
+					Address: {
+						include: {
+							Address_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+						},
+					},
+					Articles: {
+						include: {
+							Articles_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+						},
+					},
+					Jobs: true,
+				},
 			}),
 			prisma.users.count(),
 		]);
@@ -93,7 +135,30 @@ const GetAllActiveUsers = async (req, res) => {
 		const [Users, count] = await prisma.$transaction([
 			prisma.users.findMany({
 				where: { ActiveStatus: true },
-				include: { Role: true, Team: true, Image: true },
+				include: {
+					Role: true,
+					Team: true,
+					Image: true,
+					Address: {
+						include: {
+							Address_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+						},
+					},
+					Articles: {
+						include: {
+							Articles_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+						},
+					},
+					Jobs: true,
+				},
 			}),
 			prisma.users.count(query),
 		]);
@@ -115,7 +180,30 @@ const GetUserByID = async (req, res) => {
 			where: {
 				id: req.params.id,
 			},
-			include: { Role: true, Team: true, Image: true },
+			include: {
+				Role: true,
+				Team: true,
+				Image: true,
+				Address: {
+					include: {
+						Address_Translation: {
+							include: {
+								Language: true,
+							},
+						},
+					},
+				},
+				Articles: {
+					include: {
+						Articles_Translation: {
+							include: {
+								Language: true,
+							},
+						},
+					},
+				},
+				Jobs: true,
+			},
 		};
 		const user = await prisma.users.findUnique(query);
 
@@ -136,11 +224,13 @@ const UpdateUser = async (req, res) => {
 		const Selected = { id: true };
 
 		updates.forEach((item) => {
+			// if (item !== "AddressID" && item !== "roleID" && item !== "teamID")
 			Selected[item] = true;
 		});
 		if (image) {
 			Selected["Image"] = true;
 		}
+
 		const User = await prisma.users.findUnique({
 			where: { id: id },
 			select: Selected,
@@ -151,16 +241,15 @@ const UpdateUser = async (req, res) => {
 		updates.forEach((update) => (User[update] = req.body[update]));
 		if (image) {
 			if (User.Image !== null) {
-				if (fs.existsSync(`.${User.Image.URL}`)) {
-					console.log(`.${User.Image.URL}`);
-					fs.unlinkSync(`.${User.Image.URL}`);
+				if (fs.existsSync(`${User.Image.URL}`)) {
+					console.log(`${User.Image.URL}`);
+					fs.unlinkSync(`${User.Image.URL}`);
 				}
 				await prisma.images.delete({ where: { id: User.Image.id } });
 			}
 			User.Image = {
 				create: {
 					URL: image.path,
-
 					Alt: image?.originalname,
 					Size: image.size,
 					Type: image.mimetype,
