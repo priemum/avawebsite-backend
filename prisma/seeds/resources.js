@@ -174,6 +174,34 @@ const resources = [
 		CreatedAt: new Date(),
 		UpdatedAt: new Date(),
 	},
+	{
+		Name: "Guest-info",
+		Description: "Guest info Permission",
+		ActiveStatus: true,
+		CreatedAt: new Date(),
+		UpdatedAt: new Date(),
+	},
+	{
+		Name: "List-with-us",
+		Description: "List-with-us Permission",
+		ActiveStatus: true,
+		CreatedAt: new Date(),
+		UpdatedAt: new Date(),
+	},
+	{
+		Name: "Payment-Plan",
+		Description: "Payment-Plan Permission",
+		ActiveStatus: true,
+		CreatedAt: new Date(),
+		UpdatedAt: new Date(),
+	},
+	{
+		Name: "meta-Data",
+		Description: "meta-Data Permission",
+		ActiveStatus: true,
+		CreatedAt: new Date(),
+		UpdatedAt: new Date(),
+	},
 	// ToDo: meta-Data, Payment-Plan, list-with-us, Guest-info
 ];
 module.exports = {

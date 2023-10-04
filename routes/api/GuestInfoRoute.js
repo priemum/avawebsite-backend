@@ -9,16 +9,14 @@ const {
 	CreateGuest,
 	GetAllGuests,
 	GetGuestByID,
-	GetAllActiveGuests,
 	DeleteGuest,
 } = require("../../controllers/guestInformationController");
 
 const guestRouter = express.Router();
 
 guestRouter.post("/guest-info", CreateGuest);
-guestRouter.get("/guest-info", GetAllGuests);
+guestRouter.get("/guest-info", verifyJWT, VerifyRole, GetAllGuests);
 guestRouter.get("/guest-info/:id", verifyJWT, VerifyRole, GetGuestByID);
-guestRouter.get("/guest-info-active", GetAllActiveGuests);
 guestRouter.delete("/guest-info/:id", verifyJWT, VerifyRole, DeleteGuest);
 
 module.exports = guestRouter;
