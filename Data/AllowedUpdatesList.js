@@ -132,6 +132,10 @@ const allowedUpdatesList = [
 		name: "aminities",
 		value: ["Name", "Description", "Image", "Aminities_Translation"],
 	},
+	{
+		name: "meta-data",
+		value: ["Name", "Content", "PropertyID", "ArticleID"],
+	},
 	,
 ];
 

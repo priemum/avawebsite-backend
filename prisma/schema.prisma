@@ -354,15 +354,15 @@ model Jobs {
 }
 
 model MetaData {
-  id         String   @id @default(uuid())
+  id         String    @id @default(uuid())
   Name       String
   Content    String
-  Property   Property @relation(fields: [propertyId], references: [id])
-  Article    Articles @relation(fields: [articlesId], references: [id])
-  CreatedAt  DateTime @default(now())
-  UpdatedAt  DateTime @updatedAt
-  propertyId String
-  articlesId String
+  Property   Property? @relation(fields: [propertyId], references: [id])
+  Article    Articles? @relation(fields: [articlesId], references: [id])
+  CreatedAt  DateTime  @default(now())
+  UpdatedAt  DateTime  @updatedAt
+  propertyId String?
+  articlesId String?
 }
 
 //Localization Sub-Schema 

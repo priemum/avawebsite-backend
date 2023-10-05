@@ -67,7 +67,7 @@ const GetAllUnits = async (req, res) => {
 					},
 				},
 			}),
-			prisma.currency.count(),
+			prisma.unit.count(),
 		]);
 
 		if (!Unit) {
@@ -93,7 +93,7 @@ const GetAllActiveUnits = async (req, res) => {
 					},
 				},
 			}),
-			prisma.currency.count({ where: { ActiveStatus: true } }),
+			prisma.unit.count({ where: { ActiveStatus: true } }),
 		]);
 		if (!Unit) {
 			return res.status(404).send("No Units Were Found!");

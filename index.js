@@ -22,6 +22,7 @@ const announcementRouter = require("./routes/api/AnnouncementRoute");
 const aminitiesRouter = require("./routes/api/AminitiesRoute");
 const propertyRouter = require("./routes/api/PropertyRoute");
 const guestRouter = require("./routes/api/GuestInfoRoute");
+const MetaDataRouter = require("./routes/api/MetaDataRoute");
 
 const port = process.env.PORT || 3500;
 const app = express();
@@ -54,6 +55,7 @@ app.use("/", announcementRouter);
 app.use("/", aminitiesRouter);
 app.use("/", propertyRouter);
 app.use("/", guestRouter);
+app.use("/", MetaDataRouter);
 app.listen(port, () => {
 	console.log(`Listening on port ${port}`);
 });

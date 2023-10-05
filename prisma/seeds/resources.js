@@ -105,13 +105,6 @@ const resources = [
 		UpdatedAt: new Date(),
 	},
 	{
-		Name: "MetaData",
-		Description: "MetaData Permission",
-		ActiveStatus: true,
-		CreatedAt: new Date(),
-		UpdatedAt: new Date(),
-	},
-	{
 		Name: "Language",
 		Description: "Language Permission",
 		ActiveStatus: true,
