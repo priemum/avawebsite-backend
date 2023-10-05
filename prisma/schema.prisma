@@ -292,7 +292,7 @@ model Feedback {
 model GuestInformation {
   id           String         @id @default(uuid())
   FullName     String
-  Email        String
+  Email        String         @unique
   IPAddress    String
   PhoneNo      String?
   Gender       Gender
