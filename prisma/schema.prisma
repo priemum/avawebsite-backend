@@ -307,7 +307,7 @@ model GuestInformation {
 model EnquiryForm {
   id                 String           @id @default(uuid())
   Type               String
-  Purpose            String
+  Purpose            Purpose
   Bedrooms           Int
   PriceMin           Float?           @default(0)
   PriceMax           Float?

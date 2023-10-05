@@ -24,6 +24,7 @@ const propertyRouter = require("./routes/api/PropertyRoute");
 const guestRouter = require("./routes/api/GuestInfoRoute");
 const MetaDataRouter = require("./routes/api/MetaDataRoute");
 const feedbackRouter = require("./routes/api/FeedbackRoute");
+const enquiryFormRouter = require("./routes/api/EnquiryFormRoute");
 
 const port = process.env.PORT || 3500;
 const app = express();
@@ -58,6 +59,7 @@ app.use("/", propertyRouter);
 app.use("/", guestRouter);
 app.use("/", MetaDataRouter);
 app.use("/", feedbackRouter);
+app.use("/", enquiryFormRouter);
 app.listen(port, () => {
 	console.log(`Listening on port ${port}`);
 });

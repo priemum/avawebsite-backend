@@ -133,13 +133,6 @@ const resources = [
 		UpdatedAt: new Date(),
 	},
 	{
-		Name: "Feedback",
-		Description: "Feedback Permission",
-		ActiveStatus: true,
-		CreatedAt: new Date(),
-		UpdatedAt: new Date(),
-	},
-	{
 		Name: "Enquiry",
 		Description: "Enquiry Permission",
 		ActiveStatus: true,
