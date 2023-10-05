@@ -272,7 +272,7 @@ model ListWithUs {
   Bacloney           Boolean          @default(false)
   Price              Float
   Type               String
-  Purpose            String
+  Purpose            Purpose
   Owner              GuestInformation @relation(fields: [guestInformationId], references: [id])
   CreatedAt          DateTime         @default(now())
   UpdatedAt          DateTime         @updatedAt
