@@ -26,6 +26,7 @@ const MetaDataRouter = require("./routes/api/MetaDataRoute");
 const feedbackRouter = require("./routes/api/FeedbackRoute");
 const enquiryFormRouter = require("./routes/api/EnquiryFormRoute");
 const listwithusRouter = require("./routes/api/ListWithUsRoute");
+const jobRouter = require("./routes/api/JobRoute");
 
 const port = process.env.PORT || 3500;
 const app = express();
@@ -62,6 +63,7 @@ app.use("/", MetaDataRouter);
 app.use("/", feedbackRouter);
 app.use("/", enquiryFormRouter);
 app.use("/", listwithusRouter);
+app.use("/", jobRouter);
 app.listen(port, () => {
 	console.log(`Listening on port ${port}`);
 });

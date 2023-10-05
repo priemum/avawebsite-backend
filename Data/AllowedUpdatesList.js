@@ -137,6 +137,21 @@ const allowedUpdatesList = [
 		name: "meta-data",
 		value: ["Name", "Content", "PropertyID", "ArticleID"],
 	},
+	{
+		name: "job",
+		value: [
+			"Location",
+			"Type",
+			"WeekHours",
+			"Expired",
+			"ActiveStatus",
+			"Author",
+			"AuthorID",
+			"Jobs_Translation",
+			"Title",
+			"Description",
+		],
+	},
 	,
 ];
 
