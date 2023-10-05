@@ -1,0 +1,6 @@
+-- AlterTable
+ALTER TABLE "ListWithUs" ADD COLUMN     "Area" DOUBLE PRECISION,
+ADD COLUMN     "BalconySize" DOUBLE PRECISION;
+
+-- AlterTable
+ALTER TABLE "Property" ADD COLUMN     "Area" DOUBLE PRECISION;

@@ -11,6 +11,7 @@ const {
 	GetListingByID,
 	GetListingByGuestEmail,
 	DeleteListing,
+	TransferToProperty,
 } = require("../../controllers/listWithUsController");
 
 const listwithusRouter = express.Router();
@@ -29,6 +30,12 @@ listwithusRouter.get(
 	VerifyRole,
 	GetListingByGuestEmail,
 );
+// listwithusRouter.put(
+// 	"/list-with-us/transfer/:id",
+// 	verifyJWT,
+// 	VerifyRole,
+// 	TransferToProperty,
+// );
 listwithusRouter.delete(
 	"/list-with-us/:id",
 	verifyJWT,

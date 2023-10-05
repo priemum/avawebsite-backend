@@ -197,6 +197,7 @@ model Property {
   VacantStatus         String?
   Longitude            Float?
   Latitude             Float?
+  Area                 Float?
   ActiveStatus         Boolean                @default(true)
   Purpose              Purpose?
   RentFrequency        RentFrequency?
@@ -270,6 +271,8 @@ model ListWithUs {
   Title              String
   Bedrooms           Int
   Bacloney           Boolean          @default(false)
+  BalconySize        Float?
+  Area               Float?
   Price              Float
   Type               String
   Purpose            Purpose

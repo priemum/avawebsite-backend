@@ -31,6 +31,7 @@ const CreateProperty = async (req, res) => {
 		data.RentMax = parseFloat(data.RentMax);
 		data.Longitude = parseFloat(data.Longitude);
 		data.Latitude = parseFloat(data.Latitude);
+		data.Area = parseFloat(data.Area);
 		if (data.ActiveStatus) {
 			if (req.body.ActiveStatus.toLowerCase() === "false") {
 				data.ActiveStatus = false;
@@ -54,6 +55,7 @@ const CreateProperty = async (req, res) => {
 				RentMin: data.RentMin,
 				RentMax: data.RentMax,
 				Handover: data.Handover,
+				Area: data.Area,
 				FurnishingStatus: data.FurnishingStatus,
 				VacantStatus: data.VacantStatus,
 				Longitude: data.Longitude,
@@ -705,6 +707,7 @@ const UpdateProperty = async (req, res) => {
 		data.RentMax = parseFloat(data?.RentMax);
 		data.Longitude = parseFloat(data?.Longitude);
 		data.Latitude = parseFloat(data?.Latitude);
+		data.Area = parseFloat(data?.Area);
 		if (images) {
 			images.map(async (image) => {
 				data.Images.push({
@@ -755,6 +758,7 @@ const UpdateProperty = async (req, res) => {
 					BalconySize: data.BalconySize || undefined,
 					RentMin: data.RentMin || undefined,
 					RentMax: data.RentMax || undefined,
+					Area: data.Area || undefined,
 					Handover: data.Handover || undefined,
 					FurnishingStatus: data.FurnishingStatus || undefined,
 					VacantStatus: data.VacantStatus || undefined,

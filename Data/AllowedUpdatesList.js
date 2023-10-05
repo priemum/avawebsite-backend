@@ -115,6 +115,7 @@ const allowedUpdatesList = [
 			"Longitude",
 			"Latitude",
 			"Purpose",
+			"Area",
 			"RentFrequency",
 			"CompletionStatus",
 			"PermitNumber",

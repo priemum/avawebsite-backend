@@ -135,6 +135,56 @@ const GetListingByGuestEmail = async (req, res) => {
 	}
 };
 
+const TransferToProperty = async (req, res) => {
+	try {
+		const id = req.params.id;
+		const ListingData = await prisma.listWithUs.findUnique({
+			where: {
+				id: id,
+			},
+		});
+		const Property = await prisma.property.create({
+			data: {
+				Price: ListingData.Price,
+				Bedrooms: ListingData.Bedrooms,
+				Bacloney: ListingData.Bacloney,
+				BalconySize: ListingData.BalconySize,
+				Area: ListingData.Area,
+				RentMin: ListingData.RentMin,
+				RentMax: ListingData.RentMax,
+				Handover: ListingData.Handover,
+				FurnishingStatus: ListingData.FurnishingStatus,
+				VacantStatus: ListingData.VacantStatus,
+				Longitude: ListingData.Longitude,
+				Latitude: ListingData.Latitude,
+				ActiveStatus: false,
+				Purpose: ListingData.Purpose,
+				PermitNumber: ListingData.PermitNumber,
+				DEDNo: ListingData.DEDNo,
+				ReraNo: ListingData.ReraNo,
+				BRNNo: ListingData.BRNNo,
+			},
+		});
+	} catch (error) {
+		if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error.code === "P2025") {
+				return res.status(404).send("Record Doesn't Exist!");
+			} else if (error.code === "P2021") {
+				return res.status(404).send("Table Doesn't Exist!");
+			} else if (error.code === "P2002") {
+				return res.status(404).send(error.message);
+			} else if (error.code === "P2003") {
+				return res
+					.status(404)
+					.send(
+						"Foreign key constraint failed, Connection Field Doesn't Exist!",
+					);
+			}
+		}
+		return res.status(500).send(error.message);
+	}
+};
+
 const DeleteListing = async (req, res) => {
 	try {
 		const id = req.params.id;
@@ -161,6 +211,7 @@ module.exports = {
 	CreateListing,
 	GetAllListings,
 	GetListingByID,
+	TransferToProperty,
 	GetListingByGuestEmail,
 	DeleteListing,
 };
