@@ -327,18 +327,30 @@ model Applicantion {
   AreaSpecialty      String?
   CVURL              String
   CVFileType         String
-  Message            String
+  CVFileSize         String
+  CVFileName         String
+  Message            String?
   LinkedInURL        String?
-  Field              String
-  EnglishLvl         String
-  ArabicLevel        String
-  OtherLanguages     String
+  Field              String?
+  EnglishLvl         LanguageLvl?
+  ArabicLvl          LanguageLvl?
+  OtherLanguages     String?
   Applicant          GuestInformation @relation(fields: [guestInformationId], references: [id])
   Job                Jobs             @relation(fields: [jobsId], references: [id])
   CreatedAt          DateTime         @default(now())
   UpdatedAt          DateTime         @updatedAt
   guestInformationId String
   jobsId             String
+}
+
+enum LanguageLvl {
+  None
+  A1
+  A2
+  B1
+  B2
+  C1
+  C2
 }
 
 model Jobs {

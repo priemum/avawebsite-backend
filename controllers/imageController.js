@@ -1,5 +1,5 @@
 const multer = require("multer");
-
+const fs = require("fs");
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
 		let path = req.url.split("/")[1];
@@ -7,7 +7,16 @@ const storage = multer.diskStorage({
 		if (path === "auth") {
 			path = "users";
 		}
-		cb(null, `./public/images/${path}`);
+		if (fs.existsSync(`./public/images/${path}`)) {
+			cb(null, `./public/images/${path}`);
+		} else {
+			try {
+				fs.mkdirSync(`./public/images/${path}`);
+				cb(null, `./public/images/${path}`);
+			} catch (error) {
+				console.log(error);
+			}
+		}
 	},
 	filename: function (req, file, cb) {
 		cb(null, Math.floor(new Date().getTime() / 1000) + "-" + file.originalname);

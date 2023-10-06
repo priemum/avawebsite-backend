@@ -1,8 +1,4 @@
 const express = require("express");
-
-const { CheckAllowedUpdates } = require("../../middlewares/AllowedUpdates");
-
-const { CheckImage } = require("../../middlewares/imageAuth");
 const VerifyRole = require("../../middlewares/verifyRole");
 const verifyJWT = require("../../middlewares/verifyJWT");
 const {

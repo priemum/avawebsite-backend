@@ -27,6 +27,7 @@ const feedbackRouter = require("./routes/api/FeedbackRoute");
 const enquiryFormRouter = require("./routes/api/EnquiryFormRoute");
 const listwithusRouter = require("./routes/api/ListWithUsRoute");
 const jobRouter = require("./routes/api/JobRoute");
+const applicantRouter = require("./routes/api/ApplicationRoute");
 
 const port = process.env.PORT || 3500;
 const app = express();
@@ -64,6 +65,7 @@ app.use("/", feedbackRouter);
 app.use("/", enquiryFormRouter);
 app.use("/", listwithusRouter);
 app.use("/", jobRouter);
+app.use("/", applicantRouter);
 app.listen(port, () => {
 	console.log(`Listening on port ${port}`);
 });
