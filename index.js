@@ -28,10 +28,13 @@ const enquiryFormRouter = require("./routes/api/EnquiryFormRoute");
 const listwithusRouter = require("./routes/api/ListWithUsRoute");
 const jobRouter = require("./routes/api/JobRoute");
 const applicantRouter = require("./routes/api/ApplicationRoute");
+const { errorHandler } = require("./middlewares/ErrorHandler");
+const { logger } = require("./middlewares/logEvents");
 
 const port = process.env.PORT || 3500;
 const app = express();
-
+// custom middleware logger
+app.use(logger);
 //middleware
 app.use(credentials);
 app.use(cookieParser());
@@ -66,6 +69,8 @@ app.use("/", enquiryFormRouter);
 app.use("/", listwithusRouter);
 app.use("/", jobRouter);
 app.use("/", applicantRouter);
+
+app.use(errorHandler);
 app.listen(port, () => {
 	console.log(`Listening on port ${port}`);
 });

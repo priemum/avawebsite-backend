@@ -54,7 +54,7 @@ const GetAllMetaData = async (req, res) => {
 				include: {
 					Article: {
 						include: {
-							Image: true,
+							image: true,
 							Articles_Translation: {
 								include: {
 									Language: true,

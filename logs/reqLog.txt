@@ -1,0 +1,7 @@
+20231006	18:00:55	dbf591c2-489e-4e6a-ae9b-fa44b81b5b12	GET	200	 Message: OK 	/auth/refreshToken
+20231006	18:01:45	a5a0e61b-40ed-4d4d-8d49-0d00643446e6	POST	409	 Message: Conflict 	/applicant
+20231006	18:02:10	153e749d-c8c9-4af2-bc4a-bac641c70aca	POST	201	 Message: Created 	/meta-data
+20231006	18:10:31	a4f8369c-46e1-472a-a346-ef25de2a66e3	POST	403	 Message: Forbidden 	/meta-data
+20231006	18:27:21	d5ae6ab0-e75b-4924-a028-1980b2b08143	GET	403	 Message: Forbidden 	/meta-data
+20231006	18:27:25	41ebbcac-eecb-42aa-bad8-693c4c35e0ef	GET	200	 Message: OK 	/auth/refreshToken
+20231006	18:27:29	705ae772-df33-4d61-9905-827aac0e4929	GET	500	 Message: Internal Server Error 	/meta-data
