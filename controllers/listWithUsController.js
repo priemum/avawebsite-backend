@@ -57,10 +57,20 @@ const CreateListing = async (req, res) => {
 						data: data.Images,
 					},
 				},
+				ListWithUs_Translation: {
+					createMany: {
+						data: data.ListWithUs_Translation,
+					},
+				},
 			},
 			include: {
 				Owner: true,
 				Images: true,
+				ListWithUs_Translation: {
+					include: {
+						Language: true,
+					},
+				},
 			},
 		});
 		if (!Listing) {
@@ -94,6 +104,11 @@ const GetAllListings = async (req, res) => {
 				include: {
 					Owner: true,
 					Images: true,
+					ListWithUs_Translation: {
+						include: {
+							Language: true,
+						},
+					},
 				},
 			}),
 			prisma.listWithUs.count(),
@@ -120,6 +135,11 @@ const GetListingByID = async (req, res) => {
 			include: {
 				Owner: true,
 				Images: true,
+				ListWithUs_Translation: {
+					include: {
+						Language: true,
+					},
+				},
 			},
 		});
 		if (!Listing) {
@@ -146,6 +166,11 @@ const GetListingByGuestEmail = async (req, res) => {
 			include: {
 				Owner: true,
 				Images: true,
+				ListWithUs_Translation: {
+					include: {
+						Language: true,
+					},
+				},
 			},
 		});
 		if (!Listing) {
@@ -169,10 +194,12 @@ const UpdateListing = async (req, res) => {
 				item !== "Email" &&
 				item !== "IPAddress" &&
 				item !== "PhoneNo" &&
-				item !== "Gender"
+				item !== "Gender" &&
+				item !== "ListWithUs_Translation"
 			)
 				Selected[item] = true;
 		});
+		console.log(Selected);
 		const data = await prisma.listWithUs.findUnique({
 			where: {
 				id: id,
@@ -204,41 +231,64 @@ const UpdateListing = async (req, res) => {
 				data.Bacloney = true;
 			}
 		}
-		const result = await prisma.listWithUs.update({
-			where: {
-				id: id,
-			},
-			data: {
-				Title: data.Title,
-				Bedrooms: parseInt(data.Bedrooms),
-				Bacloney: data.Bacloney,
-				Price: parseFloat(data.Price),
-				Type: data.Type,
-				Purpose: data.Purpose,
-				Owner: {
-					connectOrCreate: {
-						where: {
-							Email: data.Email,
+		const result = await prisma.$transaction(async (prisma) => {
+			data.ListWithUs_Translation &&
+				data.ListWithUs_Translation.map(async (item) => {
+					{
+						console.log("Inside Map");
+						await prisma.listWithUs_Translation.updateMany({
+							where: {
+								AND: [{ languagesID: item.languagesID }, { listWithUsId: id }],
+							},
+							data: {
+								Name: item?.Name,
+								Description: item?.Description,
+							},
+						});
+					}
+				});
+			const UpdatedListing = await prisma.listWithUs.update({
+				where: {
+					id: id,
+				},
+				data: {
+					Title: data.Title || undefined,
+					Bedrooms: parseInt(data.Bedrooms) || undefined,
+					Bacloney: data.Bacloney || undefined,
+					Price: parseFloat(data.Price) || undefined,
+					Type: data.Type || undefined,
+					Purpose: data.Purpose || undefined,
+					Owner: {
+						connectOrCreate: data.Email && {
+							where: {
+								Email: data.Email,
+							},
+							create: {
+								Email: data.Email,
+								FullName: data.FullName,
+								Gender: data.Gender,
+								IPAddress: data.IPAddress,
+								PhoneNo: data.PhoneNo,
+							},
 						},
-						create: {
-							Email: data.Email,
-							FullName: data.FullName,
-							Gender: data.Gender,
-							IPAddress: data.IPAddress,
-							PhoneNo: data.PhoneNo,
+					},
+					Images: {
+						createMany: data.Images && {
+							data: data.Images,
 						},
 					},
 				},
-				Images: {
-					createMany: {
-						data: data.Images,
+				include: {
+					Owner: true,
+					Images: true,
+					ListWithUs_Translation: {
+						include: {
+							Language: true,
+						},
 					},
 				},
-			},
-			include: {
-				Owner: true,
-				Images: true,
-			},
+			});
+			return UpdatedListing;
 		});
 		return res.status(200).json({
 			Message: "Updated successfully",
@@ -274,6 +324,11 @@ const DeleteListing = async (req, res) => {
 			include: {
 				Owner: true,
 				Images: true,
+				ListWithUs_Translation: {
+					include: {
+						Language: true,
+					},
+				},
 			},
 		});
 		if (!Listing) {
@@ -292,10 +347,14 @@ const DeleteListing = async (req, res) => {
 				}
 			});
 		}
+		if (Listing.ListWithUs_Translation.length > 0) {
+			await prisma.listWithUs_Translation.deleteMany({
+				where: { listWithUsId: id },
+			});
+		}
 		await prisma.listWithUs.delete({
 			where: { id: id },
 		});
-
 		res.status(200).json({
 			"Image Deleted: ": Listing.Images,
 			Listing,

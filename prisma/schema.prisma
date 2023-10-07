@@ -269,20 +269,21 @@ enum AnnouncementType {
 }
 
 model ListWithUs {
-  id                 String           @id @default(uuid())
-  Title              String
-  Bedrooms           Int
-  Bacloney           Boolean          @default(false)
-  BalconySize        Float?
-  Area               Float?
-  Price              Float
-  Type               String
-  Images             Images[]
-  Purpose            Purpose
-  Owner              GuestInformation @relation(fields: [guestInformationId], references: [id])
-  CreatedAt          DateTime         @default(now())
-  UpdatedAt          DateTime         @updatedAt
-  guestInformationId String
+  id                     String                   @id @default(uuid())
+  Title                  String
+  Bedrooms               Int
+  Bacloney               Boolean                  @default(false)
+  BalconySize            Float?
+  Area                   Float?
+  Price                  Float
+  Type                   String
+  Images                 Images[]
+  Purpose                Purpose
+  Owner                  GuestInformation         @relation(fields: [guestInformationId], references: [id])
+  CreatedAt              DateTime                 @default(now())
+  UpdatedAt              DateTime                 @updatedAt
+  guestInformationId     String
+  ListWithUs_Translation ListWithUs_Translation[]
 }
 
 model Feedback {
@@ -388,6 +389,7 @@ model Languages {
   id                        String                      @id @default(uuid())
   Name                      String                      @unique
   Code                      String?                     @unique
+  Direction                 direction                   @default(ltr)
   Articles_Translation      Articles_Translation[]
   CreatedAt                 DateTime                    @default(now())
   UpdatedAt                 DateTime                    @updatedAt
@@ -400,6 +402,12 @@ model Languages {
   Announcements_Translation Announcements_Translation[]
   Jobs_Translation          Jobs_Translation[]
   Aminities_Translation     Aminities_Translation[]
+  ListWithUs_Translation    ListWithUs_Translation[]
+}
+
+enum direction {
+  ltr
+  rtl
 }
 
 model Articles_Translation {
@@ -481,6 +489,18 @@ model Property_Translation {
   propertyID  String
   CreatedAt   DateTime  @default(now())
   UpdatedAt   DateTime  @updatedAt
+}
+
+model ListWithUs_Translation {
+  id           String     @id @default(uuid())
+  Name         String
+  Description  String
+  Language     Languages  @relation(fields: [languagesID], references: [id])
+  ListWithUs   ListWithUs @relation(fields: [listWithUsId], references: [id])
+  languagesID  String
+  CreatedAt    DateTime   @default(now())
+  UpdatedAt    DateTime   @updatedAt
+  listWithUsId String
 }
 
 model Announcements_Translation {

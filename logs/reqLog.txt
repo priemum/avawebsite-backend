@@ -107,3 +107,48 @@
 20231007	17:00:51	92ba18d0-91c6-43e6-895f-32e739bb026b	DELETE	200	 Message: OK 	/list-with-us/ab44a2a3-f31a-4d3b-831c-23371f640d75
 20231007	17:01:00	e0f14413-b289-43e0-8f1b-33b30d310d34	DELETE	404	 Message: Not Found 	/list-with-us/ab44a2a3-f31a-4d3b-831c-23371f640d75
 20231007	17:01:07	fba0ff75-c2b4-4841-a24b-85c8fba04e22	GET	404	 Message: Not Found 	/list-with-us/ab44a2a3-f31a-4d3b-831c-23371f640d75
+20231007	22:09:58	b88a62ac-9824-4a7d-bb26-94b516da86b4	GET	403	 Message: Forbidden 	/language
+20231007	22:10:08	416975ed-e53f-4ec1-ad17-64c6fd3d85dc	GET	200	 Message: OK 	/auth/refreshToken
+20231007	22:10:48	8dd6fc86-c5f7-40c2-bc24-b7d516121100	GET	200	 Message: OK 	/language
+20231007	22:48:08	c0df7a07-5178-4c5b-93cc-3550374573e1	GET	200	 Message: OK 	/auth/refreshToken
+20231007	22:48:16	fb79638b-48f4-4db9-9c1e-0e1550c48f2b	GET	200	 Message: OK 	/list-with-us
+20231007	22:54:43	71f5f981-55d4-4c1e-bf18-63b8309bb207	GET	200	 Message: OK 	/auth/refreshToken
+20231007	22:54:46	c412b2b8-472a-4057-bec1-1be28b1ab78e	POST	201	 Message: Created 	/list-with-us
+20231007	22:54:57	18a6ff37-d1ee-4e7f-92a5-74a3b5e7ed53	GET	200	 Message: OK 	/list-with-us
+20231007	22:56:36	04ba92bf-ade1-4bcd-80d1-fddf88de0540	PUT	400	 Message: Bad Request 	/list-with-us/34cd0114-2a28-4c79-b245-5beb3052cb9b
+20231007	22:58:43	457553c8-cd8e-4cac-bc29-406c7ddc99aa	PUT	200	 Message: OK 	/list-with-us/34cd0114-2a28-4c79-b245-5beb3052cb9b
+20231007	22:59:05	f9313f3b-3fc5-44a1-808a-465d3a4fe523	GET	200	 Message: OK 	/list-with-us/34cd0114-2a28-4c79-b245-5beb3052cb9b
+20231007	23:00:19	8f6a89eb-51ab-4ce9-bcee-e464aad0d2e8	PUT	403	 Message: Forbidden 	/list-with-us/34cd0114-2a28-4c79-b245-5beb3052cb9b
+20231007	23:00:23	7629c43c-7961-4100-aea1-86f0811d10e4	GET	200	 Message: OK 	/auth/refreshToken
+20231007	23:00:25	c25c9539-2234-44a0-b822-0b93d9b117e9	GET	200	 Message: OK 	/list-with-us/34cd0114-2a28-4c79-b245-5beb3052cb9b
+20231007	23:00:41	2a41e5c6-e05c-4913-b612-13a4bfda6882	PUT	200	 Message: OK 	/list-with-us/34cd0114-2a28-4c79-b245-5beb3052cb9b
+20231007	23:01:58	1b5b2921-63fe-4925-82ef-64bbf9db43d1	PUT	200	 Message: OK 	/list-with-us/34cd0114-2a28-4c79-b245-5beb3052cb9b
+20231007	23:03:50	b7843178-2a8b-421e-ae72-477889f5dcbe	PUT	200	 Message: OK 	/list-with-us/34cd0114-2a28-4c79-b245-5beb3052cb9b
+20231007	23:04:34	7191b86a-5eb6-4d77-85b5-e1974c65592a	GET	200	 Message: OK 	/list-with-us/ab7d0da6-8743-4ad4-b911-40d0ab6de31c
+20231007	23:05:16	c2c0dbb2-c95e-4260-aa59-3d3569163702	PUT	200	 Message: OK 	/list-with-us/ab7d0da6-8743-4ad4-b911-40d0ab6de31c
+20231007	23:05:56	80b15ea5-eb04-4429-88b6-e525588c4f80	PUT	403	 Message: Forbidden 	/list-with-us/34cd0114-2a28-4c79-b245-5beb3052cb9b
+20231007	23:06:01	57727d9a-9b62-4869-a756-c60dd4da1486	GET	200	 Message: OK 	/auth/refreshToken
+20231007	23:06:03	60e8c8b3-ccd1-4375-8de1-32edf59ad287	PUT	200	 Message: OK 	/list-with-us/34cd0114-2a28-4c79-b245-5beb3052cb9b
+20231007	23:06:35	bff85c71-1385-4aa0-9c15-ea92fcb4b177	PUT	200	 Message: OK 	/list-with-us/34cd0114-2a28-4c79-b245-5beb3052cb9b
+20231007	23:06:41	dd9a637c-b775-4b8b-b41c-9229f9607797	PUT	200	 Message: OK 	/list-with-us/34cd0114-2a28-4c79-b245-5beb3052cb9b
+20231007	23:10:05	a5ecac9d-a4db-4f93-93ab-caa85f8fd217	DELETE	500	 Message: Internal Server Error 	/list-with-us/34cd0114-2a28-4c79-b245-5beb3052cb9b
+20231007	23:10:47	177fa1ca-4986-40d7-b2b7-f23c3dca3a95	DELETE	404	 Message: Not Found 	/list-with-us/34cd0114-2a28-4c79-b245-5beb3052cb9b
+20231007	23:11:05	04576d68-0958-4437-a299-b5e764f956dc	GET	403	 Message: Forbidden 	/list-with-us/34cd0114-2a28-4c79-b245-5beb3052cb9b
+20231007	23:11:08	67882e46-6b94-4dc6-aca8-3b3cd9a20344	GET	200	 Message: OK 	/auth/refreshToken
+20231007	23:11:11	ee2e9d23-be69-498e-b158-adcdf7aba7fc	GET	404	 Message: Not Found 	/list-with-us/34cd0114-2a28-4c79-b245-5beb3052cb9b
+20231007	23:11:16	d07ded0e-2e9d-4933-a438-b5fdb072924a	GET	200	 Message: OK 	/list-with-us
+20231007	23:11:36	cd279868-14de-402f-9c70-f58c48e8303a	DELETE	500	 Message: Internal Server Error 	/list-with-us/ab7d0da6-8743-4ad4-b911-40d0ab6de31c
+20231007	23:12:34	7f4661b9-f126-41f1-a080-52088cb38f90	DELETE	500	 Message: Internal Server Error 	/list-with-us/ab7d0da6-8743-4ad4-b911-40d0ab6de31c
+20231007	23:12:58	7c19131b-da2a-4b37-b2c1-99bf7dd98276	DELETE	500	 Message: Internal Server Error 	/list-with-us/ab7d0da6-8743-4ad4-b911-40d0ab6de31c
+20231007	23:13:37	1e45e36b-949c-4e07-8b42-e77c478a2c08	DELETE	500	 Message: Internal Server Error 	/list-with-us/ab7d0da6-8743-4ad4-b911-40d0ab6de31c
+20231007	23:13:58	5c344726-7be1-4d27-b6c9-23f528c5c819	DELETE	500	 Message: Internal Server Error 	/list-with-us/ab7d0da6-8743-4ad4-b911-40d0ab6de31c
+20231007	23:15:45	64fbfe39-2e9c-4c79-8279-cc9f07b67070	DELETE	500	 Message: Internal Server Error 	/list-with-us/ab7d0da6-8743-4ad4-b911-40d0ab6de31c
+20231007	23:16:16	fc58cc51-3f3b-474c-bf49-2d374b7849e5	DELETE	403	 Message: Forbidden 	/list-with-us/ab7d0da6-8743-4ad4-b911-40d0ab6de31c
+20231007	23:16:21	2c1ca941-3979-4909-abd6-05bdf6588eda	GET	200	 Message: OK 	/auth/refreshToken
+20231007	23:16:23	e0673384-42a7-4cfe-9dd8-dbe08b011bdf	DELETE	200	 Message: OK 	/list-with-us/ab7d0da6-8743-4ad4-b911-40d0ab6de31c
+20231007	23:16:37	89bb259a-d1a4-431b-8068-9e8153d38b4c	GET	404	 Message: Not Found 	/list-with-us/ab7d0da6-8743-4ad4-b911-40d0ab6de31c
+20231007	23:16:40	4082f526-0666-4dd4-8bc9-3eb4a3aab9c2	GET	200	 Message: OK 	/list-with-us
+20231007	23:16:50	8529fd8f-3f6f-4e3c-92c2-0e30c7edf468	DELETE	200	 Message: OK 	/list-with-us/b1860c91-db39-4ec8-b9a7-e0f3aa10a542
+20231007	23:16:58	ec8b8760-fda7-489c-827a-18e5dd9f2c3a	GET	200	 Message: OK 	/list-with-us
+20231007	23:17:03	692a0f46-9029-448d-adef-09ff48337bf0	POST	201	 Message: Created 	/list-with-us
+20231007	23:17:09	eba96654-c962-4671-b3fe-4becf86ac8a9	GET	200	 Message: OK 	/list-with-us

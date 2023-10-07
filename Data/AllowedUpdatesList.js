@@ -156,6 +156,7 @@ const allowedUpdatesList = [
 			"IPAddress",
 			"PhoneNo",
 			"Gender",
+			"ListWithUs_Translation",
 		],
 	},
 	{

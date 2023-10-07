@@ -7,7 +7,7 @@ require("dotenv").config;
 
 const CreateLanguage = async (req, res) => {
 	try {
-		const { Name, Code } = req.body;
+		const { Name, Code, Direction } = req.body;
 		if (!Name) {
 			return res.status(400).send("Language Name is Missing!!");
 		}
@@ -16,6 +16,7 @@ const CreateLanguage = async (req, res) => {
 			data: {
 				Name,
 				Code,
+				Direction,
 			},
 		});
 

@@ -308,7 +308,6 @@ const DeleteArticle = async (req, res) => {
 		});
 		const imageURL = Article.Image?.URL;
 		const imageID = Article.Image?.id;
-		const UserID = Article.Users?.id;
 		let isImageDeleted = false;
 		if (imageID !== undefined) {
 			if (fs.existsSync(`.${imageURL}`)) {
