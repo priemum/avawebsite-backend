@@ -122,6 +122,8 @@ model Images {
   announcementsID String?        @unique
   Developer       Developer[]
   Aminities       Aminities[]
+  ListWithUs      ListWithUs?    @relation(fields: [listWithUsId], references: [id])
+  listWithUsId    String?
 }
 
 model Address {
@@ -275,6 +277,7 @@ model ListWithUs {
   Area               Float?
   Price              Float
   Type               String
+  Images             Images[]
   Purpose            Purpose
   Owner              GuestInformation @relation(fields: [guestInformationId], references: [id])
   CreatedAt          DateTime         @default(now())

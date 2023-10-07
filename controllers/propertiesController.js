@@ -46,6 +46,14 @@ const CreateProperty = async (req, res) => {
 				data.Bacloney = true;
 			}
 		}
+		let amenities = [];
+		if (data.Aminities) {
+			data.Aminities.forEach((item) =>
+				amenities.push({
+					id: item,
+				}),
+			);
+		}
 		const Property = await prisma.property.create({
 			data: {
 				Price: data.Price,
@@ -61,11 +69,16 @@ const CreateProperty = async (req, res) => {
 				Longitude: data.Longitude,
 				Latitude: data.Latitude,
 				ActiveStatus: data?.ActiveStatus,
+				RentFrequency: data.RentFrequency,
+				CompletionStatus: data.CompletionStatus,
 				Purpose: data.Purpose,
 				PermitNumber: data.PermitNumber,
 				DEDNo: data.DEDNo,
 				ReraNo: data.ReraNo,
 				BRNNo: data.BRNNo,
+				Aminities: data?.Aminities && {
+					connect: amenities,
+				},
 				Property_Translation: {
 					createMany: {
 						data: data.Property_Translation,
@@ -94,7 +107,16 @@ const CreateProperty = async (req, res) => {
 			},
 			include: {
 				Images: true,
-				Aminities: true,
+				Aminities: {
+					include: {
+						Image: true,
+						Aminities_Translation: {
+							include: {
+								Language: true,
+							},
+						},
+					},
+				},
 				Category: {
 					include: {
 						Category_Translation: {
@@ -155,7 +177,16 @@ const GetAllProperties = async (req, res) => {
 			prisma.property.findMany({
 				include: {
 					Images: true,
-					Aminities: true,
+					Aminities: {
+						include: {
+							Image: true,
+							Aminities_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+						},
+					},
 					Category: {
 						include: {
 							Category_Translation: {
@@ -211,7 +242,16 @@ const GetAllActiveProperties = async (req, res) => {
 				where: { ActiveStatus: true },
 				include: {
 					Images: true,
-					Aminities: true,
+					Aminities: {
+						include: {
+							Image: true,
+							Aminities_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+						},
+					},
 					Category: {
 						include: {
 							Category_Translation: {
@@ -267,7 +307,16 @@ const GetPropertyByID = async (req, res) => {
 			where: { id: id },
 			include: {
 				Images: true,
-				Aminities: true,
+				Aminities: {
+					include: {
+						Image: true,
+						Aminities_Translation: {
+							include: {
+								Language: true,
+							},
+						},
+					},
+				},
 				Category: {
 					include: {
 						Category_Translation: {
@@ -320,7 +369,16 @@ const GetPropertiesByCategoryID = async (req, res) => {
 				where: { categoryId: id },
 				include: {
 					Images: true,
-					Aminities: true,
+					Aminities: {
+						include: {
+							Image: true,
+							Aminities_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+						},
+					},
 					Category: {
 						include: {
 							Category_Translation: {
@@ -379,7 +437,16 @@ const GetActivePropertiesByCategoryID = async (req, res) => {
 				where: { AND: [{ ActiveStatus: true }, { categoryId: id }] },
 				include: {
 					Images: true,
-					Aminities: true,
+					Aminities: {
+						include: {
+							Image: true,
+							Aminities_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+						},
+					},
 					Category: {
 						include: {
 							Category_Translation: {
@@ -440,7 +507,16 @@ const GetPropertiesByDeveloperID = async (req, res) => {
 				where: { developerId: id },
 				include: {
 					Images: true,
-					Aminities: true,
+					Aminities: {
+						include: {
+							Image: true,
+							Aminities_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+						},
+					},
 					Category: {
 						include: {
 							Category_Translation: {
@@ -500,7 +576,16 @@ const GetActivePropertiesByDeveloperID = async (req, res) => {
 				where: { AND: [{ developerId: id }, { ActiveStatus: true }] },
 				include: {
 					Images: true,
-					Aminities: true,
+					Aminities: {
+						include: {
+							Image: true,
+							Aminities_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+						},
+					},
 					Category: {
 						include: {
 							Category_Translation: {
@@ -562,7 +647,16 @@ const GetPropertiesByAddressID = async (req, res) => {
 				where: { addressId: id },
 				include: {
 					Images: true,
-					Aminities: true,
+					Aminities: {
+						include: {
+							Image: true,
+							Aminities_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+						},
+					},
 					Category: {
 						include: {
 							Category_Translation: {
@@ -622,7 +716,16 @@ const GetActivePropertiesByAddressID = async (req, res) => {
 				where: { AND: [{ addressId: id }, { ActiveStatus: true }] },
 				include: {
 					Images: true,
-					Aminities: true,
+					Aminities: {
+						include: {
+							Image: true,
+							Aminities_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+						},
+					},
 					Category: {
 						include: {
 							Category_Translation: {
@@ -733,6 +836,15 @@ const UpdateProperty = async (req, res) => {
 				data.Bacloney = true;
 			}
 		}
+		let amenities = [];
+		if (data.Aminities) {
+			console.log("object");
+			data.Aminities.forEach((item) =>
+				amenities.push({
+					id: item,
+				}),
+			);
+		}
 		const result = await prisma.$transaction(async (prisma) => {
 			if (data.Property_Translation !== undefined) {
 				data.Property_Translation.map(async (item) => {
@@ -766,6 +878,8 @@ const UpdateProperty = async (req, res) => {
 					Latitude: data.Latitude || undefined,
 					ActiveStatus: data?.ActiveStatus || undefined,
 					Purpose: data.Purpose || undefined,
+					RentFrequency: data.RentFrequency || undefined,
+					CompletionStatus: data.CompletionStatus || undefined,
 					PermitNumber: data.PermitNumber || undefined,
 					DEDNo: data.DEDNo || undefined,
 					ReraNo: data.ReraNo || undefined,
@@ -774,6 +888,9 @@ const UpdateProperty = async (req, res) => {
 						createMany: {
 							data: data.Property_Translation,
 						},
+					},
+					Aminities: data?.Aminities && {
+						connect: amenities,
 					},
 					Developer: data?.DeveloperID && {
 						connect: {
@@ -929,65 +1046,83 @@ const DeleteImageByID = async (req, res) => {
 const DeleteProperty = async (req, res) => {
 	try {
 		const id = req.params.id;
-		const Address = await prisma.address.findFirst({
+		const Property = await prisma.property.findFirst({
 			where: { id: id },
 			include: {
-				Image: true,
-				Address_Translation: {
+				Images: true,
+				Aminities: {
 					include: {
-						Language: true,
+						Image: true,
+						Aminities_Translation: {
+							include: {
+								Language: true,
+							},
+						},
 					},
 				},
-				Addresses: {
+				Category: {
+					include: {
+						Category_Translation: {
+							include: {
+								Language: true,
+							},
+						},
+						Parent: true,
+					},
+				},
+				Developer: {
+					include: {
+						Developer_Translation: {
+							include: {
+								Language: true,
+							},
+						},
+					},
+				},
+				Address: {
 					include: {
 						Address_Translation: {
 							include: { Language: true },
 						},
 					},
 				},
+				Property_Translation: {
+					include: {
+						Language: true,
+					},
+				},
 			},
 		});
-		const imageURL = Address.Image?.URL;
-		const imageID = Address.Image?.id;
-		// const UserID = Address.Users?.id;
-		let isImageDeleted = false;
-		if (imageID !== undefined) {
-			if (fs.existsSync(`.${imageURL}`)) {
-				fs.unlinkSync(`.${imageURL}`);
-				isImageDeleted = true;
-			} else {
-				isImageDeleted = true;
-			}
-		} else {
-			if (Address.Address_Translation.length > 0) {
-				await prisma.address_Translation.deleteMany({
-					where: { addressID: id },
-				});
-			}
-			await prisma.address.delete({ where: { id: Address.id } });
+		if (!Property) {
+			return res.status(404).send("Property Does not Exist!");
 		}
-		if (isImageDeleted) {
-			if (Address.Address_Translation.length > 0) {
-				await prisma.address_Translation.deleteMany({
-					where: { addressID: id },
-				});
-			}
-			if (Address.Addresses > 0) {
-				await prisma.address.deleteMany({
-					where: {
-						addressID: id,
-					},
-				});
-			}
-
-			await prisma.address.delete({ where: { id: Address.id } });
-			console.log("Deleting ...");
-			await prisma.images.delete({ where: { id: imageID } });
+		if (Property.Images.length > 0) {
+			Property.Images.map(async (image) => {
+				if (fs.existsSync(image.URL)) {
+					fs.unlinkSync(image.URL);
+					await prisma.images.delete({
+						where: {
+							id: image.id,
+						},
+					});
+				}
+			});
 		}
-		// console.log("Role: ", Role);
+		if (Property.Property_Translation.length > 0) {
+			await prisma.property_Translation.deleteMany({
+				where: {
+					propertyID: id,
+				},
+			});
+		}
+		await prisma.property.delete({
+			where: {
+				id: id,
+			},
+		});
 		res.status(200).json({
-			"Image Deleted: ": imageURL,
-			Address,
+			"Image Deleted: ": Property.Images,
+			Property,
 		});
 	} catch (error) {
 		if (error instanceof Prisma.PrismaClientKnownRequestError) {

@@ -5,3 +5,105 @@
 20231006	18:27:21	d5ae6ab0-e75b-4924-a028-1980b2b08143	GET	403	 Message: Forbidden 	/meta-data
 20231006	18:27:25	41ebbcac-eecb-42aa-bad8-693c4c35e0ef	GET	200	 Message: OK 	/auth/refreshToken
 20231006	18:27:29	705ae772-df33-4d61-9905-827aac0e4929	GET	500	 Message: Internal Server Error 	/meta-data
+20231007	11:38:21	04037282-2d9b-4769-9f36-63eb7db0c66a	POST	201	 Message: Created 	/auth/login
+20231007	11:39:09	4d60b5ea-9525-4785-a008-4f9e8a6a9699	POST	201	 Message: Created 	/announcement
+20231007	14:08:21	8c610e6e-3754-4c12-ae91-f5dbefbc6b3d	GET	200	 Message: OK 	/auth/refreshToken
+20231007	15:04:40	57798308-0ae6-4536-815c-f4c9800f20ec	GET	200	 Message: OK 	/auth/refreshToken
+20231007	15:16:45	ff7b345f-fa4c-4951-967d-2f6b2dc290cd	GET	200	 Message: OK 	/auth/refreshToken
+20231007	15:17:00	5e64b9f9-2867-4658-ac06-d081a8ffcfb6	GET	500	 Message: Internal Server Error 	/meta-data
+20231007	15:17:48	bad2dd17-f26c-4c55-882a-a9f7db25149b	GET	200	 Message: OK 	/meta-data
+20231007	15:19:54	dc850c64-de6e-4dcc-a75f-777dc82db6bf	POST	201	 Message: Created 	/property
+20231007	15:21:47	2a98ca08-bb63-4440-9bee-40be446668fd	POST	403	 Message: Forbidden 	/property
+20231007	15:21:51	d7afe9f8-8148-4b21-97a0-4489aeffdd64	GET	200	 Message: OK 	/auth/refreshToken
+20231007	15:21:54	249235f4-d16e-4ac1-aa1c-df0c07c891d6	POST	201	 Message: Created 	/property
+20231007	15:23:20	c079afcf-1372-4edf-9aa1-57062ee92bde	GET	200	 Message: OK 	/aminities
+20231007	15:24:19	1e9d0658-956e-4d4b-bd5e-3706c0342ed3	POST	500	 Message: Internal Server Error 	/property
+20231007	15:24:53	fc772698-67dc-4a0b-ae16-bffba25f53fd	POST	500	 Message: Internal Server Error 	/property
+20231007	15:26:09	764d3152-c8e6-493d-8aae-371073629989	POST	500	 Message: Internal Server Error 	/property
+20231007	15:27:32	e1eac314-1063-4ab4-aac2-a6eb68a71f83	POST	403	 Message: Forbidden 	/property
+20231007	15:27:39	ff4cbd5c-da58-4e9f-860a-6c0738fd5f52	GET	200	 Message: OK 	/auth/refreshToken
+20231007	15:27:41	9ddb5c29-a912-446a-9fbb-0f61884aa303	POST	500	 Message: Internal Server Error 	/property
+20231007	15:28:46	dcb9f32d-ffa4-44c7-9d02-b3f3c5401d86	POST	500	 Message: Internal Server Error 	/property
+20231007	15:29:12	01c557a6-ae0c-42ee-b808-fa4fff2a1ae1	POST	500	 Message: Internal Server Error 	/property
+20231007	15:30:45	26d8536d-1b34-4536-a755-4e154462cce3	POST	500	 Message: Internal Server Error 	/property
+20231007	15:31:41	ae05f4a2-9ae8-4af6-b3b2-794b14a19d3e	POST	500	 Message: Internal Server Error 	/property
+20231007	15:34:33	724711ec-fd93-49e0-8063-a097cc860611	POST	403	 Message: Forbidden 	/property
+20231007	15:34:37	c24b7beb-f733-44ed-a2c8-d267cccc81b4	GET	200	 Message: OK 	/auth/refreshToken
+20231007	15:34:39	c5172318-d6b2-451f-995a-04889cc411a3	GET	200	 Message: OK 	/aminities
+20231007	15:34:46	8f950c32-7df1-4906-b0f8-15a092a1138c	POST	500	 Message: Internal Server Error 	/property
+20231007	15:35:07	02b4da8f-b708-4ebf-9b68-a6686dbb14c5	POST	500	 Message: Internal Server Error 	/property
+20231007	15:35:32	41658286-09b7-4630-9402-e31f7b4f579e	POST	500	 Message: Internal Server Error 	/property
+20231007	15:35:51	0fb163eb-4ab3-4d25-9111-f606cc7fd736	POST	500	 Message: Internal Server Error 	/property
+20231007	15:37:44	6edd692f-e19c-4b9f-99dc-e0e22cef6eb5	POST	201	 Message: Created 	/property
+20231007	15:42:01	ed4d3f61-c61a-4941-ad10-cc87a9f452e9	GET	403	 Message: Forbidden 	/property
+20231007	15:42:05	b2fb4193-43da-4b32-b5f5-e4e4239e1edd	GET	200	 Message: OK 	/auth/refreshToken
+20231007	15:42:08	5039272a-2215-44a8-b4e4-19d573befa79	GET	200	 Message: OK 	/property
+20231007	15:44:48	1d0fd5dc-0a67-455b-b43d-bd4cbbeef429	PUT	400	 Message: Bad Request 	/property/de793dd8-b3a4-4560-8040-f89b6f6cebfc
+20231007	15:45:17	d74f9abf-2c1e-4cbf-b88e-be4e5afe03c7	PUT	200	 Message: OK 	/property/de793dd8-b3a4-4560-8040-f89b6f6cebfc
+20231007	15:45:31	2bafb436-30a7-4c77-9501-c20eef96c5f8	GET	200	 Message: OK 	/property-active
+20231007	15:45:48	0f18d0a5-b97e-4ecf-b12a-44ef0f1baa3e	GET	200	 Message: OK 	/property/c07cabff-0720-4655-b177-69b8727bc46b
+20231007	15:45:59	e71df0d1-7e5d-4e2e-9cc9-8abb8b6ea731	GET	200	 Message: OK 	/property/category/8f6cd1af-d163-4ca5-b711-6dedf9cbb33e
+20231007	15:46:06	f127c879-2252-4a38-bb3d-40f15bd7c530	GET	200	 Message: OK 	/property-active/category/8f6cd1af-d163-4ca5-b711-6dedf9cbb33e
+20231007	15:46:10	0819c1d8-1b36-431f-b290-38c3c83464d0	GET	200	 Message: OK 	/property/address/e3d2e85f-f644-4755-8c25-b316c4d6bc35
+20231007	15:46:17	4fb76cba-3671-464b-be85-a7beae771b10	GET	200	 Message: OK 	/property-active/address/e3d2e85f-f644-4755-8c25-b316c4d6bc35
+20231007	15:46:23	24770034-1299-4192-8cde-180d8603b769	GET	200	 Message: OK 	/property/developer/cb71e905-a695-4381-a801-74689086d52f
+20231007	15:46:27	cb0afa42-a6fa-4ab3-9f01-b707383327b5	GET	200	 Message: OK 	/property-active/developer/cb71e905-a695-4381-a801-74689086d52f
+20231007	15:55:11	6110bcae-b78b-4ec3-b519-1aad7c3a30b9	GET	200	 Message: OK 	/auth/refreshToken
+20231007	15:55:38	dafb6091-e0a8-4105-b935-d27d3e067fe5	GET	200	 Message: OK 	/property
+20231007	15:55:52	2286d2ca-2a10-49e3-b0e4-9204c1c33dc2	DELETE	200	 Message: OK 	/property/de793dd8-b3a4-4560-8040-f89b6f6cebfc
+20231007	15:56:58	01561aa5-d778-49d0-8d67-3bf2f8803334	PUT	200	 Message: OK 	/property/de793dd8-b3a4-4560-8040-f89b6f6cebfc
+20231007	15:57:10	be27070b-51ca-4b62-bd6d-f01b3c8a3f36	DELETE	200	 Message: OK 	/property/de793dd8-b3a4-4560-8040-f89b6f6cebfc
+20231007	15:59:01	2f3d7147-30e0-413f-b2f9-63c78674caad	DELETE	200	 Message: OK 	/property/de793dd8-b3a4-4560-8040-f89b6f6cebfc
+20231007	16:00:14	63612df8-0bbe-4674-821a-5db52971e34e	DELETE	403	 Message: Forbidden 	/property/de793dd8-b3a4-4560-8040-f89b6f6cebfc
+20231007	16:00:19	a2918eea-b1c6-410e-a68c-feb26e3a337b	GET	200	 Message: OK 	/auth/refreshToken
+20231007	16:00:23	7546b41d-aad8-49d5-934d-d4553f518952	PUT	200	 Message: OK 	/property/de793dd8-b3a4-4560-8040-f89b6f6cebfc
+20231007	16:01:03	7dd5e545-17e0-4919-b847-a1d2f8b2b8e5	PUT	200	 Message: OK 	/property/de793dd8-b3a4-4560-8040-f89b6f6cebfc
+20231007	16:02:03	12430749-d982-43bb-acbc-0b7af8884927	PUT	200	 Message: OK 	/property/de793dd8-b3a4-4560-8040-f89b6f6cebfc
+20231007	16:03:49	fdad79b1-02cc-4cd0-bfeb-eafda1a52b3d	PUT	200	 Message: OK 	/property/de793dd8-b3a4-4560-8040-f89b6f6cebfc
+20231007	16:04:29	c3c59ddd-490e-4fd6-b00f-d3a38f7790c2	PUT	200	 Message: OK 	/property/de793dd8-b3a4-4560-8040-f89b6f6cebfc
+20231007	16:05:07	df1bd6a7-f8e9-4755-888e-f9a4e6471d7f	DELETE	500	 Message: Internal Server Error 	/property/de793dd8-b3a4-4560-8040-f89b6f6cebfc
+20231007	16:05:40	9f390c34-7a33-46b4-b665-36c675d34849	DELETE	403	 Message: Forbidden 	/property/de793dd8-b3a4-4560-8040-f89b6f6cebfc
+20231007	16:05:44	32658971-62cc-429a-af28-b17aacfcbc43	GET	200	 Message: OK 	/auth/refreshToken
+20231007	16:05:47	d8390f04-66b6-4579-afe5-b5e5b6d518b2	DELETE	500	 Message: Internal Server Error 	/property/de793dd8-b3a4-4560-8040-f89b6f6cebfc
+20231007	16:06:09	54a1735f-341e-4467-ae4d-e47b5e87f1b6	DELETE	200	 Message: OK 	/property/de793dd8-b3a4-4560-8040-f89b6f6cebfc
+20231007	16:13:44	3e0981be-ac1c-47db-9d4b-0b5d06f133c3	DELETE	403	 Message: Forbidden 	/property/de793dd8-b3a4-4560-8040-f89b6f6cebfc
+20231007	16:13:51	8c89c45e-8962-44b7-8795-ab81cbf460ad	GET	200	 Message: OK 	/auth/refreshToken
+20231007	16:13:59	5bf63c30-fbbc-449f-93bf-e04e848ab3a6	DELETE	500	 Message: Internal Server Error 	/property/de793dd8-b3a4-4560-8040-f89b6f6cebfc
+20231007	16:15:45	3b1a3497-bb05-4106-ba0e-172224643b0f	DELETE	200	 Message: OK 	/property/de793dd8-b3a4-4560-8040-f89b6f6cebfc
+20231007	16:16:01	0197536c-d54e-4bf1-a2cb-0b485926a0e1	GET	200	 Message: OK 	/property/de793dd8-b3a4-4560-8040-f89b6f6cebfc
+20231007	16:16:48	74019507-e198-4ab8-91f4-721faa0f5f0d	GET	200	 Message: OK 	/property/de793dd8-b3a4-4560-8040-f89b6f6cebfc
+20231007	16:16:51	de7466b1-fb46-4fb1-87c6-089e0ca60a77	DELETE	200	 Message: OK 	/property/de793dd8-b3a4-4560-8040-f89b6f6cebfc
+20231007	16:17:00	68d04540-bec8-45b5-9fa6-b96421b5255e	GET	404	 Message: Not Found 	/property/de793dd8-b3a4-4560-8040-f89b6f6cebfc
+20231007	16:17:10	0d6a5d0a-44cd-4a83-b918-52371e44b14b	GET	200	 Message: OK 	/property
+20231007	16:17:22	508d855d-5f35-4472-bfcc-731bc79cdc0f	PUT	200	 Message: OK 	/property/201e1bbc-4eb5-4dd8-93a6-59e3ae8627e4
+20231007	16:17:41	648c3055-5e43-4d2c-8605-8a85dfb16ed7	DELETE	200	 Message: OK 	/property/201e1bbc-4eb5-4dd8-93a6-59e3ae8627e4
+20231007	16:17:55	b8ccef9e-9524-4dae-a7b9-539649f46bdf	GET	404	 Message: Not Found 	/property/201e1bbc-4eb5-4dd8-93a6-59e3ae8627e4
+20231007	16:26:24	f2519b1b-d4cb-4fe3-b85a-389c5dd59e66	DELETE	403	 Message: Forbidden 	/property/201e1bbc-4eb5-4dd8-93a6-59e3ae8627e4
+20231007	16:26:30	8c48562f-8c1a-478c-a3ab-c92ab1d0af29	GET	200	 Message: OK 	/auth/refreshToken
+20231007	16:26:33	0970afe1-0329-4b41-9e4e-f3ea63f22e9f	DELETE	404	 Message: Not Found 	/property/201e1bbc-4eb5-4dd8-93a6-59e3ae8627e4
+20231007	16:38:04	51701855-d081-4ca9-a90f-6ff1932f1200	POST	500	 Message: Internal Server Error 	/list-with-us
+20231007	16:38:55	5d0404ba-cc7e-44cf-af7e-ed25ccfb00e3	POST	500	 Message: Internal Server Error 	/list-with-us
+20231007	16:42:33	38760c6c-1340-43fd-b622-ec62315610cb	POST	500	 Message: Internal Server Error 	/list-with-us
+20231007	16:45:39	4fa052e5-f80f-4dae-b882-26017410a2e6	GET	200	 Message: OK 	/auth/refreshToken
+20231007	16:45:49	25f58804-e96b-4bd5-82b8-86de7336ae56	POST	201	 Message: Created 	/list-with-us
+20231007	16:46:04	4781532f-9913-483c-a391-da3d734ad85d	GET	200	 Message: OK 	/list-with-us
+20231007	16:46:14	f19298be-ddd3-459a-911a-a84810208465	GET	404	 Message: Not Found 	/list-with-us/f0520ada-82fa-4da7-a59c-04fa1248d7ab
+20231007	16:46:35	179b63f0-6ff4-47de-9990-7e1a778b33c7	GET	200	 Message: OK 	/list-with-us/ab44a2a3-f31a-4d3b-831c-23371f640d75
+20231007	16:46:47	b486d553-775a-4c0b-856d-ced5b406005c	GET	200	 Message: OK 	/list-with-us/email/Guest2@mail.com
+20231007	16:52:28	62179fe2-52ce-4545-8e95-b213329cdd8e	PUT	403	 Message: Forbidden 	/list-with-us/ab44a2a3-f31a-4d3b-831c-23371f640d75
+20231007	16:52:34	f804403b-eeac-4c8c-a720-27400a4a7cdc	GET	200	 Message: OK 	/auth/refreshToken
+20231007	16:52:57	f1c2729f-8705-4b72-910b-9a7f0398f6cb	PUT	500	 Message: Internal Server Error 	/list-with-us/ab44a2a3-f31a-4d3b-831c-23371f640d75
+20231007	16:55:03	b3eefc43-280e-4499-9fea-b904ed85dc9c	PUT	500	 Message: Internal Server Error 	/list-with-us/ab44a2a3-f31a-4d3b-831c-23371f640d75
+20231007	16:55:38	0c9d83a7-ff99-4067-a19f-e8228ab55f54	PUT	500	 Message: Internal Server Error 	/list-with-us/ab44a2a3-f31a-4d3b-831c-23371f640d75
+20231007	16:56:35	5fda49bb-eca4-4b29-9090-ce2e38a4400f	PUT	500	 Message: Internal Server Error 	/list-with-us/ab44a2a3-f31a-4d3b-831c-23371f640d75
+20231007	16:57:05	1471155f-4d33-459e-9eb1-94c29c14228d	PUT	200	 Message: OK 	/list-with-us/ab44a2a3-f31a-4d3b-831c-23371f640d75
+20231007	16:57:21	49987e6e-ce0f-42d2-837d-412e2a015f57	PUT	200	 Message: OK 	/list-with-us/ab44a2a3-f31a-4d3b-831c-23371f640d75
+20231007	16:57:31	b345ddd0-ea6f-4ad5-ba44-dc618f72af93	GET	200	 Message: OK 	/list-with-us/ab44a2a3-f31a-4d3b-831c-23371f640d75
+20231007	16:58:06	cc5eeda5-9f27-438e-8793-f82d2aa3ba3d	DELETE	403	 Message: Forbidden 	/list-with-us/ab44a2a3-f31a-4d3b-831c-23371f640d75
+20231007	16:58:12	f556ecfa-4cb2-48fa-bae2-f41be7dc0dde	GET	200	 Message: OK 	/auth/refreshToken
+20231007	16:58:17	b57c613a-f4a2-489b-bfc1-582cdbecd125	DELETE	500	 Message: Internal Server Error 	/list-with-us/ab44a2a3-f31a-4d3b-831c-23371f640d75
+20231007	16:59:08	ba6f5346-0b1c-4379-9174-17477e1115f9	DELETE	500	 Message: Internal Server Error 	/list-with-us/ab44a2a3-f31a-4d3b-831c-23371f640d75
+20231007	16:59:46	205f4f3f-44a3-48fd-b654-043c6fbf2b54	DELETE	500	 Message: Internal Server Error 	/list-with-us/ab44a2a3-f31a-4d3b-831c-23371f640d75
+20231007	17:00:51	92ba18d0-91c6-43e6-895f-32e739bb026b	DELETE	200	 Message: OK 	/list-with-us/ab44a2a3-f31a-4d3b-831c-23371f640d75
+20231007	17:01:00	e0f14413-b289-43e0-8f1b-33b30d310d34	DELETE	404	 Message: Not Found 	/list-with-us/ab44a2a3-f31a-4d3b-831c-23371f640d75
+20231007	17:01:07	fba0ff75-c2b4-4841-a24b-85c8fba04e22	GET	404	 Message: Not Found 	/list-with-us/ab44a2a3-f31a-4d3b-831c-23371f640d75

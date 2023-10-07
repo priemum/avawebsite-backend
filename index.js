@@ -1,6 +1,8 @@
 const express = require("express");
 const dotenv = require("dotenv").config();
 const cookieParser = require("cookie-parser");
+const prisma = require("./prismaClient");
+const schedule = require("node-schedule");
 const path = require("path");
 const cors = require("cors");
 const userRouter = require("./routes/api/UserRoute");
@@ -30,6 +32,7 @@ const jobRouter = require("./routes/api/JobRoute");
 const applicantRouter = require("./routes/api/ApplicationRoute");
 const { errorHandler } = require("./middlewares/ErrorHandler");
 const { logger } = require("./middlewares/logEvents");
+const { testJob } = require("./middlewares/CronJobs");
 
 const port = process.env.PORT || 3500;
 const app = express();
@@ -45,6 +48,7 @@ app.use(express.urlencoded({ extended: false }));
 //serve static files
 // console.log(path.join(__dirname, "/public"));
 app.use("/public", express.static(path.join(__dirname, "/public")));
+// app.use(testJob);
 
 app.use("/", AuthRouter);
 app.use("/", userRouter);

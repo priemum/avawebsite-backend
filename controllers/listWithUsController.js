@@ -10,12 +10,25 @@ require("dotenv").config;
 const CreateListing = async (req, res) => {
 	try {
 		const data = req.body;
+		const images = req.files;
+		data.Images = [];
 		if (data.Bacloney) {
 			if (req.body.Bacloney.toLowerCase() === "false") {
 				data.Bacloney = false;
 			} else {
 				data.Bacloney = true;
 			}
+		}
+		if (images) {
+			images.map((image) => {
+				data.Images.push({
+					URL: image.path,
+					Alt: image?.originalname,
+					Size: image.size,
+					Type: image.mimetype,
+					user: undefined,
+				});
+			});
 		}
 		const Listing = await prisma.listWithUs.create({
 			data: {
@@ -39,9 +52,15 @@ const CreateListing = async (req, res) => {
 						},
 					},
 				},
+				Images: {
+					createMany: {
+						data: data.Images,
+					},
+				},
 			},
 			include: {
 				Owner: true,
+				Images: true,
 			},
 		});
 		if (!Listing) {
@@ -74,6 +93,7 @@ const GetAllListings = async (req, res) => {
 			prisma.listWithUs.findMany({
 				include: {
 					Owner: true,
+					Images: true,
 				},
 			}),
 			prisma.listWithUs.count(),
@@ -99,6 +119,7 @@ const GetListingByID = async (req, res) => {
 			where: { id: id },
 			include: {
 				Owner: true,
+				Images: true,
 			},
 		});
 		if (!Listing) {
@@ -124,6 +145,7 @@ const GetListingByGuestEmail = async (req, res) => {
 			},
 			include: {
 				Owner: true,
+				Images: true,
 			},
 		});
 		if (!Listing) {
@@ -135,35 +157,92 @@ const GetListingByGuestEmail = async (req, res) => {
 	}
 };
 
-const TransferToProperty = async (req, res) => {
+const UpdateListing = async (req, res) => {
 	try {
 		const id = req.params.id;
-		const ListingData = await prisma.listWithUs.findUnique({
+		const updates = Object.keys(req.body);
+		const images = req.files;
+		const Selected = { id: true };
+		updates.forEach((item) => {
+			if (
+				item !== "FullName" &&
+				item !== "Email" &&
+				item !== "IPAddress" &&
+				item !== "PhoneNo" &&
+				item !== "Gender"
+			)
+				Selected[item] = true;
+		});
+		const data = await prisma.listWithUs.findUnique({
 			where: {
 				id: id,
 			},
+			select: Selected,
 		});
-		const Property = await prisma.property.create({
-			data: {
-				Price: ListingData.Price,
-				Bedrooms: ListingData.Bedrooms,
-				Bacloney: ListingData.Bacloney,
-				BalconySize: ListingData.BalconySize,
-				Area: ListingData.Area,
-				RentMin: ListingData.RentMin,
-				RentMax: ListingData.RentMax,
-				Handover: ListingData.Handover,
-				FurnishingStatus: ListingData.FurnishingStatus,
-				VacantStatus: ListingData.VacantStatus,
-				Longitude: ListingData.Longitude,
-				Latitude: ListingData.Latitude,
-				ActiveStatus: false,
-				Purpose: ListingData.Purpose,
-				PermitNumber: ListingData.PermitNumber,
-				DEDNo: ListingData.DEDNo,
-				ReraNo: ListingData.ReraNo,
-				BRNNo: ListingData.BRNNo,
+		if (!data) {
+			return res.status(404).send("Property was not Found!");
+		}
+		if (images) {
+			data.Images = [];
+		}
+		if (images) {
+			images.map(async (image) => {
+				data.Images.push({
+					URL: image.path,
+					Alt: image?.originalname,
+					Size: image.size,
+					Type: image.mimetype,
+					user: undefined,
+				});
+			});
+		}
+		updates.forEach((update) => (data[update] = req.body[update]));
+		if (data.Bacloney) {
+			if (req.body.Bacloney.toLowerCase() === "false") {
+				data.Bacloney = false;
+			} else {
+				data.Bacloney = true;
+			}
+		}
+		const result = await prisma.listWithUs.update({
+			where: {
+				id: id,
 			},
+			data: {
+				Title: data.Title,
+				Bedrooms: parseInt(data.Bedrooms),
+				Bacloney: data.Bacloney,
+				Price: parseFloat(data.Price),
+				Type: data.Type,
+				Purpose: data.Purpose,
+				Owner: {
+					connectOrCreate: {
+						where: {
+							Email: data.Email,
+						},
+						create: {
+							Email: data.Email,
+							FullName: data.FullName,
+							Gender: data.Gender,
+							IPAddress: data.IPAddress,
+							PhoneNo: data.PhoneNo,
+						},
+					},
+				},
+				Images: {
+					createMany: {
+						data: data.Images,
+					},
+				},
+			},
+			include: {
+				Owner: true,
+				Images: true,
+			},
+		});
+		return res.status(200).json({
+			Message: "Updated successfully",
+			result,
 		});
 	} catch (error) {
 		if (error instanceof Prisma.PrismaClientKnownRequestError) {
@@ -188,13 +267,39 @@ const TransferToProperty = async (req, res) => {
 const DeleteListing = async (req, res) => {
 	try {
 		const id = req.params.id;
-		const Listing = await prisma.listWithUs.delete({
-			where: { id: id },
+		const Listing = await prisma.listWithUs.findUnique({
+			where: {
+				id: id,
+			},
+			include: {
+				Owner: true,
+				Images: true,
+			},
 		});
 		if (!Listing) {
 			return res.status(404).send("Listing Does not Exist!");
 		}
-		res.status(200).send(Listing);
+
+		if (Listing.Images.length > 0) {
+			Listing.Images.map(async (image) => {
+				if (fs.existsSync(image.URL)) {
+					fs.unlinkSync(image.URL);
+					await prisma.images.delete({
+						where: {
+							id: image.id,
+						},
+					});
+				}
+			});
+		}
+		await prisma.listWithUs.delete({
+			where: { id: id },
+		});
+
+		res.status(200).json({
+			"Image Deleted: ": Listing.Images,
+			Listing,
+		});
 	} catch (error) {
 		if (error instanceof Prisma.PrismaClientKnownRequestError) {
 			if (error.code === "P2025") {
@@ -211,7 +316,7 @@ module.exports = {
 	CreateListing,
 	GetAllListings,
 	GetListingByID,
-	TransferToProperty,
+	UpdateListing,
 	GetListingByGuestEmail,
 	DeleteListing,
 };
