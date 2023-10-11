@@ -9,8 +9,18 @@ require("dotenv").config;
 //Create New User
 const Register = async (req, res) => {
 	try {
-		let { Name, Email, Password, PhoneNo, ActiveStatus, Gender, DOB, RoleID } =
-			req.body;
+		let {
+			Name,
+			Email,
+			Password,
+			PhoneNo,
+			ActiveStatus,
+			Gender,
+			DOB,
+			roleID,
+			addressId,
+			teamID,
+		} = req.body;
 		const image = req.file;
 		if (!Name || !Email || !Password) {
 			return res.status(400).send("Required Field Missing!!");
@@ -31,20 +41,21 @@ const Register = async (req, res) => {
 				Gender: Gender || undefined,
 				DOB,
 				PhoneNo,
-				Role: RoleID
-					? {
-							connect: {
-								id: RoleID,
-							},
-					  }
-					: undefined,
-				Address: AddressID
-					? {
-							connect: {
-								id: AddressID,
-							},
-					  }
-					: undefined,
+				Role: roleID && {
+					connect: {
+						id: roleID,
+					},
+				},
+				Address: addressId && {
+					connect: {
+						id: addressId,
+					},
+				},
+				Team: teamID && {
+					connect: {
+						id: teamID,
+					},
+				},
 				Image: image
 					? {
 							create: {
