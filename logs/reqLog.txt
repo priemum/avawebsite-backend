@@ -2906,3 +2906,19 @@
 20231013	09:43:01	4ac7200f-8288-414a-a377-e6dfc1791acc	GET	200	 Message: OK 	/users
 20231013	09:43:01	52e1420f-290a-45fd-bb38-3f4746edd5f2	GET	200	 Message: OK 	/role
 20231013	09:43:01	97fe4b84-d803-4d84-95e8-420a78530f15	GET	304	 Message: Not Modified 	/images/users/1696836972-Kasra.PNG
+20231013	13:04:27	bf7a2799-c514-445b-bf07-c34d178430a2	POST	201	 Message: Created 	/auth/login
+20231013	13:04:50	711cacfb-6480-45ec-9a75-77d2a3eb2bf1	GET	200	 Message: OK 	/announcement
+20231013	13:11:40	2ef1f56d-a456-41bb-bb43-7d87c07dd4c7	GET	200	 Message: OK 	/announcement/9dadbee0-1dbe-4b0a-ae0f-0572fdd6c77a
+20231013	13:12:21	fe52f7ea-a3c5-4f52-a0c9-e9e077df7a59	PUT	403	 Message: Forbidden 	/announcement/9dadbee0-1dbe-4b0a-ae0f-0572fdd6c77a
+20231013	13:12:26	7eb78ded-cc19-4111-b5df-980b715d8f3e	GET	200	 Message: OK 	/auth/refreshToken
+20231013	13:12:30	71f0b067-135c-42ed-a73a-6858cbab64b7	PUT	200	 Message: OK 	/announcement/9dadbee0-1dbe-4b0a-ae0f-0572fdd6c77a
+20231013	13:22:44	b4ab56d5-4a8c-4ff5-9675-f80f4b15e315	GET	404	 Message: Not Found 	/
+20231013	13:23:06	65ff9a7c-e190-4ec9-8f77-18c0c677ac03	GET	404	 Message: Not Found 	/
+20231013	13:30:15	8e0f97e3-509b-4281-95fc-7639ce79a01a	GET	200	 Message: OK 	/announcement/9dadbee0-1dbe-4b0a-ae0f-0572fdd6c77a
+20231013	13:30:44	476f2e8f-dba0-42f7-b7db-59877495f8cc	GET	200	 Message: OK 	/announcement/9dadbee0-1dbe-4b0a-ae0f-0572fdd6c77a
+20231013	13:31:20	bc61b7ce-3f47-4c15-a132-bbda36c2da5c	GET	200	 Message: OK 	/announcement/9dadbee0-1dbe-4b0a-ae0f-0572fdd6c77a
+20231013	13:32:16	ee824ff1-4d53-401e-bac1-f18f04b98011	PUT	403	 Message: Forbidden 	/announcement/9dadbee0-1dbe-4b0a-ae0f-0572fdd6c77a
+20231013	13:32:21	4132949f-9ad8-44cf-b4f9-58a395c8c432	GET	200	 Message: OK 	/auth/refreshToken
+20231013	13:32:25	54da2fa6-595e-4ea1-b46f-962a6a31e06a	PUT	200	 Message: OK 	/announcement/9dadbee0-1dbe-4b0a-ae0f-0572fdd6c77a
+20231013	13:32:41	81153a26-f683-48ad-8d98-e6f16c656028	GET	200	 Message: OK 	/announcement/9dadbee0-1dbe-4b0a-ae0f-0572fdd6c77a
+20231013	13:33:25	bf7c3bce-e4ad-420e-bc58-64b69f6eff68	GET	200	 Message: OK 	/announcement/9dadbee0-1dbe-4b0a-ae0f-0572fdd6c77a

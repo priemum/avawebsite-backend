@@ -1,8 +1,9 @@
 const prisma = require("../prismaClient");
 const schedule = require("node-schedule");
 
-const testJob = async (err, req, res, next) => {
+const CronJob = async (err, req, res) => {
 	let yourDate = new Date();
+	console.log("Hi From Cron Job");
 	yourDate.toISOString().split("T")[0];
 	console.log(yourDate);
 	const announcement = await prisma.announcements.findMany({
@@ -10,6 +11,7 @@ const testJob = async (err, req, res, next) => {
 			EndDate: true,
 			id: true,
 			StartDate: true,
+			ActiveStatus: true,
 			// Announcements_Translation: {
 			// 	select: {
 			// 		Title: true,
@@ -17,21 +19,32 @@ const testJob = async (err, req, res, next) => {
 			// },
 		},
 	});
-	// console.log(announcement);
-	schedule.scheduleJob("Test-Job", "* * * * *", () => {
+	schedule.scheduleJob("Cron-Job", "0 0 * * *", () => {
 		console.log(yourDate);
-
-		announcement.map((item) => {
-			if (item.EndDate > yourDate) {
-				console.log(item, " is Not Expired yet");
-			} else {
-				console.log(item, " is Expired ");
-			}
-		});
+		if (announcement.length > 0) {
+			announcement.map(async (item) => {
+				if (item.EndDate >= yourDate) {
+					console.log(item, " is Not Expired yet");
+				} else {
+					item.ActiveStatus = false;
+					console.log(item, " is Expired ");
+					await prisma.announcements.update({
+						where: { id: item.id },
+						data: {
+							ActiveStatus: item.ActiveStatus,
+						},
+					});
+				}
+			});
+		} else {
+			console.log("No Announcment were found");
+		}
 	});
-	next();
+	if (err) {
+		console.log(err);
+	}
 };
 
 module.exports = {
-	testJob,
+	CronJob,
 };
