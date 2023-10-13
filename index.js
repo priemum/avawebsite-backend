@@ -42,7 +42,7 @@ app.use(logger);
 app.use(credentials);
 app.use(cookieParser());
 app.use(cors(corsOptions));
-app.set("trust proxy", true);
+// app.set("trust proxy", true);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 //serve static files
