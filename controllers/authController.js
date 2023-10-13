@@ -9,8 +9,8 @@ require("dotenv").config;
 // Login
 const Login = async (req, res) => {
 	try {
-		console.log("Https Status: ", isHttps);
 		const isHttps = req.protocol === "https";
+		console.log("Https Status: ", isHttps);
 		const { email, password } = req.body;
 		if (!email || !password) {
 			return res
