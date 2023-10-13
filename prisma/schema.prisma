@@ -192,6 +192,7 @@ model Property {
   Bedrooms             Int
   Bacloney             Boolean                @default(false)
   BalconySize          Float?
+  Bathrooms            Int?
   RentMin              Float                  @default(0)
   RentMax              Float?
   Handover             String?
