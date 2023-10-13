@@ -9,7 +9,8 @@ require("dotenv").config;
 // Login
 const Login = async (req, res) => {
 	try {
-		const isHttps = req.protocol === "https";
+		const isHttps = true;
+		// const isHttps = req.protocol === "https";
 		console.log("Https Status: ", isHttps);
 		const { email, password } = req.body;
 		if (!email || !password) {
@@ -198,8 +199,8 @@ const updateProfile = async (req, res) => {
 };
 
 const handleLogout = async (req, res) => {
-	// On client, also delete the accessToken
-	const isHttps = req.protocol === "https";
+	// On client, also delete the accessToken req.protocol === "https";
+	const isHttps = true;
 	console.log("Https Status: ", isHttps);
 	const cookies = req.cookies;
 	if (!cookies?.jwt) return res.status(204).send("No Cookie was found"); //No content
