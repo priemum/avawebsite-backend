@@ -5,6 +5,7 @@ const allowedOrigins = [
 	"http://localhost:5174",
 	"https://www.avarealestate.ae",
 	"https://dashboard.avarealestate.ae",
+	"https://ava-dashboard-ten.vercel.app/",
 	"https://avawebsite-backend-git-main-kanaan92.vercel.app",
 ];
 
