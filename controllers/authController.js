@@ -9,6 +9,8 @@ require("dotenv").config;
 // Login
 const Login = async (req, res) => {
 	try {
+		console.log("Https Status: ", isHttps);
+		const isHttps = req.protocol === "https";
 		const { email, password } = req.body;
 		if (!email || !password) {
 			return res
@@ -59,13 +61,13 @@ const Login = async (req, res) => {
 				res.cookie("jwt", refreshToken, {
 					maxAge: 24 * 60 * 60 * 1000,
 					httpOnly: true,
-					secure: true,
+					secure: isHttps,
 					sameSite: "None",
 				});
 				res.cookie("UserData", userData, {
 					maxAge: 24 * 60 * 60 * 1000,
 					httpOnly: true,
-					secure: true,
+					secure: isHttps,
 					sameSite: "None",
 				});
 				//send user data
@@ -84,6 +86,7 @@ const Login = async (req, res) => {
 const GetProfile = async (req, res) => {
 	try {
 		const cookies = req.cookies;
+		console.log("Cookie: ", cookies);
 		if (!cookies.jwt) return res.status(401).send("User Does not exist!");
 		const refreshToken = cookies.jwt;
 		const foundUser = await prisma.users.findFirst({
@@ -196,7 +199,8 @@ const updateProfile = async (req, res) => {
 
 const handleLogout = async (req, res) => {
 	// On client, also delete the accessToken
-
+	const isHttps = req.protocol === "https";
+	console.log("Https Status: ", isHttps);
 	const cookies = req.cookies;
 	if (!cookies?.jwt) return res.status(204).send("No Cookie was found"); //No content
 	const refreshToken = cookies.jwt;
@@ -209,7 +213,7 @@ const handleLogout = async (req, res) => {
 		res.clearCookie("jwt", { httpOnly: true });
 		res.clearCookie("UserData", {
 			httpOnly: true,
-			secure: true,
+			secure: isHttps,
 			sameSite: "None",
 		});
 		return res.status(204).send("cookie cleared");
@@ -224,7 +228,7 @@ const handleLogout = async (req, res) => {
 		},
 	});
 	//! added this option at production secure: true, sameSite: "None",
-	res.clearCookie("jwt", { httpOnly: true });
+	res.clearCookie("jwt", { httpOnly: true, secure: true, sameSite: "None" });
 	res.clearCookie("UserData", {
 		httpOnly: true,
 		secure: true,
