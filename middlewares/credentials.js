@@ -9,6 +9,8 @@ const credentials = (req, res, next) => {
 			"X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization",
 		);
 		res.header("Access-Control-Allow-Origin", "*");
+	} else {
+		console.log("Not allowed credentials!");
 	}
 
 	next();
