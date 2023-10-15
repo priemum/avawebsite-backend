@@ -15,6 +15,7 @@ model Team {
   id           String   @id @default(uuid())
   Title        String   @unique
   Description  String?
+  ViewTag      Boolean  @default(true)
   ActiveStatus Boolean  @default(true)
   CreatedAt    DateTime @default(now())
   UpdatedAt    DateTime @updatedAt
@@ -28,6 +29,7 @@ model Users {
   DOB          DateTime?
   Email        String     @unique
   PhoneNo      String?
+  Title        String?
   ActiveStatus Boolean    @default(true)
   Gender       Gender?
   Password     String

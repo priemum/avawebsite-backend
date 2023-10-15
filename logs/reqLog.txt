@@ -2922,3 +2922,27 @@
 20231013	13:32:25	54da2fa6-595e-4ea1-b46f-962a6a31e06a	PUT	200	 Message: OK 	/announcement/9dadbee0-1dbe-4b0a-ae0f-0572fdd6c77a
 20231013	13:32:41	81153a26-f683-48ad-8d98-e6f16c656028	GET	200	 Message: OK 	/announcement/9dadbee0-1dbe-4b0a-ae0f-0572fdd6c77a
 20231013	13:33:25	bf7c3bce-e4ad-420e-bc58-64b69f6eff68	GET	200	 Message: OK 	/announcement/9dadbee0-1dbe-4b0a-ae0f-0572fdd6c77a
+20231015	20:28:39	8853fa64-7cc3-4451-8d3c-b4b90a96e342	POST	201	 Message: Created 	/auth/login
+20231015	20:28:50	9d157eaa-567f-4059-a6c1-c4c112436c0b	GET	200	 Message: OK 	/users
+20231015	20:29:30	0960df7c-4e23-4133-a96e-29cd813ebd26	PUT	200	 Message: OK 	/users/6c1528ba-dec6-4630-8ca7-05e77bd25518
+20231015	20:29:35	62943a6a-d145-4ac2-a8bb-81659d918dd9	GET	200	 Message: OK 	/users
+20231015	20:29:55	40c6cdae-47b9-4d4b-b61e-102f231ef4a1	GET	200	 Message: OK 	/users/6c1528ba-dec6-4630-8ca7-05e77bd25518
+20231015	20:30:07	76c4f224-6f2b-46bc-9a6e-afed05c3e1c9	GET	200	 Message: OK 	/team
+20231015	20:30:40	13e423cd-4eef-42ba-bd1b-90fda2dc4bb8	PUT	500	 Message: Internal Server Error 	/team/45b5fef1-be34-4fa0-b5ce-f12362b77b94
+20231015	20:31:15	aca5fea4-e7f3-4c58-86f6-a43394a67cca	PUT	500	 Message: Internal Server Error 	/team/45b5fef1-be34-4fa0-b5ce-f12362b77b94
+20231015	20:31:35	c8a13e0c-abce-4a2a-9a57-db866f117162	PUT	500	 Message: Internal Server Error 	/team/45b5fef1-be34-4fa0-b5ce-f12362b77b94
+20231015	20:32:10	3ead6c62-7b3e-43bd-92b8-471208237354	PUT	500	 Message: Internal Server Error 	/team/45b5fef1-be34-4fa0-b5ce-f12362b77b94
+20231015	20:32:24	3700eff9-749e-4df7-9904-a63fdc75f735	GET	200	 Message: OK 	/team
+20231015	20:33:09	667ebf50-ac7e-4802-a951-ffbc9b9c1871	GET	200	 Message: OK 	/team
+20231015	20:33:11	95c6f863-b38d-40e8-b2a6-7c14975c513b	PUT	200	 Message: OK 	/team/45b5fef1-be34-4fa0-b5ce-f12362b77b94
+20231015	20:33:15	aba5d09c-1718-4833-b564-c5e496d7437c	GET	200	 Message: OK 	/team
+20231015	20:34:17	84793e17-3a2e-4360-9588-7e0f5cd8e62b	PUT	403	 Message: Forbidden 	/team/45b5fef1-be34-4fa0-b5ce-f12362b77b94
+20231015	20:34:22	eb3f10d7-b698-455f-aacd-d3c36424a4f0	GET	200	 Message: OK 	/auth/refreshToken
+20231015	20:34:25	8e0e8620-2436-4f3f-86d7-0def8f56eac6	PUT	200	 Message: OK 	/team/45b5fef1-be34-4fa0-b5ce-f12362b77b94
+20231015	20:34:32	bb8c05b8-eae0-4447-884e-bb6ab24bdf27	GET	200	 Message: OK 	/team
+20231015	20:34:46	4ef2ea15-bdc4-48ce-92e5-a042000afbca	PUT	200	 Message: OK 	/team/45b5fef1-be34-4fa0-b5ce-f12362b77b94
+20231015	20:34:53	a71d5549-9cd0-468a-b98a-57727a5d3aca	GET	200	 Message: OK 	/team
+20231015	20:35:29	72f88f20-c0e5-47c6-a77b-e5ce5154b399	POST	500	 Message: Internal Server Error 	/team
+20231015	20:35:51	9e66d795-dc20-4e16-8e68-401ce773b9e8	POST	201	 Message: Created 	/team
+20231015	20:36:03	eb674c55-8be0-4c05-9647-1f98d0e985e8	GET	200	 Message: OK 	/team/772e9d53-5b15-463c-91d9-00a931e3835a
+20231015	20:36:26	9b9f6af3-0936-4ff7-890c-b691603a6614	POST	201	 Message: Created 	/users

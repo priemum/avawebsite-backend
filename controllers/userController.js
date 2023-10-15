@@ -14,6 +14,7 @@ const Register = async (req, res) => {
 			Email,
 			Password,
 			PhoneNo,
+			Title,
 			ActiveStatus,
 			Gender,
 			DOB,
@@ -40,6 +41,7 @@ const Register = async (req, res) => {
 				ActiveStatus,
 				Gender: Gender || undefined,
 				DOB,
+				Title,
 				PhoneNo,
 				Role: roleID && {
 					connect: {

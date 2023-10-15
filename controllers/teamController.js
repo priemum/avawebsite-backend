@@ -8,16 +8,31 @@ require("dotenv").config;
 
 const CreateTeam = async (req, res) => {
 	try {
-		const { Title, Description, ActiveStatus, UserID } = req.body;
+		let { Title, Description, ViewTag, ActiveStatus, UserID } = req.body;
 		const image = req.file;
 		if (!Title) {
 			return res.status(400).send("Team Title or Description is Missing!!");
+		}
+		if (ActiveStatus) {
+			if (req.body.ActiveStatus.toLowerCase() === "false") {
+				ActiveStatus = false;
+			} else {
+				ActiveStatus = true;
+			}
+		}
+		if (ViewTag) {
+			if (req.body.ViewTag.toLowerCase() === "false") {
+				ViewTag = false;
+			} else {
+				ViewTag = true;
+			}
 		}
 		const Team = await prisma.team.create({
 			data: {
 				Title,
 				Description,
 				ActiveStatus,
+				ViewTag,
 				Image: image
 					? {
 							create: {
@@ -143,6 +158,15 @@ const UpdateTeam = async (req, res) => {
 				Team.ActiveStatus = false;
 			} else {
 				Team.ActiveStatus = true;
+			}
+		}
+		console.log(Team);
+		if (updates.includes("ViewTag")) {
+			if (req.body.ViewTag.toLowerCase() === "false") {
+				Team.ViewTag = false;
+				console.log(Team.ViewTag);
+			} else {
+				Team.ViewTag = true;
 			}
 		}
 		await prisma.team.update({

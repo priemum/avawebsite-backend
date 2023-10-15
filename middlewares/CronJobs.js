@@ -20,8 +20,8 @@ const CronJob = async (err, req, res) => {
 		},
 	});
 	schedule.scheduleJob("Cron-Job", "0 0 * * *", () => {
-		console.log(yourDate);
 		if (announcement.length > 0) {
+			console.log("pass");
 			announcement.map(async (item) => {
 				if (item.EndDate >= yourDate) {
 					console.log(item, " is Not Expired yet");
@@ -40,6 +40,7 @@ const CronJob = async (err, req, res) => {
 			console.log("No Announcment were found");
 		}
 	});
+	// console.log(schedule.scheduledJobs["Cron-Job"]);
 	if (err) {
 		console.log(err);
 	}
