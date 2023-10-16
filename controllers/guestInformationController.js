@@ -51,6 +51,7 @@ const GetAllGuests = async (req, res) => {
 		]);
 
 		console.log("Guest IP Address: ", req.socket.remoteAddress);
+		console.log("Guest IP Address 2: ", req.ip);
 		if (!Guests) {
 			return res.status(404).send("No Guests Were Found!");
 		}

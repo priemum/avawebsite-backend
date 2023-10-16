@@ -2948,3 +2948,4 @@
 20231015	20:36:26	9b9f6af3-0936-4ff7-890c-b691603a6614	POST	201	 Message: Created 	/users
 20231016	14:00:27	f4ecd413-7647-4d78-bab6-025384393e32	POST	201	 Message: Created 	/auth/login
 20231016	14:00:59	f1bb8517-8388-42ed-9abd-371ccbde4ad7	GET	200	 Message: OK 	/guest-info
+20231016	14:05:25	e370292d-672e-4b18-9f9d-f7879a587e40	GET	200	 Message: OK 	/guest-info
