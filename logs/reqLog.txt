@@ -2954,3 +2954,4 @@
 20231016	14:10:59	fefda075-85b6-4ab0-b0c4-9fa389da7c02	GET	200	 Message: OK 	/guest-info
 20231016	14:16:59	fbb18d02-9fbf-42f8-a2b7-ee484021d358	GET	200	 Message: OK 	/auth/refreshToken
 20231016	14:17:02	b65aff51-7481-4da8-a0e9-b712cbfcf911	GET	200	 Message: OK 	/guest-info
+20231016	14:21:22	83dc0401-e5b6-42bc-8ad9-8fe8885871f8	GET	200	 Message: OK 	/guest-info
