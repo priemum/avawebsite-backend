@@ -2955,3 +2955,6 @@
 20231016	14:16:59	fbb18d02-9fbf-42f8-a2b7-ee484021d358	GET	200	 Message: OK 	/auth/refreshToken
 20231016	14:17:02	b65aff51-7481-4da8-a0e9-b712cbfcf911	GET	200	 Message: OK 	/guest-info
 20231016	14:21:22	83dc0401-e5b6-42bc-8ad9-8fe8885871f8	GET	200	 Message: OK 	/guest-info
+20231016	14:33:09	70decc79-d563-415a-989e-2cb287a7e95f	GET	403	 Message: Forbidden 	/guest-info
+20231016	14:33:17	5743e952-7209-4da3-b150-e577cb51cb02	GET	200	 Message: OK 	/auth/refreshToken
+20231016	14:33:22	2aefed9a-f6f1-4ac4-a518-35370e653469	GET	200	 Message: OK 	/guest-info

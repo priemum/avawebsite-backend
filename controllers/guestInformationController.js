@@ -5,6 +5,7 @@ const { Prisma } = require("@prisma/client");
 const { HandleError } = require("../middlewares/ErrorHandler");
 const fs = require("fs");
 const { json } = require("express");
+const requestIP = require("request-ip");
 const IP = require("ip");
 require("dotenv").config;
 
@@ -50,9 +51,14 @@ const GetAllGuests = async (req, res) => {
 			prisma.guestInformation.findMany({}),
 			prisma.guestInformation.count(),
 		]);
+		const ipAddresses = req.header("X-Real-IP");
+		const ipAddress = requestIP.getClientIp(req);
 		const ipAddressN = IP.address();
-
-		console.log("Guest IP Address : ", ipAddressN);
+		console.log("Guest IP Address: ", req.socket.remoteAddress);
+		console.log("Guest IP Address 2: ", req.ip);
+		console.log("Guest IP Address 3: ", ipAddresses);
+		console.log("Guest IP Address 4: ", ipAddress);
+		console.log("Guest IP Address 5: ", ipAddressN);
 		if (!Guests) {
 			return res.status(404).send("No Guests Were Found!");
 		}
