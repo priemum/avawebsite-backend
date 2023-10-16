@@ -50,6 +50,7 @@ const GetAllGuests = async (req, res) => {
 			prisma.guestInformation.count(),
 		]);
 
+		console.log("Guest IP Address: ", req.socket.remoteAddress);
 		if (!Guests) {
 			return res.status(404).send("No Guests Were Found!");
 		}
