@@ -98,6 +98,29 @@ const GetAllActiveTeams = async (req, res) => {
 		return res.status(500).send(error.message);
 	}
 };
+// Get All active viewable teams
+const GetAllActiveViewTeams = async (req, res) => {
+	try {
+		const [Teams, count] = await prisma.$transaction([
+			prisma.team.findMany({
+				where: { AND: [{ ActiveStatus: true }, { ViewTag: true }] },
+				include: { Users: true, Image: true },
+			}),
+			prisma.team.count({
+				where: { AND: [{ ActiveStatus: true }, { ViewTag: true }] },
+			}),
+		]);
+		if (!Teams) {
+			return res.status(404).send("No Teams Were Found!");
+		}
+		res.status(200).json({
+			count,
+			Teams,
+		});
+	} catch (error) {
+		return res.status(500).send(error.message);
+	}
+};
 
 const GetTeamByID = async (req, res) => {
 	try {
@@ -230,6 +253,7 @@ module.exports = {
 	GetAllTeams,
 	GetTeamByID,
 	GetAllActiveTeams,
+	GetAllActiveViewTeams,
 	UpdateTeam,
 	DeleteTeam,
 };

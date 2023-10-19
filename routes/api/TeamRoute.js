@@ -8,6 +8,7 @@ const {
 	GetAllActiveTeams,
 	UpdateTeam,
 	DeleteTeam,
+	GetAllActiveViewTeams,
 } = require("../../controllers/teamController");
 const { CheckImage } = require("../../middlewares/imageAuth");
 const VerifyRole = require("../../middlewares/verifyRole");
@@ -19,6 +20,7 @@ teamRouter.post("/team", verifyJWT, VerifyRole, CheckImage, CreateTeam);
 teamRouter.get("/team", verifyJWT, VerifyRole, GetAllTeams);
 teamRouter.get("/team/:id", verifyJWT, VerifyRole, GetTeamByID);
 teamRouter.get("/team-active", GetAllActiveTeams);
+teamRouter.get("/team-active-view", GetAllActiveViewTeams);
 teamRouter.put(
 	"/team/:id",
 	verifyJWT,

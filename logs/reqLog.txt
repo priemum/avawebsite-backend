@@ -2965,3 +2965,7 @@
 20231019	10:24:07	b9a96b52-e86b-41bf-bc8c-09dc5241411d	GET	500	 Message: Internal Server Error 	/announcement-active
 20231019	10:25:57	19fcbfd3-a3d0-4f69-9bc9-4f1e41f5cb9b	GET	500	 Message: Internal Server Error 	/announcement-active
 20231019	10:27:18	7a55e3c7-8680-4f5f-99b2-6203f9fb16e5	GET	200	 Message: OK 	/announcement-active
+20231019	16:24:25	8b6588d1-b506-4e91-be90-94df8e02a680	GET	200	 Message: OK 	/team-active-view
+20231019	16:28:40	3da3224a-f439-41f2-9399-479c2c17bc32	GET	200	 Message: OK 	/team-active-view
+20231019	16:29:19	99858a8a-48bf-4a8e-8fbd-c71cd5812252	GET	200	 Message: OK 	/team-active-view
+20231019	16:29:35	5eb8c15d-5df3-4818-88f9-7db121c4e57f	GET	200	 Message: OK 	/team-active-view
