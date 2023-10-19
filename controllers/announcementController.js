@@ -109,7 +109,7 @@ const GetAllActiveAnnouncements = async (req, res) => {
 			prisma.announcements.findMany({
 				where: { ActiveStatus: true },
 				include: {
-					Images: true,
+					Image: true,
 					Announcements_Translation: {
 						include: { Language: true },
 					},

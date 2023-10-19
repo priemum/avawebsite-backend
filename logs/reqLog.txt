@@ -2958,3 +2958,10 @@
 20231016	14:33:09	70decc79-d563-415a-989e-2cb287a7e95f	GET	403	 Message: Forbidden 	/guest-info
 20231016	14:33:17	5743e952-7209-4da3-b150-e577cb51cb02	GET	200	 Message: OK 	/auth/refreshToken
 20231016	14:33:22	2aefed9a-f6f1-4ac4-a518-35370e653469	GET	200	 Message: OK 	/guest-info
+20231016	14:39:22	d84f9f6a-a711-41e0-9183-2c1c7779d74e	GET	403	 Message: Forbidden 	/guest-info
+20231016	14:39:26	f9d643fe-60cc-4e0c-84ac-09ed19ee5887	GET	200	 Message: OK 	/auth/refreshToken
+20231016	14:39:29	ec86deca-4338-4dbb-9b30-5f745a71cdff	GET	500	 Message: Internal Server Error 	/guest-info
+20231016	14:39:54	ff0395d8-46f3-4476-97b4-f0bccb8701b5	GET	200	 Message: OK 	/guest-info
+20231019	10:24:07	b9a96b52-e86b-41bf-bc8c-09dc5241411d	GET	500	 Message: Internal Server Error 	/announcement-active
+20231019	10:25:57	19fcbfd3-a3d0-4f69-9bc9-4f1e41f5cb9b	GET	500	 Message: Internal Server Error 	/announcement-active
+20231019	10:27:18	7a55e3c7-8680-4f5f-99b2-6203f9fb16e5	GET	200	 Message: OK 	/announcement-active
