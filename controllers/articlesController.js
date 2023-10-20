@@ -91,7 +91,25 @@ const GetAllArticles = async (req, res) => {
 		const [Articles, count] = await prisma.$transaction([
 			prisma.articles.findMany({
 				include: {
-					User: true,
+					User: {
+						include: {
+							Image: true,
+							Team: {
+								include: {
+									Image: true,
+								},
+							},
+							Address: {
+								include: {
+									Address_Translation: {
+										include: {
+											Language: true,
+										},
+									},
+								},
+							},
+						},
+					},
 					Image: true,
 					Articles_Translation: {
 						include: { Language: true },
@@ -119,7 +137,25 @@ const GetAllActiveArticles = async (req, res) => {
 			prisma.articles.findMany({
 				where: { ActiveStatus: true },
 				include: {
-					User: true,
+					User: {
+						include: {
+							Image: true,
+							Team: {
+								include: {
+									Image: true,
+								},
+							},
+							Address: {
+								include: {
+									Address_Translation: {
+										include: {
+											Language: true,
+										},
+									},
+								},
+							},
+						},
+					},
 					Image: true,
 					Articles_Translation: {
 						include: { Language: true },
@@ -147,7 +183,25 @@ const GetArticleByID = async (req, res) => {
 		const Article = await prisma.articles.findUnique({
 			where: { id: id },
 			include: {
-				User: true,
+				User: {
+					include: {
+						Image: true,
+						Team: {
+							include: {
+								Image: true,
+							},
+						},
+						Address: {
+							include: {
+								Address_Translation: {
+									include: {
+										Language: true,
+									},
+								},
+							},
+						},
+					},
+				},
 				Image: true,
 				Articles_Translation: {
 					include: { Language: true },
@@ -171,7 +225,25 @@ const GetArticleByUserID = async (req, res) => {
 					usersID: id,
 				},
 				include: {
-					User: true,
+					User: {
+						include: {
+							Image: true,
+							Team: {
+								include: {
+									Image: true,
+								},
+							},
+							Address: {
+								include: {
+									Address_Translation: {
+										include: {
+											Language: true,
+										},
+									},
+								},
+							},
+						},
+					},
 					Image: true,
 					Articles_Translation: {
 						include: { Language: true },
@@ -272,6 +344,25 @@ const UpdateArticle = async (req, res) => {
 				},
 				include: {
 					Image: true,
+					User: {
+						include: {
+							Image: true,
+							Team: {
+								include: {
+									Image: true,
+								},
+							},
+							Address: {
+								include: {
+									Address_Translation: {
+										include: {
+											Language: true,
+										},
+									},
+								},
+							},
+						},
+					},
 					Articles_Translation: {
 						include: {
 							Language: true,

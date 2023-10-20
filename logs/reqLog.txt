@@ -2969,3 +2969,9 @@
 20231019	16:28:40	3da3224a-f439-41f2-9399-479c2c17bc32	GET	200	 Message: OK 	/team-active-view
 20231019	16:29:19	99858a8a-48bf-4a8e-8fbd-c71cd5812252	GET	200	 Message: OK 	/team-active-view
 20231019	16:29:35	5eb8c15d-5df3-4818-88f9-7db121c4e57f	GET	200	 Message: OK 	/team-active-view
+20231020	10:06:26	b17d04fb-b3e5-4dca-ab47-69e42ad1c85b	POST	201	 Message: Created 	/auth/login
+20231020	10:06:38	bc351f97-fe64-4f1c-94ad-6fef27ad01b5	GET	404	 Message: Not Found 	/article/e32f67b9-3e86-4080-8008-e9b9ba120930
+20231020	10:06:44	a14b921a-fd6c-491d-9f6a-60cc2e52da36	GET	200	 Message: OK 	/article
+20231020	10:07:22	89b7aa6b-60b0-4055-8e15-cd06f4cd498f	GET	200	 Message: OK 	/team-active-view
+20231020	10:08:50	165bf256-4872-4897-b808-09b37ea8e648	GET	200	 Message: OK 	/auth/logout
+20231020	10:08:55	62e08334-3eb7-4b68-a28f-7da8db2a47fd	GET	401	 Message: Unauthorized 	/auth/refreshToken
