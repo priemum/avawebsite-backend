@@ -267,6 +267,110 @@ const GetArticleByUserID = async (req, res) => {
 		return res.status(500).send(error.message);
 	}
 };
+// Search Articles
+const ArticleSearch = async (req, res) => {
+	try {
+		const searchTerm = req.params.searchTerm;
+		console.log("query: ", searchTerm);
+		const query = {
+			OR: [
+				{
+					Articles_Translation: {
+						some: {
+							OR: [
+								{
+									Title: {
+										contains: searchTerm,
+										mode: "insensitive",
+									},
+								},
+								{
+									Description: {
+										contains: searchTerm,
+										mode: "insensitive",
+									},
+								},
+								{
+									Caption: {
+										contains: searchTerm,
+										mode: "insensitive",
+									},
+								},
+							],
+						},
+					},
+				},
+				{
+					User: {
+						OR: [
+							{
+								Name: {
+									contains: searchTerm,
+									mode: "insensitive",
+								},
+							},
+							{
+								Address: {
+									Address_Translation: {
+										some: {
+											Name: {
+												contains: searchTerm,
+												mode: "insensitive",
+											},
+										},
+									},
+								},
+							},
+						],
+					},
+				},
+			],
+		};
+		const [Articles, count] = await prisma.$transaction([
+			prisma.articles.findMany({
+				where: query,
+				include: {
+					Articles_Translation: {
+						include: { Language: true },
+					},
+					User: {
+						include: {
+							Image: true,
+							Team: {
+								include: {
+									Image: true,
+								},
+							},
+							Address: {
+								include: {
+									Address_Translation: {
+										include: {
+											Language: true,
+										},
+									},
+								},
+							},
+						},
+					},
+					Image: true,
+				},
+			}),
+			prisma.articles.count({
+				where: query,
+			}),
+		]);
+		if (!Articles) {
+			return res.status(404).send("No Article Were Found For this User!");
+		}
+		res.status(200).json({
+			count,
+			Articles,
+		});
+	} catch (error) {
+		return res.status(500).send(error.message);
+	}
+};
+
 // ToDO: Change update articles
 const UpdateArticle = async (req, res) => {
 	try {
@@ -448,6 +552,7 @@ module.exports = {
 	CreateArticle,
 	GetAllArticles,
 	GetArticleByID,
+	ArticleSearch,
 	GetArticleByUserID,
 	GetAllActiveArticles,
 	UpdateArticle,

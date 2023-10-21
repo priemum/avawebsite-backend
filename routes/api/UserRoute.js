@@ -28,7 +28,7 @@ userRouter.post(
 userRouter.get("/users", verifyJWT, VerifyRole, GetAllUsers);
 userRouter.get("/users-active", GetAllActiveUsers);
 userRouter.get("/users/:id", verifyJWT, VerifyRole, GetUserByID);
-userRouter.get("/users/team/:id", verifyJWT, VerifyRole, GetUsersByTeamID);
+userRouter.get("/users/team/:id", GetUsersByTeamID);
 userRouter.get("/users/role/:id", verifyJWT, VerifyRole, GetUsersByRoleID);
 userRouter.put(
 	"/users/:id",

@@ -2975,3 +2975,76 @@
 20231020	10:07:22	89b7aa6b-60b0-4055-8e15-cd06f4cd498f	GET	200	 Message: OK 	/team-active-view
 20231020	10:08:50	165bf256-4872-4897-b808-09b37ea8e648	GET	200	 Message: OK 	/auth/logout
 20231020	10:08:55	62e08334-3eb7-4b68-a28f-7da8db2a47fd	GET	401	 Message: Unauthorized 	/auth/refreshToken
+20231020	17:11:59	241172fc-53ef-4a06-8ec6-41659d0ac09d	POST	201	 Message: Created 	/auth/login
+20231020	17:12:30	ded71fbf-e9ff-471f-af9a-e001e2eab30e	GET	200	 Message: OK 	/article
+20231020	17:18:11	4de23587-c8a4-4615-82ff-dfe0592e2073	GET	403	 Message: Forbidden 	/article/search/
+20231020	17:18:19	24c4274f-0798-4803-982d-93673a3b09c6	GET	200	 Message: OK 	/auth/refreshToken
+20231020	17:18:30	bb4d68c7-6f09-444d-b786-ba7b67d27082	GET	404	 Message: Not Found 	/article/search/
+20231020	17:18:52	1eda6942-ee53-4eac-8541-1394ab7ddc64	GET	200	 Message: OK 	/auth/logout
+20231020	17:19:05	fd7cb88f-fee2-4e46-97a1-552c73919489	GET	500	 Message: Internal Server Error 	/article/search/kasra
+20231020	17:19:38	270254dd-6414-48fd-8510-427fb35c3d95	GET	500	 Message: Internal Server Error 	/article/search/kasra
+20231020	17:22:58	becacf7c-5cc9-4155-bd89-27cf6cfa6862	GET	500	 Message: Internal Server Error 	/article/search/kasra
+20231020	17:26:24	95593408-2a42-4a0e-8d85-4c3892831ffb	GET	200	 Message: OK 	/article/search/kasra
+20231020	17:27:26	6f33ff62-3ccd-4179-aa22-ae0e39c81a09	GET	200	 Message: OK 	/article/search/test
+20231020	17:27:34	be51d4a3-a4ef-4c3a-8045-dcb31b640bd5	GET	200	 Message: OK 	/article/search/new
+20231020	18:17:59	157135aa-8ee9-4cc9-954b-49e99133512d	GET	200	 Message: OK 	/article-active
+20231020	18:18:34	d90b2ad5-f549-4536-bf74-058c4a95c9aa	GET	200	 Message: OK 	/article/search/Bankruptcy
+20231020	18:18:52	369e9ab3-05a6-4a7a-bedc-a721cd308b2c	GET	200	 Message: OK 	/article/search/Bankrupty
+20231020	18:19:04	9b89ddd9-1517-4a10-9c1d-a8184f380114	GET	200	 Message: OK 	/article/search/home
+20231020	18:32:05	c97b5007-98c3-401e-99dd-533db4258a82	GET	401	 Message: Unauthorized 	/article/search/
+20231020	18:32:18	dc50b05e-c97b-44a2-a564-769597a75c8b	GET	200	 Message: OK 	/article/search/w
+20231020	18:36:58	d77c29d0-f2d5-487f-8358-44432b09b3eb	GET	500	 Message: Internal Server Error 	/article/search/w
+20231020	18:41:46	00767868-e72e-4a5b-a325-2fdf11988dbd	POST	201	 Message: Created 	/auth/login
+20231021	11:19:46	c16c0fc9-4763-4e22-bf7a-a429f3fd3c1b	POST	201	 Message: Created 	/auth/login
+20231021	11:21:12	d5d2cd46-ef03-4a66-a5be-f4937bb2746c	POST	500	 Message: Internal Server Error 	/article
+20231021	11:21:37	f4d65084-58b0-446b-90c2-78ebe5de74e0	POST	404	 Message: Not Found 	/article
+20231021	11:23:48	333e4019-bdce-41ca-b975-59b9bd0fd717	GET	200	 Message: OK 	/language
+20231021	11:24:37	ff3dbadd-fd2c-4ef0-a5c6-baa5a09f5da5	POST	404	 Message: Not Found 	/article
+20231021	11:24:58	33c34be8-ed30-46bf-8997-b44b2a95c965	POST	403	 Message: Forbidden 	/article
+20231021	11:25:05	66166b58-002e-4599-85be-377fcc5e791c	GET	200	 Message: OK 	/auth/refreshToken
+20231021	11:25:10	5292e177-5103-4bf6-8002-4e5da09304b0	POST	201	 Message: Created 	/article
+20231021	11:25:30	ff396588-a8a9-4ab7-a8f2-e926fc79f796	POST	201	 Message: Created 	/article
+20231021	11:28:37	94887c3d-28ce-4624-b79d-161ebe1b8645	POST	201	 Message: Created 	/article
+20231021	11:28:58	d17d6d56-062c-42fe-8417-5eb2c97346b3	GET	200	 Message: OK 	/article/search/new
+20231021	11:29:27	8d7ee112-fd71-4a82-8757-ac5241755a33	GET	500	 Message: Internal Server Error 	/article/search/new
+20231021	11:30:02	e154255b-870b-4150-be51-0c3f72efba3f	GET	200	 Message: OK 	/article/search/new
+20231021	11:30:51	d27aa39d-7d6c-4bd5-99fe-5917b9d782d1	GET	200	 Message: OK 	/article/search/ali
+20231021	11:36:06	8650e1fd-3310-4f00-8f3b-a1d71f40cedb	GET	200	 Message: OK 	/article/search/ali
+20231021	11:36:25	07ab9bc5-141a-49a9-a840-8b59b4413f31	GET	403	 Message: Forbidden 	/article
+20231021	11:36:33	5fc16c1d-d1ad-4880-8966-e51f2dc0159f	GET	200	 Message: OK 	/article-active
+20231021	11:36:49	798b3967-0e19-41eb-bd56-6d30294dc624	GET	200	 Message: OK 	/article/search/Implications
+20231021	11:38:14	2ff63a38-0279-4eb5-a4dd-7d77bd1e5a2f	GET	200	 Message: OK 	/article/search/Implications
+20231021	11:38:54	b5ddc2b0-89b5-4b18-8d6c-94aa50aff25d	GET	500	 Message: Internal Server Error 	/article/search/Implications
+20231021	11:49:08	7d2f6d5b-402b-41af-b43d-b3794fbf39ba	GET	200	 Message: OK 	/article/search/Implications
+20231021	11:49:17	7b3d7446-1855-4210-86fb-81747dc739e8	GET	200	 Message: OK 	/article/search/%20
+20231021	11:51:03	dfc416e7-4595-4c0d-8933-2d5d95fc2bf9	GET	200	 Message: OK 	/article/search/%20
+20231021	11:51:29	ad0aafd0-4664-4b0d-a30b-63c2c407f2ef	GET	200	 Message: OK 	/article/search/%20
+20231021	11:51:39	e0bfd110-c579-4794-8539-1cfb9329e480	GET	200	 Message: OK 	/article/search/Implications
+20231021	11:52:11	96c019dd-e235-41d2-8e0d-5d49db52fdfe	GET	200	 Message: OK 	/article/search/Implications
+20231021	11:52:20	a0ba2bfb-0569-43a9-984e-2e15bd2e6f90	GET	200	 Message: OK 	/article/search/ali
+20231021	11:52:25	be4766fd-042f-4629-9c97-4337a9c85729	GET	200	 Message: OK 	/article/search/Ali
+20231021	11:52:45	c26fbb9c-45d6-4628-909c-ca1e72b04729	GET	200	 Message: OK 	/article/search/ali
+20231021	11:53:24	57e0e763-a44d-423c-9791-c6b886dc4f20	GET	200	 Message: OK 	/article/search/ali
+20231021	11:54:09	9324dbb6-ff3a-451d-8751-54caf4bab506	GET	200	 Message: OK 	/article/search/ali
+20231021	11:56:29	f8c4e7c1-b7d8-4866-9da3-b4c459d46bf4	GET	200	 Message: OK 	/article/search/ali
+20231021	11:56:48	63ed2c4d-8289-450c-9108-4b4daf430ae7	GET	200	 Message: OK 	/article/search/ali
+20231021	11:56:56	594d9f82-cb83-40a1-a002-1b7e878d794a	GET	200	 Message: OK 	/article/search/new
+20231021	11:57:33	97b9bcdc-85c4-4f12-adb6-f271fb75705e	GET	200	 Message: OK 	/article/search/%D9%85%D9%82%D8%A7%D9%84
+20231021	11:57:40	5e5e008a-d83c-483c-b050-d233d275c413	GET	200	 Message: OK 	/article/search/%D8%AF%D8%A8%D9%8A
+20231021	11:57:58	5fb6493b-c42e-449d-9c7a-164de4f6cb06	GET	200	 Message: OK 	/article/search/%D8%AC%D8%AF%D9%8A%D8%AF
+20231021	11:58:04	19867fea-8a7c-4236-96b1-bf7d38d623b2	GET	200	 Message: OK 	/article/search/%20
+20231021	12:00:13	e502213d-4612-4f92-8a63-5b20db432ca9	GET	200	 Message: OK 	/article/search/%20
+20231021	12:00:35	7694598f-4b51-4a81-8eaf-2ff616c2d728	GET	200	 Message: OK 	/article/search/financial
+20231021	12:01:19	27235f2f-b6c9-44d9-b889-567c4f31fe41	GET	200	 Message: OK 	/article/search/Description
+20231021	12:23:12	b984fd46-6c3e-4e07-862a-9e996bdcae89	GET	200	 Message: OK 	/article/search/kanaan
+20231021	12:23:37	27c0fe6f-5416-464f-ab04-3b8cd8499a2d	GET	200	 Message: OK 	/article/search/kanaan
+20231021	12:23:43	f8e1d45c-3314-4cf6-a773-3df5bef7d043	GET	200	 Message: OK 	/article/search/kasra
+20231021	12:23:49	40cbffac-8e2c-4197-9b00-b4d7f2a5fa28	GET	200	 Message: OK 	/article/search/moaz
+20231021	12:23:53	56697330-6653-4dfd-b5e0-79dd360574de	GET	200	 Message: OK 	/article/search/ka
+20231021	12:23:57	7514f87f-a3a0-4d73-b511-ba5632e3fd74	GET	200	 Message: OK 	/article/search/dubai
+20231021	12:24:03	293131cf-4514-4bc2-9d9e-51182616f19b	GET	200	 Message: OK 	/article/search/Alain
+20231021	12:35:36	debafef8-05f2-4092-b45c-ba724f7ca9c7	GET	200	 Message: OK 	/article/search/Bankruptcy
+20231021	12:35:57	34990b0b-83a8-494a-8ef3-f72b3ce63703	GET	200	 Message: OK 	/article/search/ali
+20231021	12:36:10	5dee3ba3-5bff-47d6-b07f-3a81ee4a67a1	GET	200	 Message: OK 	/article/search/ali
+20231021	12:36:55	a20ddd8a-3ec4-4236-82b2-951953ea5c63	GET	200	 Message: OK 	/article/search/ali
+20231021	12:37:59	a2ade1e2-c531-4163-94ef-d2a5216b6027	GET	200	 Message: OK 	/article/search/Palm%20Jebel%20Ali

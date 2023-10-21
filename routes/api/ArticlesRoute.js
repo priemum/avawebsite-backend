@@ -13,6 +13,7 @@ const {
 	UpdateArticle,
 	DeleteArticle,
 	GetArticleByUserID,
+	ArticleSearch,
 } = require("../../controllers/articlesController");
 
 const articleRouter = express.Router();
@@ -27,6 +28,7 @@ articleRouter.post(
 articleRouter.get("/article", verifyJWT, VerifyRole, GetAllArticles);
 articleRouter.get("/article/:id", verifyJWT, VerifyRole, GetArticleByID);
 articleRouter.get("/article/user/:id", GetArticleByUserID);
+articleRouter.get("/article/search/:searchTerm", ArticleSearch);
 articleRouter.get("/article-active", GetAllActiveArticles);
 articleRouter.put(
 	"/article/:id",
