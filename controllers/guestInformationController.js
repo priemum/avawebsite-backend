@@ -47,18 +47,16 @@ const CreateGuest = async (req, res) => {
 
 const GetAllGuests = async (req, res) => {
 	try {
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const [Guests, count] = await prisma.$transaction([
-			prisma.guestInformation.findMany({}),
+			prisma.guestInformation.findMany({
+				skip: skip || undefined,
+				take: take || undefined,
+			}),
 			prisma.guestInformation.count(),
 		]);
-		const ipAddresses = req.header("X-Real-IP");
-		const ipAddress = requestIP.getClientIp(req);
-		const ipAddressN = IP.address();
-		console.log("Guest IP Address: ", req.socket.remoteAddress);
-		console.log("Guest IP Address 2: ", req.ip);
-		console.log("Guest IP Address 3: ", ipAddresses);
-		console.log("Guest IP Address 4: ", ipAddress);
-		console.log("Guest IP Address 5: ", ipAddressN);
 		if (!Guests) {
 			return res.status(404).send("No Guests Were Found!");
 		}

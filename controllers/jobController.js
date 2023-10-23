@@ -79,8 +79,13 @@ const CreateJob = async (req, res) => {
 
 const GetAllJobs = async (req, res) => {
 	try {
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const [Jobs, count] = await prisma.$transaction([
 			prisma.jobs.findMany({
+				skip: skip || undefined,
+				take: take || undefined,
 				include: {
 					Jobs_Translation: {
 						include: {
@@ -112,9 +117,14 @@ const GetAllJobs = async (req, res) => {
 
 const GetAllActiveJobs = async (req, res) => {
 	try {
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const [Jobs, count] = await prisma.$transaction([
 			prisma.jobs.findMany({
 				where: { ActiveStatus: true },
+				skip: skip || undefined,
+				take: take || undefined,
 				include: {
 					Jobs_Translation: {
 						include: {
@@ -174,6 +184,9 @@ const GetJobByID = async (req, res) => {
 const GetJobByUserID = async (req, res) => {
 	try {
 		const id = req.params.id;
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const [Jobs, count] = await prisma.$transaction([
 			prisma.jobs.findMany({
 				where: {
@@ -181,6 +194,8 @@ const GetJobByUserID = async (req, res) => {
 						id: id,
 					},
 				},
+				skip: skip || undefined,
+				take: take || undefined,
 				include: {
 					Jobs_Translation: {
 						include: {

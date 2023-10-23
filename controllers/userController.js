@@ -96,8 +96,13 @@ const Register = async (req, res) => {
 //Get All Users////Done
 const GetAllUsers = async (req, res) => {
 	try {
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const [Users, count] = await prisma.$transaction([
 			prisma.users.findMany({
+				skip: skip || undefined,
+				take: take || undefined,
 				include: {
 					Role: true,
 					Team: true,
@@ -145,9 +150,14 @@ const GetAllActiveUsers = async (req, res) => {
 				ActiveStatus: true,
 			},
 		};
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const [Users, count] = await prisma.$transaction([
 			prisma.users.findMany({
 				where: { ActiveStatus: true },
+				skip: skip || undefined,
+				take: take || undefined,
 				include: {
 					Role: true,
 					Team: true,
@@ -306,10 +316,15 @@ const UpdateUser = async (req, res) => {
 const GetUsersByTeamID = async (req, res) => {
 	try {
 		const id = req.params.id;
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const [Team, Users, count] = await prisma.$transaction([
 			prisma.team.findUnique({ where: { id: id } }),
 			prisma.users.findMany({
 				where: { teamID: id },
+				skip: skip || undefined,
+				take: take || undefined,
 				include: { Role: true, Team: true, Image: true },
 			}),
 			prisma.users.count({ where: { teamID: id } }),
@@ -337,10 +352,15 @@ const GetUsersByTeamID = async (req, res) => {
 const GetUsersByRoleID = async (req, res) => {
 	try {
 		const id = req.params.id;
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const [Role, Users, count] = await prisma.$transaction([
 			prisma.role.findUnique({ where: { id: id } }),
 			prisma.users.findMany({
 				where: { roleID: id },
+				skip: skip || undefined,
+				take: take || undefined,
 				include: { Role: true, Team: true, Image: true },
 			}),
 			prisma.users.count({ where: { roleID: id } }),

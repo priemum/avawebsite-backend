@@ -59,8 +59,13 @@ const CreateTeam = async (req, res) => {
 
 const GetAllTeams = async (req, res) => {
 	try {
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const [Teams, count] = await prisma.$transaction([
 			prisma.team.findMany({
+				skip: skip || undefined,
+				take: take || undefined,
 				include: { Users: true, Image: true },
 			}),
 			prisma.team.count(),
@@ -80,9 +85,14 @@ const GetAllTeams = async (req, res) => {
 
 const GetAllActiveTeams = async (req, res) => {
 	try {
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const [Teams, count] = await prisma.$transaction([
 			prisma.team.findMany({
 				where: { ActiveStatus: true },
+				skip: skip || undefined,
+				take: take || undefined,
 				include: { Users: true, Image: true },
 			}),
 			prisma.team.count({ where: { ActiveStatus: true } }),
@@ -101,9 +111,14 @@ const GetAllActiveTeams = async (req, res) => {
 // Get All active viewable teams
 const GetAllActiveViewTeams = async (req, res) => {
 	try {
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const [Teams, count] = await prisma.$transaction([
 			prisma.team.findMany({
 				where: { AND: [{ ActiveStatus: true }, { ViewTag: true }] },
+				skip: skip || undefined,
+				take: take || undefined,
 				include: { Users: true, Image: true },
 			}),
 			prisma.team.count({

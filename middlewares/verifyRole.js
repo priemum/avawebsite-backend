@@ -30,8 +30,9 @@ const VerifyRole = async (req, res, next) => {
 				resource: true,
 			},
 		});
-
-		const path = req.url.split("/")[1];
+		// console.log("path before: ", req.url);
+		let path = req.url.split("/")[1];
+		path = path.split("?")[0];
 		console.log("path: ", path);
 		let pathAuth = "";
 		RoleResources.map((item) => {

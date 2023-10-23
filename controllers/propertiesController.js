@@ -173,8 +173,13 @@ const CreateProperty = async (req, res) => {
 
 const GetAllProperties = async (req, res) => {
 	try {
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const [Properties, count] = await prisma.$transaction([
 			prisma.property.findMany({
+				skip: skip || undefined,
+				take: take || undefined,
 				include: {
 					Images: true,
 					Aminities: {
@@ -237,9 +242,14 @@ const GetAllProperties = async (req, res) => {
 
 const GetAllActiveProperties = async (req, res) => {
 	try {
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const [Properties, count] = await prisma.$transaction([
 			prisma.property.findMany({
 				where: { ActiveStatus: true },
+				skip: skip || undefined,
+				take: take || undefined,
 				include: {
 					Images: true,
 					Aminities: {
@@ -363,10 +373,14 @@ const GetPropertyByID = async (req, res) => {
 const GetPropertiesByCategoryID = async (req, res) => {
 	try {
 		const id = req.params.id;
-
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const [Properties, count] = await prisma.$transaction([
 			prisma.property.findMany({
 				where: { categoryId: id },
+				skip: skip || undefined,
+				take: take || undefined,
 				include: {
 					Images: true,
 					Aminities: {
@@ -432,9 +446,14 @@ const GetPropertiesByCategoryID = async (req, res) => {
 const GetActivePropertiesByCategoryID = async (req, res) => {
 	try {
 		const id = req.params.id;
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const [Properties, count] = await prisma.$transaction([
 			prisma.property.findMany({
 				where: { AND: [{ ActiveStatus: true }, { categoryId: id }] },
+				skip: skip || undefined,
+				take: take || undefined,
 				include: {
 					Images: true,
 					Aminities: {
@@ -501,10 +520,14 @@ const GetActivePropertiesByCategoryID = async (req, res) => {
 const GetPropertiesByDeveloperID = async (req, res) => {
 	try {
 		const id = req.params.id;
-
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const [Properties, count] = await prisma.$transaction([
 			prisma.property.findMany({
 				where: { developerId: id },
+				skip: skip || undefined,
+				take: take || undefined,
 				include: {
 					Images: true,
 					Aminities: {
@@ -570,10 +593,14 @@ const GetPropertiesByDeveloperID = async (req, res) => {
 const GetActivePropertiesByDeveloperID = async (req, res) => {
 	try {
 		const id = req.params.id;
-
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const [Properties, count] = await prisma.$transaction([
 			prisma.property.findMany({
 				where: { AND: [{ developerId: id }, { ActiveStatus: true }] },
+				skip: skip || undefined,
+				take: take || undefined,
 				include: {
 					Images: true,
 					Aminities: {
@@ -641,10 +668,14 @@ const GetActivePropertiesByDeveloperID = async (req, res) => {
 const GetPropertiesByAddressID = async (req, res) => {
 	try {
 		const id = req.params.id;
-
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const [Properties, count] = await prisma.$transaction([
 			prisma.property.findMany({
 				where: { addressId: id },
+				skip: skip || undefined,
+				take: take || undefined,
 				include: {
 					Images: true,
 					Aminities: {
@@ -710,10 +741,14 @@ const GetPropertiesByAddressID = async (req, res) => {
 const GetActivePropertiesByAddressID = async (req, res) => {
 	try {
 		const id = req.params.id;
-
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const [Properties, count] = await prisma.$transaction([
 			prisma.property.findMany({
 				where: { AND: [{ addressId: id }, { ActiveStatus: true }] },
+				skip: skip || undefined,
+				take: take || undefined,
 				include: {
 					Images: true,
 					Aminities: {

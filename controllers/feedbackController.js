@@ -56,8 +56,13 @@ const CreateFeedback = async (req, res) => {
 
 const GetAllFeedbacks = async (req, res) => {
 	try {
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const [Feedback, count] = await prisma.$transaction([
 			prisma.feedback.findMany({
+				skip: skip || undefined,
+				take: take || undefined,
 				include: {
 					Guest: true,
 				},
@@ -101,13 +106,17 @@ const GetFeedbackByID = async (req, res) => {
 const GetFeedbacksByGuestEmail = async (req, res) => {
 	try {
 		const email = req.params.email;
-
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const Feedback = await prisma.feedback.findMany({
 			where: {
 				Guest: {
 					Email: email,
 				},
 			},
+			skip: skip || undefined,
+			take: take || undefined,
 			include: {
 				Guest: true,
 			},

@@ -99,8 +99,13 @@ const CreateListing = async (req, res) => {
 
 const GetAllListings = async (req, res) => {
 	try {
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const [Listings, count] = await prisma.$transaction([
 			prisma.listWithUs.findMany({
+				skip: skip || undefined,
+				take: take || undefined,
 				include: {
 					Owner: true,
 					Images: true,
@@ -156,13 +161,17 @@ const GetListingByID = async (req, res) => {
 const GetListingByGuestEmail = async (req, res) => {
 	try {
 		const email = req.params.email;
-
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const Listing = await prisma.listWithUs.findMany({
 			where: {
 				Owner: {
 					Email: email,
 				},
 			},
+			skip: skip || undefined,
+			take: take || undefined,
 			include: {
 				Owner: true,
 				Images: true,

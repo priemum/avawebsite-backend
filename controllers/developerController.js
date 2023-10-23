@@ -80,8 +80,13 @@ const CreateDeveloper = async (req, res) => {
 
 const GetAllDevelopers = async (req, res) => {
 	try {
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const [Developer, count] = await prisma.$transaction([
 			prisma.developer.findMany({
+				skip: skip || undefined,
+				take: take || undefined,
 				include: {
 					Image: true,
 					Developer_Translation: {
@@ -107,9 +112,14 @@ const GetAllDevelopers = async (req, res) => {
 
 const GetAllActiveDevelopers = async (req, res) => {
 	try {
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const [Developer, count] = await prisma.$transaction([
 			prisma.developer.findMany({
 				where: { ActiveStatus: true },
+				skip: skip || undefined,
+				take: take || undefined,
 				include: {
 					Image: true,
 					Developer_Translation: {
@@ -134,9 +144,14 @@ const GetAllActiveDevelopers = async (req, res) => {
 
 const GetAllActiveViewDevelopers = async (req, res) => {
 	try {
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const [Developer, count] = await prisma.$transaction([
 			prisma.developer.findMany({
 				where: { AND: [{ ActiveStatus: true }, { ViewTag: true }] },
+				skip: skip || undefined,
+				take: take || undefined,
 				include: {
 					Image: true,
 					Developer_Translation: {

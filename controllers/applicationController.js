@@ -95,8 +95,13 @@ const CreateApplication = async (req, res) => {
 
 const GetAllApplications = async (req, res) => {
 	try {
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const [Applicantion, count] = await prisma.$transaction([
 			prisma.applicantion.findMany({
+				skip: skip || undefined,
+				take: take || undefined,
 				include: {
 					Applicant: true,
 					Job: {

@@ -72,8 +72,13 @@ const CreateAminity = async (req, res) => {
 
 const GetAllAminities = async (req, res) => {
 	try {
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const [Aminities, count] = await prisma.$transaction([
 			prisma.aminities.findMany({
+				skip: skip || undefined,
+				take: take || undefined,
 				include: {
 					Image: true,
 					Aminities_Translation: {

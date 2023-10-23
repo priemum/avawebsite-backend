@@ -88,8 +88,13 @@ const CreateArticle = async (req, res) => {
 
 const GetAllArticles = async (req, res) => {
 	try {
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const [Articles, count] = await prisma.$transaction([
 			prisma.articles.findMany({
+				skip: skip || undefined,
+				take: take || undefined,
 				include: {
 					User: {
 						include: {
@@ -133,8 +138,13 @@ const GetAllArticles = async (req, res) => {
 
 const GetAllActiveArticles = async (req, res) => {
 	try {
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const [Articles, count] = await prisma.$transaction([
 			prisma.articles.findMany({
+				skip: skip || undefined,
+				take: take || undefined,
 				where: { ActiveStatus: true },
 				include: {
 					User: {
@@ -326,9 +336,14 @@ const ArticleSearch = async (req, res) => {
 				},
 			],
 		};
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const [Articles, count] = await prisma.$transaction([
 			prisma.articles.findMany({
 				where: query,
+				skip: skip || undefined,
+				take: take || undefined,
 				include: {
 					Articles_Translation: {
 						include: { Language: true },

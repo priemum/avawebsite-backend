@@ -59,8 +59,13 @@ const CreateUnit = async (req, res) => {
 
 const GetAllUnits = async (req, res) => {
 	try {
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const [Unit, count] = await prisma.$transaction([
 			prisma.unit.findMany({
+				skip: skip || undefined,
+				take: take || undefined,
 				include: {
 					Unit_Translation: {
 						include: { Language: true },
@@ -84,9 +89,14 @@ const GetAllUnits = async (req, res) => {
 
 const GetAllActiveUnits = async (req, res) => {
 	try {
+		let { skip, take } = req.query;
+		skip = parseInt(skip);
+		take = parseInt(take);
 		const [Unit, count] = await prisma.$transaction([
 			prisma.unit.findMany({
 				where: { ActiveStatus: true },
+				skip: skip || undefined,
+				take: take || undefined,
 				include: {
 					Unit_Translation: {
 						include: { Language: true },
