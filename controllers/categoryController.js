@@ -70,13 +70,14 @@ const CreateCategory = async (req, res) => {
 
 const GetAllCategories = async (req, res) => {
 	try {
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const [Category, count] = await prisma.$transaction([
 			prisma.category.findMany({
-				skip: skip || undefined,
-				take: take || undefined,
+				skip: offset || undefined,
+				take: limit || undefined,
 				include: {
 					_count: true,
 					Category_Translation: {
@@ -108,13 +109,14 @@ const GetAllCategories = async (req, res) => {
 
 const GetAllActiveCategories = async (req, res) => {
 	try {
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const [Category, count] = await prisma.$transaction([
 			prisma.category.findMany({
-				skip: skip || undefined,
-				take: take || undefined,
+				skip: offset || undefined,
+				take: limit || undefined,
 				where: { ActiveStatus: true },
 				include: {
 					_count: true,
@@ -175,16 +177,17 @@ const GetCategoryByID = async (req, res) => {
 const GetCategoryByParentID = async (req, res) => {
 	try {
 		const id = req.params.id;
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const [Category, count] = await prisma.$transaction([
 			prisma.category.findMany({
 				where: {
 					ParentID: id,
 				},
-				skip: skip || undefined,
-				take: take || undefined,
+				skip: offset || undefined,
+				take: limit || undefined,
 				include: {
 					_count: true,
 					Category_Translation: {

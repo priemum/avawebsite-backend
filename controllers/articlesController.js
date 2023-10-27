@@ -88,13 +88,14 @@ const CreateArticle = async (req, res) => {
 
 const GetAllArticles = async (req, res) => {
 	try {
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const [Articles, count] = await prisma.$transaction([
 			prisma.articles.findMany({
-				skip: skip || undefined,
-				take: take || undefined,
+				skip: offset || undefined,
+				take: limit || undefined,
 				include: {
 					User: {
 						include: {
@@ -138,13 +139,14 @@ const GetAllArticles = async (req, res) => {
 
 const GetAllActiveArticles = async (req, res) => {
 	try {
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const [Articles, count] = await prisma.$transaction([
 			prisma.articles.findMany({
-				skip: skip || undefined,
-				take: take || undefined,
+				skip: offset || undefined,
+				take: limit || undefined,
 				where: { ActiveStatus: true },
 				include: {
 					User: {
@@ -229,8 +231,14 @@ const GetArticleByID = async (req, res) => {
 const GetArticleByUserID = async (req, res) => {
 	try {
 		const id = req.params.id;
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const [Articles, count] = await prisma.$transaction([
 			prisma.articles.findMany({
+				skip: offset || undefined,
+				take: limit || undefined,
 				where: {
 					usersID: id,
 				},
@@ -336,14 +344,15 @@ const ArticleSearch = async (req, res) => {
 				},
 			],
 		};
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const [Articles, count] = await prisma.$transaction([
 			prisma.articles.findMany({
 				where: query,
-				skip: skip || undefined,
-				take: take || undefined,
+				skip: offset || undefined,
+				take: limit || undefined,
 				include: {
 					Articles_Translation: {
 						include: { Language: true },

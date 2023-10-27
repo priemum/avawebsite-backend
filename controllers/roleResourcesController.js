@@ -31,12 +31,13 @@ const CreateRoleResource = async (req, res) => {
 
 const GetAllRolesResource = async (req, res) => {
 	try {
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const RolesResource = await prisma.role_Resources.findMany({
-			skip: skip || undefined,
-			take: take || undefined,
+			skip: offset || undefined,
+			take: limit || undefined,
 			include: { Role: true, resource: true },
 		});
 		if (!RolesResource) {
@@ -67,13 +68,14 @@ const GetRoleResourceByID = async (req, res) => {
 const GetRoleResourceByRoleID = async (req, res) => {
 	try {
 		const id = req.params.id;
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const RolesResource = await prisma.role_Resources.findMany({
 			where: { roleID: id },
-			skip: skip || undefined,
-			take: take || undefined,
+			skip: offset || undefined,
+			take: limit || undefined,
 			include: { Role: true, resource: true },
 		});
 		if (!RolesResource) {

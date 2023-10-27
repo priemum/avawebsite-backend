@@ -47,13 +47,14 @@ const CreateGuest = async (req, res) => {
 
 const GetAllGuests = async (req, res) => {
 	try {
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const [Guests, count] = await prisma.$transaction([
 			prisma.guestInformation.findMany({
-				skip: skip || undefined,
-				take: take || undefined,
+				skip: offset || undefined,
+				take: limit || undefined,
 			}),
 			prisma.guestInformation.count(),
 		]);

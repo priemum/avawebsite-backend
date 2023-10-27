@@ -79,13 +79,14 @@ const CreateJob = async (req, res) => {
 
 const GetAllJobs = async (req, res) => {
 	try {
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const [Jobs, count] = await prisma.$transaction([
 			prisma.jobs.findMany({
-				skip: skip || undefined,
-				take: take || undefined,
+				skip: offset || undefined,
+				take: limit || undefined,
 				include: {
 					Jobs_Translation: {
 						include: {
@@ -117,14 +118,15 @@ const GetAllJobs = async (req, res) => {
 
 const GetAllActiveJobs = async (req, res) => {
 	try {
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const [Jobs, count] = await prisma.$transaction([
 			prisma.jobs.findMany({
 				where: { ActiveStatus: true },
-				skip: skip || undefined,
-				take: take || undefined,
+				skip: offset || undefined,
+				take: limit || undefined,
 				include: {
 					Jobs_Translation: {
 						include: {
@@ -184,9 +186,10 @@ const GetJobByID = async (req, res) => {
 const GetJobByUserID = async (req, res) => {
 	try {
 		const id = req.params.id;
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const [Jobs, count] = await prisma.$transaction([
 			prisma.jobs.findMany({
 				where: {
@@ -194,8 +197,8 @@ const GetJobByUserID = async (req, res) => {
 						id: id,
 					},
 				},
-				skip: skip || undefined,
-				take: take || undefined,
+				skip: offset || undefined,
+				take: limit || undefined,
 				include: {
 					Jobs_Translation: {
 						include: {
@@ -229,6 +232,127 @@ const GetJobByUserID = async (req, res) => {
 		return res.status(500).send(error.message);
 	}
 };
+// Search Job
+const JobSearch = async (req, res) => {
+	try {
+		const searchTerm = req.params.searchTerm;
+		console.log("query: ", searchTerm);
+		const query = {
+			OR: [
+				{
+					Location: {
+						contains: searchTerm,
+						mode: "insensitive",
+					},
+				},
+				{
+					Type: {
+						contains: searchTerm,
+						mode: "insensitive",
+					},
+				},
+				{
+					WeekHours: {
+						contains: searchTerm,
+						mode: "insensitive",
+					},
+				},
+				{
+					Jobs_Translation: {
+						some: {
+							OR: [
+								{
+									Title: {
+										contains: searchTerm,
+										mode: "insensitive",
+									},
+								},
+								{
+									Description: {
+										contains: searchTerm,
+										mode: "insensitive",
+									},
+								},
+							],
+						},
+					},
+				},
+				{
+					Author: {
+						OR: [
+							{
+								Name: {
+									contains: searchTerm,
+									mode: "insensitive",
+								},
+							},
+							{
+								Address: {
+									Address_Translation: {
+										some: {
+											Name: {
+												contains: searchTerm,
+												mode: "insensitive",
+											},
+										},
+									},
+								},
+							},
+						],
+					},
+				},
+			],
+		};
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
+		const [Jobs, count] = await prisma.$transaction([
+			prisma.jobs.findMany({
+				where: query,
+				skip: offset || undefined,
+				take: limit || undefined,
+				include: {
+					Jobs_Translation: {
+						include: { Language: true },
+					},
+					Author: {
+						include: {
+							Image: true,
+							Team: {
+								include: {
+									Image: true,
+								},
+							},
+							Address: {
+								include: {
+									Address_Translation: {
+										include: {
+											Language: true,
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			}),
+			prisma.jobs.count({
+				where: query,
+			}),
+		]);
+		if (!Jobs) {
+			return res.status(404).send("No Jobs Were Found For this User!");
+		}
+		res.status(200).json({
+			count,
+			Jobs,
+		});
+	} catch (error) {
+		return res.status(500).send(error.message);
+	}
+};
+
 // ToDO: Change update articles
 const UpdateJob = async (req, res) => {
 	try {
@@ -369,6 +493,7 @@ module.exports = {
 	CreateJob,
 	GetAllJobs,
 	GetJobByID,
+	JobSearch,
 	GetJobByUserID,
 	GetAllActiveJobs,
 	UpdateJob,

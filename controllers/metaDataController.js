@@ -49,13 +49,14 @@ const CreateMetaData = async (req, res) => {
 
 const GetAllMetaData = async (req, res) => {
 	try {
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const [MetaData, count] = await prisma.$transaction([
 			prisma.metaData.findMany({
-				skip: skip || undefined,
-				take: take || undefined,
+				skip: offset || undefined,
+				take: limit || undefined,
 				include: {
 					Article: {
 						include: {
@@ -132,13 +133,14 @@ const GetMetaDataByID = async (req, res) => {
 const GetMetaDataByPropertyID = async (req, res) => {
 	try {
 		const id = req.params.id;
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const MetaData = await prisma.metaData.findMany({
 			where: { propertyId: id },
-			skip: skip || undefined,
-			take: take || undefined,
+			skip: offset || undefined,
+			take: limit || undefined,
 			include: {
 				Article: {
 					include: {
@@ -173,13 +175,14 @@ const GetMetaDataByPropertyID = async (req, res) => {
 const GetMetaDataByArticleID = async (req, res) => {
 	try {
 		const id = req.params.id;
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const MetaData = await prisma.metaData.findMany({
 			where: { articlesId: id },
-			skip: skip || undefined,
-			take: take || undefined,
+			skip: offset || undefined,
+			take: limit || undefined,
 			include: {
 				Article: {
 					include: {

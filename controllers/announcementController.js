@@ -79,13 +79,14 @@ const CreateAnnouncement = async (req, res) => {
 
 const GetAllAnnouncements = async (req, res) => {
 	try {
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const [Announcement, count] = await prisma.$transaction([
 			prisma.announcements.findMany({
-				skip: skip || undefined,
-				take: take || undefined,
+				skip: offset || undefined,
+				take: limit || undefined,
 				include: {
 					Image: true,
 					Announcements_Translation: {
@@ -110,14 +111,15 @@ const GetAllAnnouncements = async (req, res) => {
 
 const GetAllActiveAnnouncements = async (req, res) => {
 	try {
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const [Announcement, count] = await prisma.$transaction([
 			prisma.announcements.findMany({
 				where: { ActiveStatus: true },
-				skip: skip || undefined,
-				take: take || undefined,
+				skip: offset || undefined,
+				take: limit || undefined,
 				include: {
 					Image: true,
 					Announcements_Translation: {

@@ -60,13 +60,14 @@ const CreateEnquiryForm = async (req, res) => {
 
 const GetAllEnquiryForms = async (req, res) => {
 	try {
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const [EnquiryForm, count] = await prisma.$transaction([
 			prisma.enquiryForm.findMany({
-				skip: skip || undefined,
-				take: take || undefined,
+				skip: offset || undefined,
+				take: limit || undefined,
 				include: {
 					Guest: true,
 				},
@@ -110,17 +111,18 @@ const GetEnquiryFormByID = async (req, res) => {
 const GetEnquiryFormsByGuestEmail = async (req, res) => {
 	try {
 		const email = req.params.email;
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const EnquiryForm = await prisma.enquiryForm.findMany({
 			where: {
 				Guest: {
 					Email: email,
 				},
 			},
-			skip: skip || undefined,
-			take: take || undefined,
+			skip: offset || undefined,
+			take: limit || undefined,
 			include: {
 				Guest: true,
 			},

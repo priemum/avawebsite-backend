@@ -59,13 +59,14 @@ const CreateCurrency = async (req, res) => {
 
 const GetAllCurrencies = async (req, res) => {
 	try {
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const [Currency, count] = await prisma.$transaction([
 			prisma.currency.findMany({
-				skip: skip || undefined,
-				take: take || undefined,
+				skip: offset || undefined,
+				take: limit || undefined,
 				include: {
 					Currency_Translation: {
 						include: { Language: true },
@@ -89,14 +90,15 @@ const GetAllCurrencies = async (req, res) => {
 
 const GetAllActiveCurrencies = async (req, res) => {
 	try {
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const [Currency, count] = await prisma.$transaction([
 			prisma.currency.findMany({
 				where: { ActiveStatus: true },
-				skip: skip || undefined,
-				take: take || undefined,
+				skip: offset || undefined,
+				take: limit || undefined,
 				include: {
 					Currency_Translation: {
 						include: { Language: true },

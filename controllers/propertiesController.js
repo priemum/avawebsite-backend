@@ -1,7 +1,12 @@
 const bcrypt = require("bcryptjs");
 // const jwt = require("jsonwebtoken");
 const prisma = require("../prismaClient");
-const { Prisma } = require("@prisma/client");
+const {
+	Prisma,
+	Purpose,
+	RentFrequency,
+	CompletionStatus,
+} = require("@prisma/client");
 const { HandleError } = require("../middlewares/ErrorHandler");
 const fs = require("fs");
 const { json } = require("express");
@@ -173,13 +178,14 @@ const CreateProperty = async (req, res) => {
 
 const GetAllProperties = async (req, res) => {
 	try {
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const [Properties, count] = await prisma.$transaction([
 			prisma.property.findMany({
-				skip: skip || undefined,
-				take: take || undefined,
+				skip: offset || undefined,
+				take: limit || undefined,
 				include: {
 					Images: true,
 					Aminities: {
@@ -242,14 +248,15 @@ const GetAllProperties = async (req, res) => {
 
 const GetAllActiveProperties = async (req, res) => {
 	try {
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const [Properties, count] = await prisma.$transaction([
 			prisma.property.findMany({
 				where: { ActiveStatus: true },
-				skip: skip || undefined,
-				take: take || undefined,
+				skip: offset || undefined,
+				take: limit || undefined,
 				include: {
 					Images: true,
 					Aminities: {
@@ -373,14 +380,15 @@ const GetPropertyByID = async (req, res) => {
 const GetPropertiesByCategoryID = async (req, res) => {
 	try {
 		const id = req.params.id;
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const [Properties, count] = await prisma.$transaction([
 			prisma.property.findMany({
 				where: { categoryId: id },
-				skip: skip || undefined,
-				take: take || undefined,
+				skip: offset || undefined,
+				take: limit || undefined,
 				include: {
 					Images: true,
 					Aminities: {
@@ -446,14 +454,15 @@ const GetPropertiesByCategoryID = async (req, res) => {
 const GetActivePropertiesByCategoryID = async (req, res) => {
 	try {
 		const id = req.params.id;
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const [Properties, count] = await prisma.$transaction([
 			prisma.property.findMany({
 				where: { AND: [{ ActiveStatus: true }, { categoryId: id }] },
-				skip: skip || undefined,
-				take: take || undefined,
+				skip: offset || undefined,
+				take: limit || undefined,
 				include: {
 					Images: true,
 					Aminities: {
@@ -520,14 +529,15 @@ const GetActivePropertiesByCategoryID = async (req, res) => {
 const GetPropertiesByDeveloperID = async (req, res) => {
 	try {
 		const id = req.params.id;
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const [Properties, count] = await prisma.$transaction([
 			prisma.property.findMany({
 				where: { developerId: id },
-				skip: skip || undefined,
-				take: take || undefined,
+				skip: offset || undefined,
+				take: limit || undefined,
 				include: {
 					Images: true,
 					Aminities: {
@@ -593,14 +603,15 @@ const GetPropertiesByDeveloperID = async (req, res) => {
 const GetActivePropertiesByDeveloperID = async (req, res) => {
 	try {
 		const id = req.params.id;
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const [Properties, count] = await prisma.$transaction([
 			prisma.property.findMany({
 				where: { AND: [{ developerId: id }, { ActiveStatus: true }] },
-				skip: skip || undefined,
-				take: take || undefined,
+				skip: offset || undefined,
+				take: limit || undefined,
 				include: {
 					Images: true,
 					Aminities: {
@@ -668,14 +679,15 @@ const GetActivePropertiesByDeveloperID = async (req, res) => {
 const GetPropertiesByAddressID = async (req, res) => {
 	try {
 		const id = req.params.id;
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const [Properties, count] = await prisma.$transaction([
 			prisma.property.findMany({
 				where: { addressId: id },
-				skip: skip || undefined,
-				take: take || undefined,
+				skip: offset || undefined,
+				take: limit || undefined,
 				include: {
 					Images: true,
 					Aminities: {
@@ -741,14 +753,15 @@ const GetPropertiesByAddressID = async (req, res) => {
 const GetActivePropertiesByAddressID = async (req, res) => {
 	try {
 		const id = req.params.id;
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const [Properties, count] = await prisma.$transaction([
 			prisma.property.findMany({
 				where: { AND: [{ addressId: id }, { ActiveStatus: true }] },
-				skip: skip || undefined,
-				take: take || undefined,
+				skip: offset || undefined,
+				take: limit || undefined,
 				include: {
 					Images: true,
 					Aminities: {
@@ -802,6 +815,258 @@ const GetActivePropertiesByAddressID = async (req, res) => {
 			return res
 				.status(404)
 				.send("No Active Properties Were Found Under This Address!");
+		}
+		res.status(200).json({
+			count,
+			Properties,
+		});
+	} catch (error) {
+		return res.status(500).send(error.message);
+	}
+};
+//Search Property
+const PropertySearch = async (req, res) => {
+	try {
+		const searchTerm = req.params.searchTerm;
+		console.log("query: ", searchTerm);
+
+		const query = {
+			OR: [
+				{
+					Handover: {
+						contains: searchTerm,
+						mode: "insensitive",
+					},
+				},
+				{
+					FurnishingStatus: {
+						contains: searchTerm,
+						mode: "insensitive",
+					},
+				},
+				{
+					VacantStatus: {
+						contains: searchTerm,
+						mode: "insensitive",
+					},
+				},
+				{
+					PermitNumber: {
+						contains: searchTerm,
+						mode: "insensitive",
+					},
+				},
+				{
+					DEDNo: {
+						contains: searchTerm,
+						mode: "insensitive",
+					},
+				},
+				{
+					ReraNo: {
+						contains: searchTerm,
+						mode: "insensitive",
+					},
+				},
+				{
+					BRNNo: {
+						contains: searchTerm,
+						mode: "insensitive",
+					},
+				},
+				{
+					Property_Translation: {
+						some: {
+							OR: [
+								{
+									Name: {
+										contains: searchTerm,
+										mode: "insensitive",
+									},
+								},
+								{
+									Description: {
+										contains: searchTerm,
+										mode: "insensitive",
+									},
+								},
+							],
+						},
+					},
+				},
+				{
+					Address: {
+						Address_Translation: {
+							some: {
+								Name: {
+									contains: searchTerm,
+									mode: "insensitive",
+								},
+							},
+						},
+					},
+				},
+				{
+					Developer: {
+						Developer_Translation: {
+							some: {
+								Name: {
+									contains: searchTerm,
+									mode: "insensitive",
+								},
+							},
+						},
+					},
+				},
+				{
+					Category: {
+						Category_Translation: {
+							some: {
+								OR: [
+									{
+										Name: {
+											contains: searchTerm,
+											mode: "insensitive",
+										},
+									},
+									{
+										Description: {
+											contains: searchTerm,
+											mode: "insensitive",
+										},
+									},
+								],
+							},
+						},
+					},
+				},
+				{
+					Aminities: {
+						some: {
+							OR: [
+								{
+									Aminities_Translation: {
+										some: {
+											OR: [
+												{
+													Name: {
+														contains: searchTerm,
+														mode: "insensitive",
+													},
+												},
+												{
+													Description: {
+														contains: searchTerm,
+														mode: "insensitive",
+													},
+												},
+											],
+										},
+									},
+								},
+							],
+						},
+					},
+				},
+				{
+					Developer: {
+						Developer_Translation: {
+							some: {
+								Name: {
+									contains: searchTerm,
+									mode: "insensitive",
+								},
+							},
+						},
+					},
+				},
+			],
+		};
+		if (searchTerm.toLowerCase() === Purpose.Rent.toLowerCase()) {
+			query.OR.push({
+				Purpose: Purpose.Rent,
+			});
+		} else if (searchTerm.toLowerCase() === Purpose.Buy.toLowerCase()) {
+			query.OR.push({
+				Purpose: Purpose.Buy,
+			});
+		}
+		const rentFrequency = Object.keys(RentFrequency);
+		rentFrequency.map((item) => {
+			if (searchTerm.toLowerCase() === item.toLowerCase()) {
+				query.OR.push({
+					RentFrequency: item,
+				});
+			}
+		});
+		const completionStatus = Object.keys(CompletionStatus);
+		completionStatus.map((item) => {
+			if (searchTerm.toLowerCase() === item.toLowerCase()) {
+				query.OR.push({
+					CompletionStatus: item,
+				});
+			}
+		});
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
+		const [Properties, count] = await prisma.$transaction([
+			prisma.property.findMany({
+				where: query,
+				skip: offset || undefined,
+				take: limit || undefined,
+				include: {
+					Images: true,
+					Aminities: {
+						include: {
+							Image: true,
+							Aminities_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+						},
+					},
+					Category: {
+						include: {
+							Category_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+							Parent: true,
+						},
+					},
+					Developer: {
+						include: {
+							Developer_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+						},
+					},
+					Address: {
+						include: {
+							Address_Translation: {
+								include: { Language: true },
+							},
+						},
+					},
+					Property_Translation: {
+						include: {
+							Language: true,
+						},
+					},
+				},
+			}),
+			prisma.property.count({
+				where: query,
+			}),
+		]);
+		if (!Properties) {
+			return res.status(404).send("No Properties Were Found!");
 		}
 		res.status(200).json({
 			count,
@@ -1174,6 +1439,7 @@ const DeleteProperty = async (req, res) => {
 module.exports = {
 	CreateProperty,
 	GetAllProperties,
+	PropertySearch,
 	GetPropertyByID,
 	GetPropertiesByCategoryID,
 	GetActivePropertiesByCategoryID,

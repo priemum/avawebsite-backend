@@ -11,6 +11,7 @@ const {
 	GetAllActiveJobs,
 	UpdateJob,
 	DeleteJob,
+	JobSearch,
 } = require("../../controllers/jobController");
 
 const jobRouter = express.Router();
@@ -18,6 +19,7 @@ const jobRouter = express.Router();
 jobRouter.post("/job", verifyJWT, VerifyRole, CreateJob);
 jobRouter.get("/job", verifyJWT, VerifyRole, GetAllJobs);
 jobRouter.get("/job/:id", GetJobByID);
+jobRouter.get("/job/search/:searchTerm", JobSearch);
 jobRouter.get("/job/user/:id", verifyJWT, VerifyRole, GetJobByUserID);
 jobRouter.get("/job-active", GetAllActiveJobs);
 jobRouter.put(

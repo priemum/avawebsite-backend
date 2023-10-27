@@ -20,6 +20,7 @@ const {
 	GetActivePropertiesByDeveloperID,
 	DeletePropertyImages,
 	DeleteImageByID,
+	PropertySearch,
 } = require("../../controllers/propertiesController");
 const { saveProperty } = require("../../middlewares/propertyAuth");
 
@@ -45,6 +46,7 @@ propertyRouter.get(
 	"/property-active/category/:id",
 	GetActivePropertiesByCategoryID,
 );
+propertyRouter.get("/property/search/:searchTerm", PropertySearch);
 propertyRouter.get(
 	"/property/address/:id",
 	verifyJWT,

@@ -30,12 +30,13 @@ const CreateResource = async (req, res) => {
 
 const GetAllResources = async (req, res) => {
 	try {
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const Resources = await prisma.resources.findMany({
-			skip: skip || undefined,
-			take: take || undefined,
+			skip: offset || undefined,
+			take: limit || undefined,
 		});
 		if (!Resources) {
 			return res.status(404).send("No Resource Were Found!");
@@ -48,13 +49,14 @@ const GetAllResources = async (req, res) => {
 
 const GetAllActiveResources = async (req, res) => {
 	try {
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const Resources = await prisma.resources.findMany({
 			where: { ActiveStatus: true },
-			skip: skip || undefined,
-			take: take || undefined,
+			skip: offset || undefined,
+			take: limit || undefined,
 		});
 		if (!Resources) {
 			return res.status(404).send("No Resources Were Found!");

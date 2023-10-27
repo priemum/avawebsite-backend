@@ -88,13 +88,14 @@ const CreateAddress = async (req, res) => {
 
 const GetAllAddresses = async (req, res) => {
 	try {
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const [Address, count] = await prisma.$transaction([
 			prisma.address.findMany({
-				skip: skip || undefined,
-				take: take || undefined,
+				skip: offset || undefined,
+				take: limit || undefined,
 				include: {
 					Image: true,
 					Address_Translation: {
@@ -126,14 +127,15 @@ const GetAllAddresses = async (req, res) => {
 
 const GetAllActiveAddresses = async (req, res) => {
 	try {
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const [Address, count] = await prisma.$transaction([
 			prisma.address.findMany({
 				where: { ActiveStatus: true },
-				skip: skip || undefined,
-				take: take || undefined,
+				skip: offset || undefined,
+				take: limit || undefined,
 				include: {
 					Image: true,
 					Address_Translation: {
@@ -193,17 +195,17 @@ const GetAddressByID = async (req, res) => {
 };
 const GetAddressByParentID = async (req, res) => {
 	try {
-		const id = req.params.id;
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const [Address, count] = await prisma.$transaction([
 			prisma.address.findMany({
 				where: {
 					addressID: id,
 				},
-				skip: skip || undefined,
-				take: take || undefined,
+				skip: offset || undefined,
+				take: limit || undefined,
 				include: {
 					Image: true,
 					Address_Translation: {

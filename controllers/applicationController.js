@@ -95,13 +95,14 @@ const CreateApplication = async (req, res) => {
 
 const GetAllApplications = async (req, res) => {
 	try {
-		let { skip, take } = req.query;
-		skip = parseInt(skip);
-		take = parseInt(take);
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const [Applicantion, count] = await prisma.$transaction([
 			prisma.applicantion.findMany({
-				skip: skip || undefined,
-				take: take || undefined,
+				skip: offset || undefined,
+				take: limit || undefined,
 				include: {
 					Applicant: true,
 					Job: {
@@ -175,13 +176,18 @@ const GetApplicationByID = async (req, res) => {
 const GetApplicationByEmailID = async (req, res) => {
 	try {
 		const Email = req.params.email;
-
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
 		const Applicantion = await prisma.applicantion.findMany({
 			where: {
 				Applicant: {
 					Email,
 				},
 			},
+			skip: offset || undefined,
+			take: limit || undefined,
 			include: {
 				Applicant: true,
 				Job: {
