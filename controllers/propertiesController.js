@@ -1076,6 +1076,153 @@ const PropertySearch = async (req, res) => {
 		return res.status(500).send(error.message);
 	}
 };
+//Filter Properties
+
+const FilterProperties = async (req, res) => {
+	try {
+		const filter = req.body;
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
+		const query = {
+			AND: [
+				{
+					addressId: {
+						in: filter.Addresses,
+					},
+				},
+				{
+					Bathrooms: {
+						in: filter.Bathrooms,
+					},
+				},
+				{
+					Bedrooms: {
+						in: filter.Bedrooms,
+					},
+				},
+				{
+					categoryId: {
+						equals: filter.CategoryID,
+					},
+				},
+				{
+					Area: {
+						lte: filter.AreaMax,
+					},
+				},
+				{
+					Price: {
+						gte: filter.PriceMin,
+					},
+				},
+				{
+					Price: {
+						lte: filter.PriceMax,
+					},
+				},
+				{
+					Area: {
+						gte: filter.AreaMin,
+					},
+				},
+			],
+		};
+
+		if (filter.purpose) {
+			if (filter.purpose.toLowerCase() === Purpose.Rent.toLowerCase()) {
+				query.AND.push({
+					Purpose: Purpose.Rent,
+				});
+			} else if (filter.purpose.toLowerCase() === Purpose.Buy.toLowerCase()) {
+				query.AND.push({
+					Purpose: Purpose.Buy,
+				});
+			}
+		}
+		if (filter.rentFrequency) {
+			const rentFrequency = Object.keys(RentFrequency);
+			rentFrequency.map((item) => {
+				if (filter.rentFrequency.toLowerCase() === item.toLowerCase()) {
+					query.AND.push({
+						RentFrequency: item,
+					});
+				}
+			});
+		}
+		if (filter.completionStatus) {
+			const completionStatus = Object.keys(CompletionStatus);
+			completionStatus.map((item) => {
+				if (filter.completionStatus.toLowerCase() === item.toLowerCase()) {
+					query.AND.push({
+						CompletionStatus: item,
+					});
+				}
+			});
+		}
+		const [Properties, count] = await prisma.$transaction([
+			prisma.property.findMany({
+				where: query,
+				skip: offset || undefined,
+				take: limit || undefined,
+				include: {
+					Images: true,
+					Aminities: {
+						include: {
+							Image: true,
+							Aminities_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+						},
+					},
+					Category: {
+						include: {
+							Category_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+							Parent: true,
+						},
+					},
+					Developer: {
+						include: {
+							Developer_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+						},
+					},
+					Address: {
+						include: {
+							Address_Translation: {
+								include: { Language: true },
+							},
+						},
+					},
+					Property_Translation: {
+						include: {
+							Language: true,
+						},
+					},
+				},
+			}),
+			prisma.property.count({
+				where: query,
+			}),
+		]);
+		res.status(200).json({
+			count,
+			Properties,
+		});
+	} catch (error) {
+		return res.status(500).send(error.message);
+	}
+};
 
 //Update Property
 const UpdateProperty = async (req, res) => {
@@ -1448,6 +1595,7 @@ module.exports = {
 	GetActivePropertiesByDeveloperID,
 	GetPropertiesByDeveloperID,
 	GetAllActiveProperties,
+	FilterProperties,
 	UpdateProperty,
 	DeletePropertyImages,
 	DeleteImageByID,

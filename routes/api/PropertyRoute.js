@@ -21,6 +21,7 @@ const {
 	DeletePropertyImages,
 	DeleteImageByID,
 	PropertySearch,
+	FilterProperties,
 } = require("../../controllers/propertiesController");
 const { saveProperty } = require("../../middlewares/propertyAuth");
 
@@ -35,6 +36,7 @@ propertyRouter.post(
 	CreateProperty,
 );
 propertyRouter.get("/property", verifyJWT, VerifyRole, GetAllProperties);
+propertyRouter.post("/property/filter", FilterProperties);
 propertyRouter.get("/property/:id", GetPropertyByID);
 propertyRouter.get(
 	"/property/category/:id",
