@@ -32,7 +32,6 @@ const CreateListing = async (req, res) => {
 		}
 		const Listing = await prisma.listWithUs.create({
 			data: {
-				Title: data.Title,
 				Bedrooms: parseInt(data.Bedrooms),
 				Bacloney: data.Bacloney,
 				Price: parseFloat(data.Price),
@@ -263,7 +262,6 @@ const UpdateListing = async (req, res) => {
 					id: id,
 				},
 				data: {
-					Title: data.Title || undefined,
 					Bedrooms: parseInt(data.Bedrooms) || undefined,
 					Bacloney: data.Bacloney || undefined,
 					Price: parseFloat(data.Price) || undefined,

@@ -274,7 +274,6 @@ enum AnnouncementType {
 
 model ListWithUs {
   id                     String                   @id @default(uuid())
-  Title                  String
   Bedrooms               Int
   Bacloney               Boolean                  @default(false)
   BalconySize            Float?
