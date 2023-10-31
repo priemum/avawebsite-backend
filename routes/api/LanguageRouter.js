@@ -21,8 +21,8 @@ languageRouter.post(
 	CheckImage,
 	CreateLanguage,
 );
-languageRouter.get("/language", verifyJWT, VerifyRole, GetAllLanguages);
-languageRouter.get("/language/:id", verifyJWT, VerifyRole, GetLanguageByID);
+languageRouter.get("/language", GetAllLanguages);
+languageRouter.get("/language/:id", GetLanguageByID);
 languageRouter.put(
 	"/language/:id",
 	verifyJWT,
