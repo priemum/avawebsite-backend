@@ -106,6 +106,7 @@ const allowedUpdatesList = [
 			"Price",
 			"ActiveStatus",
 			"Bedrooms",
+			"propertyUnits",
 			"Bacloney",
 			"BalconySize",
 			"RentMin",

@@ -6,6 +6,7 @@ const {
 	Purpose,
 	RentFrequency,
 	CompletionStatus,
+	PrismaClient,
 } = require("@prisma/client");
 const { HandleError } = require("../middlewares/ErrorHandler");
 const fs = require("fs");
@@ -29,14 +30,10 @@ const CreateProperty = async (req, res) => {
 				});
 			});
 		}
-		data.Price = parseFloat(data.Price);
-		data.Bedrooms = parseInt(data.Bedrooms);
-		data.BalconySize = parseFloat(data.BalconySize);
 		data.RentMin = parseFloat(data.RentMin);
 		data.RentMax = parseFloat(data.RentMax);
 		data.Longitude = parseFloat(data.Longitude);
 		data.Latitude = parseFloat(data.Latitude);
-		data.Area = parseFloat(data.Area);
 		if (data.ActiveStatus) {
 			if (req.body.ActiveStatus.toLowerCase() === "false") {
 				data.ActiveStatus = false;
@@ -59,16 +56,21 @@ const CreateProperty = async (req, res) => {
 				}),
 			);
 		}
+		data.propertyUnits.map((unit) => {
+			unit.Price = parseFloat(unit.Price);
+			unit.Size = parseFloat(unit.Size);
+			unit.BalconySize = parseFloat(unit.BalconySize);
+			unit.EstimatedRent = parseFloat(unit.EstimatedRent);
+			unit.Bedrooms = parseInt(unit.Bedrooms);
+			unit.Bathrooms = parseInt(unit.Bathrooms);
+			unit.Bacloney = unit.Bacloney === "true" ? true : false;
+			unit.PricePerSQFT = unit.Price / unit.Size;
+		});
 		const Property = await prisma.property.create({
 			data: {
-				Price: data.Price,
-				Bedrooms: data.Bedrooms,
-				Bacloney: data.Bacloney,
-				BalconySize: data.BalconySize,
 				RentMin: data.RentMin,
 				RentMax: data.RentMax,
 				Handover: data.Handover,
-				Area: data.Area,
 				FurnishingStatus: data.FurnishingStatus,
 				VacantStatus: data.VacantStatus,
 				Longitude: data.Longitude,
@@ -76,11 +78,10 @@ const CreateProperty = async (req, res) => {
 				ActiveStatus: data?.ActiveStatus,
 				RentFrequency: data.RentFrequency,
 				CompletionStatus: data.CompletionStatus,
-				Purpose: data.Purpose,
-				PermitNumber: data.PermitNumber,
-				DEDNo: data.DEDNo,
 				ReraNo: data.ReraNo,
-				BRNNo: data.BRNNo,
+				propertyUnits: {
+					createMany: { data: data.propertyUnits },
+				},
 				Aminities: data?.Aminities && {
 					connect: amenities,
 				},
@@ -112,6 +113,7 @@ const CreateProperty = async (req, res) => {
 			},
 			include: {
 				Images: true,
+				propertyUnits: true,
 				Aminities: {
 					include: {
 						Image: true,
@@ -159,7 +161,7 @@ const CreateProperty = async (req, res) => {
 	} catch (error) {
 		if (error instanceof Prisma.PrismaClientKnownRequestError) {
 			if (error.code === "P2025") {
-				return res.status(404).send("Record Doesn't Exist!");
+				return res.status(404).send("Record Doesn't Exist! \n" + error.message);
 			} else if (error.code === "P2021") {
 				return res.status(404).send("Table Doesn't Exist!");
 			} else if (error.code === "P2002") {
@@ -188,6 +190,27 @@ const GetAllProperties = async (req, res) => {
 				take: limit || undefined,
 				include: {
 					Images: true,
+					propertyUnits: {
+						include: {
+							Paymentplan: {
+								include: {
+									Installments: {
+										orderBy: {
+											Number: "asc",
+										},
+
+										include: {
+											Installments_Translation: {
+												include: {
+													Language: true,
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+					},
 					Aminities: {
 						include: {
 							Image: true,
@@ -259,6 +282,27 @@ const GetAllActiveProperties = async (req, res) => {
 				take: limit || undefined,
 				include: {
 					Images: true,
+					propertyUnits: {
+						include: {
+							Paymentplan: {
+								include: {
+									Installments: {
+										orderBy: {
+											Number: "asc",
+										},
+
+										include: {
+											Installments_Translation: {
+												include: {
+													Language: true,
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+					},
 					Aminities: {
 						include: {
 							Image: true,
@@ -324,6 +368,27 @@ const GetPropertyByID = async (req, res) => {
 			where: { id: id },
 			include: {
 				Images: true,
+				propertyUnits: {
+					include: {
+						Paymentplan: {
+							include: {
+								Installments: {
+									orderBy: {
+										Number: "asc",
+									},
+
+									include: {
+										Installments_Translation: {
+											include: {
+												Language: true,
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
 				Aminities: {
 					include: {
 						Image: true,
@@ -391,6 +456,27 @@ const GetPropertiesByCategoryID = async (req, res) => {
 				take: limit || undefined,
 				include: {
 					Images: true,
+					propertyUnits: {
+						include: {
+							Paymentplan: {
+								include: {
+									Installments: {
+										orderBy: {
+											Number: "asc",
+										},
+
+										include: {
+											Installments_Translation: {
+												include: {
+													Language: true,
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+					},
 					Aminities: {
 						include: {
 							Image: true,
@@ -465,6 +551,27 @@ const GetActivePropertiesByCategoryID = async (req, res) => {
 				take: limit || undefined,
 				include: {
 					Images: true,
+					propertyUnits: {
+						include: {
+							Paymentplan: {
+								include: {
+									Installments: {
+										orderBy: {
+											Number: "asc",
+										},
+
+										include: {
+											Installments_Translation: {
+												include: {
+													Language: true,
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+					},
 					Aminities: {
 						include: {
 							Image: true,
@@ -540,6 +647,27 @@ const GetPropertiesByDeveloperID = async (req, res) => {
 				take: limit || undefined,
 				include: {
 					Images: true,
+					propertyUnits: {
+						include: {
+							Paymentplan: {
+								include: {
+									Installments: {
+										orderBy: {
+											Number: "asc",
+										},
+
+										include: {
+											Installments_Translation: {
+												include: {
+													Language: true,
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+					},
 					Aminities: {
 						include: {
 							Image: true,
@@ -614,6 +742,27 @@ const GetActivePropertiesByDeveloperID = async (req, res) => {
 				take: limit || undefined,
 				include: {
 					Images: true,
+					propertyUnits: {
+						include: {
+							Paymentplan: {
+								include: {
+									Installments: {
+										orderBy: {
+											Number: "asc",
+										},
+
+										include: {
+											Installments_Translation: {
+												include: {
+													Language: true,
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+					},
 					Aminities: {
 						include: {
 							Image: true,
@@ -690,6 +839,27 @@ const GetPropertiesByAddressID = async (req, res) => {
 				take: limit || undefined,
 				include: {
 					Images: true,
+					propertyUnits: {
+						include: {
+							Paymentplan: {
+								include: {
+									Installments: {
+										orderBy: {
+											Number: "asc",
+										},
+
+										include: {
+											Installments_Translation: {
+												include: {
+													Language: true,
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+					},
 					Aminities: {
 						include: {
 							Image: true,
@@ -764,9 +934,31 @@ const GetActivePropertiesByAddressID = async (req, res) => {
 				take: limit || undefined,
 				include: {
 					Images: true,
+					propertyUnits: {
+						include: {
+							Paymentplan: {
+								include: {
+									Installments: {
+										orderBy: {
+											Number: "asc",
+										},
+
+										include: {
+											Installments_Translation: {
+												include: {
+													Language: true,
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+					},
 					Aminities: {
 						include: {
 							Image: true,
+							propertyUnits: true,
 							Aminities_Translation: {
 								include: {
 									Language: true,
@@ -850,18 +1042,7 @@ const PropertySearch = async (req, res) => {
 						mode: "insensitive",
 					},
 				},
-				{
-					PermitNumber: {
-						contains: searchTerm,
-						mode: "insensitive",
-					},
-				},
-				{
-					DEDNo: {
-						contains: searchTerm,
-						mode: "insensitive",
-					},
-				},
+
 				{
 					ReraNo: {
 						contains: searchTerm,
@@ -869,9 +1050,23 @@ const PropertySearch = async (req, res) => {
 					},
 				},
 				{
-					BRNNo: {
-						contains: searchTerm,
-						mode: "insensitive",
+					propertyUnits: {
+						some: {
+							OR: [
+								{
+									PermitNumber: {
+										contains: searchTerm,
+										mode: "insensitive",
+									},
+								},
+								{
+									DEDNo: {
+										contains: searchTerm,
+										mode: "insensitive",
+									},
+								},
+							],
+						},
 					},
 				},
 				{
@@ -1018,6 +1213,27 @@ const PropertySearch = async (req, res) => {
 				take: limit || undefined,
 				include: {
 					Images: true,
+					propertyUnits: {
+						include: {
+							Paymentplan: {
+								include: {
+									Installments: {
+										orderBy: {
+											Number: "asc",
+										},
+
+										include: {
+											Installments_Translation: {
+												include: {
+													Language: true,
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+					},
 					Aminities: {
 						include: {
 							Image: true,
@@ -1093,43 +1309,66 @@ const FilterProperties = async (req, res) => {
 					},
 				},
 				{
-					Bathrooms: {
-						in: filter.Bathrooms,
-					},
-				},
-				{
-					Bedrooms: {
-						in: filter.Bedrooms,
-					},
-				},
-				{
 					categoryId: {
 						equals: filter.CategoryID,
 					},
 				},
 				{
-					Area: {
-						lte: filter.AreaMax,
-					},
-				},
-				{
-					Price: {
-						gte: filter.PriceMin,
-					},
-				},
-				{
-					Price: {
-						lte: filter.PriceMax,
-					},
-				},
-				{
-					Area: {
-						gte: filter.AreaMin,
+					propertyUnits: {
+						some: {
+							AND: [
+								{
+									Bedrooms: {
+										in: filter.Bedrooms,
+									},
+								},
+								{
+									Bathrooms: {
+										in: filter.Bathrooms,
+									},
+								},
+								{
+									Size: {
+										lte: filter.AreaMax,
+									},
+								},
+								{
+									Size: {
+										gte: filter.AreaMin,
+									},
+								},
+								{
+									Price: {
+										lte: filter.PriceMax,
+									},
+								},
+								{
+									Price: {
+										gte: filter.PriceMin,
+									},
+								},
+								{
+									BalconySize: {
+										lte: filter.BalconySizeMax,
+									},
+								},
+								{
+									BalconySize: {
+										gte: filter.BalconySizeMin,
+									},
+								},
+								{
+									EstimatedRent: {
+										gte: filter.EstimatedRent,
+									},
+								},
+							],
+						},
 					},
 				},
 			],
 		};
-
+		console.log(filter);
 		if (filter.purpose) {
 			if (filter.purpose.toLowerCase() === Purpose.Rent.toLowerCase()) {
 				query.AND.push({
@@ -1168,6 +1407,27 @@ const FilterProperties = async (req, res) => {
 				take: limit || undefined,
 				include: {
 					Images: true,
+					propertyUnits: {
+						include: {
+							Paymentplan: {
+								include: {
+									Installments: {
+										orderBy: {
+											Number: "asc",
+										},
+
+										include: {
+											Installments_Translation: {
+												include: {
+													Language: true,
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+					},
 					Aminities: {
 						include: {
 							Image: true,
@@ -1243,6 +1503,7 @@ const UpdateProperty = async (req, res) => {
 			where: { id: id },
 			select: Selected,
 		});
+		console.log(data);
 		if (!data) {
 			return res.status(404).send("Property was not Found!");
 		}
@@ -1250,14 +1511,10 @@ const UpdateProperty = async (req, res) => {
 			data.Images = [];
 		}
 		updates.forEach((update) => (data[update] = req.body[update]));
-		data.Price = parseFloat(data?.Price);
-		data.Bedrooms = parseInt(data?.Bedrooms);
-		data.BalconySize = parseFloat(data?.BalconySize);
 		data.RentMin = parseFloat(data?.RentMin);
 		data.RentMax = parseFloat(data?.RentMax);
 		data.Longitude = parseFloat(data?.Longitude);
 		data.Latitude = parseFloat(data?.Latitude);
-		data.Area = parseFloat(data?.Area);
 		if (images) {
 			images.map(async (image) => {
 				data.Images.push({
@@ -1276,16 +1533,8 @@ const UpdateProperty = async (req, res) => {
 				data.ActiveStatus = true;
 			}
 		}
-		if (data.Bacloney) {
-			if (req.body.Bacloney.toLowerCase() === "false") {
-				data.Bacloney = false;
-			} else {
-				data.Bacloney = true;
-			}
-		}
 		let amenities = [];
 		if (data.Aminities) {
-			console.log("object");
 			data.Aminities.forEach((item) =>
 				amenities.push({
 					id: item,
@@ -1308,29 +1557,43 @@ const UpdateProperty = async (req, res) => {
 					}
 				});
 			}
+			if (data.propertyUnits !== undefined) {
+				data.propertyUnits.map(async (unit) => {
+					await prisma.propertyUnits.update({
+						where: {
+							id: unit.id,
+						},
+						data: {
+							Price: parseFloat(unit.Price),
+							Size: parseFloat(unit.Size),
+							BalconySize: parseFloat(unit.BalconySize),
+							EstimatedRent: parseFloat(unit.EstimatedRent),
+							Bedrooms: parseInt(unit.Bedrooms),
+							Bathrooms: parseInt(unit.Bathrooms),
+							Bacloney: unit.Bacloney === "true" ? true : false,
+							PricePerSQFT: unit.PricePerSQFT,
+							PermitNumber: unit.PermitNumber,
+							DEDNo: unit.DEDNo,
+						},
+					});
+				});
+			}
+
 			const UpdatedProperty = await prisma.property.update({
 				where: { id: id },
 				data: {
-					Price: data.Price || undefined,
-					Bedrooms: data.Bedrooms || undefined,
-					Bacloney: data.Bacloney || undefined,
-					BalconySize: data.BalconySize || undefined,
 					RentMin: data.RentMin || undefined,
 					RentMax: data.RentMax || undefined,
-					Area: data.Area || undefined,
 					Handover: data.Handover || undefined,
 					FurnishingStatus: data.FurnishingStatus || undefined,
 					VacantStatus: data.VacantStatus || undefined,
 					Longitude: data.Longitude || undefined,
 					Latitude: data.Latitude || undefined,
-					ActiveStatus: data?.ActiveStatus || undefined,
+					ActiveStatus: data?.ActiveStatus,
 					Purpose: data.Purpose || undefined,
 					RentFrequency: data.RentFrequency || undefined,
 					CompletionStatus: data.CompletionStatus || undefined,
-					PermitNumber: data.PermitNumber || undefined,
-					DEDNo: data.DEDNo || undefined,
 					ReraNo: data.ReraNo || undefined,
-					BRNNo: data.BRNNo || undefined,
 					Property_Translation: data?.Property_Translation && {
 						createMany: {
 							data: data.Property_Translation,
@@ -1362,6 +1625,27 @@ const UpdateProperty = async (req, res) => {
 				},
 				include: {
 					Images: true,
+					propertyUnits: {
+						include: {
+							Paymentplan: {
+								include: {
+									Installments: {
+										orderBy: {
+											Number: "asc",
+										},
+
+										include: {
+											Installments_Translation: {
+												include: {
+													Language: true,
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+					},
 					Aminities: true,
 					Category: {
 						include: {
@@ -1497,6 +1781,27 @@ const DeleteProperty = async (req, res) => {
 			where: { id: id },
 			include: {
 				Images: true,
+				propertyUnits: {
+					include: {
+						Paymentplan: {
+							include: {
+								Installments: {
+									orderBy: {
+										Number: "asc",
+									},
+
+									include: {
+										Installments_Translation: {
+											include: {
+												Language: true,
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
 				Aminities: {
 					include: {
 						Image: true,
@@ -1553,6 +1858,13 @@ const DeleteProperty = async (req, res) => {
 						},
 					});
 				}
+			});
+		}
+		if (Property.propertyUnits.length > 0) {
+			await prisma.propertyUnits.deleteMany({
+				where: {
+					propertyId: id,
+				},
 			});
 		}
 		if (Property.Property_Translation.length > 0) {

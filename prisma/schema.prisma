@@ -34,6 +34,7 @@ model Users {
   ActiveStatus Boolean    @default(true)
   Gender       Gender?
   Password     String
+  BRNNo        String?
   Address      Address?   @relation(fields: [addressId], references: [id])
   refreshToken String?
   Image        Images?
@@ -191,11 +192,6 @@ model Category {
 
 model Property {
   id                   String                 @id @default(uuid())
-  Price                Float
-  Bedrooms             Int
-  Bacloney             Boolean                @default(false)
-  BalconySize          Float?
-  Bathrooms            Int?
   RentMin              Float                  @default(0)
   RentMax              Float?
   Handover             String?
@@ -203,15 +199,11 @@ model Property {
   VacantStatus         String?
   Longitude            Float?
   Latitude             Float?
-  Area                 Float?
   ActiveStatus         Boolean                @default(true)
   Purpose              Purpose?
   RentFrequency        RentFrequency?
   CompletionStatus     CompletionStatus?
-  PermitNumber         String
-  DEDNo                String
   ReraNo               String
-  BRNNo                String
   Developer            Developer              @relation(fields: [developerId], references: [id])
   Category             Category               @relation(fields: [categoryId], references: [id])
   Address              Address                @relation(fields: [addressId], references: [id])
@@ -221,6 +213,7 @@ model Property {
   developerId          String
   categoryId           String
   addressId            String
+  propertyUnits        propertyUnits[]
   Aminities            Aminities[]
   Images               Images[]
   MetaData             MetaData[]
@@ -241,6 +234,55 @@ enum RentFrequency {
 enum CompletionStatus {
   Ready
   OffPlan
+}
+
+model propertyUnits {
+  id            String        @id @default(uuid())
+  Size          Float?
+  Price         Float
+  Bedrooms      Int
+  Bacloney      Boolean       @default(false)
+  BalconySize   Float?
+  Bathrooms     Int?
+  EstimatedRent Float?
+  PricePerSQFT  Float?
+  PermitNumber  String
+  DEDNo         String
+  Property      Property?     @relation(fields: [propertyId], references: [id])
+  propertyId    String?
+  Paymentplan   PaymentPlan[]
+  CreatedAt     DateTime      @default(now())
+  UpdatedAt     DateTime      @updatedAt
+}
+
+model PaymentPlan {
+  id                           String          @id @default(uuid())
+  DownPayemnt                  Float
+  TotalMonths                  Int
+  Posthandover                 Boolean         @default(false)
+  NoOfPosthandoverMonths       Int?
+  PosthandoverPercentage       Float?
+  OnHandoverPercentage         Float?
+  DuringConstructionMonths     Int
+  DuringConstructionPercentage Float
+  HandoverDate                 DateTime
+  CreatedAt                    DateTime        @default(now())
+  UpdatedAt                    DateTime        @updatedAt
+  Installments                 Installments[]
+  propertyUnits                propertyUnits[]
+}
+
+model Installments {
+  id                       String                     @id @default(uuid())
+  Number                   Int
+  PercentageOfPayment      Float
+  Amount                   Float?
+  Date                     DateTime?
+  CreatedAt                DateTime                   @default(now())
+  UpdatedAt                DateTime                   @updatedAt
+  Installments_Translation Installments_Translation[]
+  PaymentPlan              PaymentPlan?               @relation(fields: [paymentPlanId], references: [id])
+  paymentPlanId            String?
 }
 
 model Aminities {
@@ -406,6 +448,7 @@ model Languages {
   Jobs_Translation          Jobs_Translation[]
   Aminities_Translation     Aminities_Translation[]
   ListWithUs_Translation    ListWithUs_Translation[]
+  Installments_Translation  Installments_Translation[]
 }
 
 enum direction {
@@ -492,6 +535,17 @@ model Property_Translation {
   propertyID  String
   CreatedAt   DateTime  @default(now())
   UpdatedAt   DateTime  @updatedAt
+}
+
+model Installments_Translation {
+  id             String        @id @default(uuid())
+  Description    String
+  Language       Languages     @relation(fields: [languagesId], references: [id])
+  languagesId    String
+  CreatedAt      DateTime      @default(now())
+  UpdatedAt      DateTime      @updatedAt
+  Installments   Installments? @relation(fields: [installmentsId], references: [id])
+  installmentsId String?
 }
 
 model ListWithUs_Translation {

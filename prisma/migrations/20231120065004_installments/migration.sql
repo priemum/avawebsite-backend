@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Installments" ALTER COLUMN "Amount" DROP NOT NULL,
+ALTER COLUMN "Date" DROP NOT NULL;

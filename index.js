@@ -33,6 +33,7 @@ const applicantRouter = require("./routes/api/ApplicationRoute");
 const { errorHandler } = require("./middlewares/ErrorHandler");
 const { logger } = require("./middlewares/logEvents");
 const { CronJob } = require("./middlewares/CronJobs");
+const paymentPlanRouter = require("./routes/api/PaymentPlanRoute");
 // const schedule = require("node-schedule");
 const port = process.env.PORT || 3500;
 const app = express();
@@ -72,6 +73,7 @@ app.use("/", enquiryFormRouter);
 app.use("/", listwithusRouter);
 app.use("/", jobRouter);
 app.use("/", applicantRouter);
+app.use("/", paymentPlanRouter);
 
 app.use(errorHandler);
 app.listen(port, () => {
