@@ -3902,3 +3902,24 @@
 20231122	13:47:24	c6496782-b22b-451c-821a-4f0faf1210a6	GET	200	 Message: OK 	/property/76c516c5-6b38-4f8c-84c5-a189e05f7d9e
 20231122	13:47:30	91d493a2-ce56-4467-a417-076e2e23bdae	GET	200	 Message: OK 	/property/search/50?page=1&limit=4
 20231122	13:47:38	547943e1-fc59-4da9-a817-0b025fe45873	GET	200	 Message: OK 	/property/search/new?page=1&limit=4
+20231122	15:16:24	30931dc8-cee0-4806-82e0-d38e85ebeb87	GET	200	 Message: OK 	/property-active?page=1&limit=4
+20231122	15:16:37	8488955f-f8c9-420b-9007-75900a23aede	POST	403	 Message: Forbidden 	/paymentplan
+20231122	15:16:43	d1f9b616-8d31-4b62-b7a4-273bdbb8964c	POST	201	 Message: Created 	/auth/login
+20231122	15:16:48	b0a74e2a-31f9-41ab-bece-1924f72f5f11	POST	500	 Message: Internal Server Error 	/paymentplan
+20231122	15:17:35	57d6b462-ccc2-4e77-a062-3d616447be91	POST	500	 Message: Internal Server Error 	/paymentplan
+20231122	15:18:37	8692a2ca-259e-4c4c-b4c6-781cda6e9058	POST	500	 Message: Internal Server Error 	/paymentplan
+20231122	15:20:20	04d288c8-ba45-405c-90fa-e132a96be111	POST	500	 Message: Internal Server Error 	/paymentplan
+20231122	15:22:25	d56eca5e-e403-4a49-9e18-96081a0651f1	POST	403	 Message: Forbidden 	/paymentplan
+20231122	15:22:29	85f7f989-141c-4dbf-9bf1-5affe81af52b	GET	200	 Message: OK 	/auth/refreshToken
+20231122	15:22:35	c2e86c4c-7f66-435a-a8cb-84754b761106	POST	500	 Message: Internal Server Error 	/paymentplan
+20231122	15:24:56	360a2359-3f1e-4d7a-a0ba-2d0302df9922	POST	500	 Message: Internal Server Error 	/paymentplan
+20231122	15:25:45	deee2d28-e381-489e-82de-f709ab6fc444	POST	500	 Message: Internal Server Error 	/paymentplan
+20231122	15:30:04	a839bb01-5396-4019-a3c2-c1d0a148c773	POST	403	 Message: Forbidden 	/paymentplan
+20231122	15:30:09	debad75b-6501-43db-9896-a83e08919baa	GET	200	 Message: OK 	/auth/refreshToken
+20231122	15:30:13	be3d3040-61ec-48c0-97da-39b92e4533d9	POST	500	 Message: Internal Server Error 	/paymentplan
+20231122	15:30:55	e98ecd17-0e19-4eae-a0fd-b666b9666ad0	POST	500	 Message: Internal Server Error 	/paymentplan
+20231122	15:33:44	0a4889fe-7537-45f0-bad3-00f9c66cfe34	POST	500	 Message: Internal Server Error 	/paymentplan
+20231122	15:34:54	0b8711c4-d6f0-4c8e-8806-164777a6bfde	POST	201	 Message: Created 	/paymentplan
+20231122	15:35:37	6743c160-c9b1-4fb9-8a9c-c91bcb9478d5	POST	403	 Message: Forbidden 	/paymentplan
+20231122	15:35:41	5e5f1a45-6986-4544-9230-e374a3cf68f6	GET	200	 Message: OK 	/auth/refreshToken
+20231122	15:35:45	be4f4cf3-903b-49b3-9c15-148d0723cb59	POST	201	 Message: Created 	/paymentplan

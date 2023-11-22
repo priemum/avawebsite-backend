@@ -34,10 +34,11 @@ const CreatePaymentPlan = async (req, res) => {
 					PostHandoverMonth = data.TotalMonths - handoverInstallmentNo;
 					for (let i = 0; i < data.TotalMonths; i++) {
 						//if it is the first installment
+						console.log("I: ", i);
 						if (i == 0) {
 							Installments[i] = {
 								Number: i + 1,
-								Desciption: "Downpayment",
+								Description: "Downpayment",
 								PercentageOfPayment: data.DownPayemnt,
 								Amount: (data.DownPayemnt / 100) * Price,
 								Date: new Date(data.HandoverDate),
@@ -46,7 +47,7 @@ const CreatePaymentPlan = async (req, res) => {
 							//if it is handover installment
 							Installments[i] = {
 								Number: i + 1,
-								Desciption: "On Handover",
+								Description: "On Handover",
 								PercentageOfPayment: data.OnHandoverPercentage,
 								Amount: (data.OnHandoverPercentage / 100) * Price,
 								Date: data.HandoverDate,
@@ -55,7 +56,7 @@ const CreatePaymentPlan = async (req, res) => {
 							//if it is posthandover installment
 							Installments[i] = {
 								Number: i + 1,
-								Desciption: "Post Handover Installment No. " + i,
+								Description: "Post Handover Installment No. " + i,
 								PercentageOfPayment:
 									data.PosthandoverPercentage / data.NoOfPosthandoverMonths,
 								Amount:
@@ -149,6 +150,9 @@ const CreatePaymentPlan = async (req, res) => {
 					};
 				}
 			});
+			// Installments.map((x) => {
+			// 	console.log(x.Installments_Translation);
+			// });
 			const NewPaymentPlan = await prisma.paymentPlan.create({
 				data: {
 					DownPayemnt: data.DownPayemnt,
@@ -176,7 +180,15 @@ const CreatePaymentPlan = async (req, res) => {
 					},
 				},
 				include: {
-					Installments: true,
+					Installments: {
+						include: {
+							Installments_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+						},
+					},
 					propertyUnits: true,
 				},
 			});
@@ -185,10 +197,7 @@ const CreatePaymentPlan = async (req, res) => {
 			// });
 			return NewPaymentPlan;
 		});
-		return res.status(201).json({
-			Message: "Created successfully",
-			results,
-		});
+		return res.status(201).send(results);
 	} catch (error) {
 		if (error instanceof Prisma.PrismaClientKnownRequestError) {
 			if (error.code === "P2025") {
