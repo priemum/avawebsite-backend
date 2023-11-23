@@ -3923,3 +3923,6 @@
 20231122	15:35:37	6743c160-c9b1-4fb9-8a9c-c91bcb9478d5	POST	403	 Message: Forbidden 	/paymentplan
 20231122	15:35:41	5e5f1a45-6986-4544-9230-e374a3cf68f6	GET	200	 Message: OK 	/auth/refreshToken
 20231122	15:35:45	be4f4cf3-903b-49b3-9c15-148d0723cb59	POST	201	 Message: Created 	/paymentplan
+20231123	11:59:03	c8d0a112-8508-4971-8d01-49de7fc20870	POST	403	 Message: Forbidden 	/property
+20231123	11:59:08	25a9420b-f9f3-4651-a45b-2df3f7d17ddb	POST	201	 Message: Created 	/auth/login
+20231123	11:59:12	79f76ed9-2aed-4df8-8713-9705ac2d9c4a	POST	409	 Message: Conflict 	/property

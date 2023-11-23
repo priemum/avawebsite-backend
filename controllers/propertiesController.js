@@ -71,6 +71,7 @@ const CreateProperty = async (req, res) => {
 				RentMin: data.RentMin,
 				RentMax: data.RentMax,
 				Handover: data.Handover,
+				Purpose: data.Purpose,
 				FurnishingStatus: data.FurnishingStatus,
 				VacantStatus: data.VacantStatus,
 				Longitude: data.Longitude,

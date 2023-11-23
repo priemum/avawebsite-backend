@@ -34,7 +34,6 @@ const CreatePaymentPlan = async (req, res) => {
 					PostHandoverMonth = data.TotalMonths - handoverInstallmentNo;
 					for (let i = 0; i < data.TotalMonths; i++) {
 						//if it is the first installment
-						console.log("I: ", i);
 						if (i == 0) {
 							Installments[i] = {
 								Number: i + 1,
@@ -123,9 +122,6 @@ const CreatePaymentPlan = async (req, res) => {
 				}
 			} else {
 				Installments = data.Installments;
-				// Installments.map((installment) => {
-				// 	console.log(installment.Installments_Translation);
-				// });
 			}
 			const LangIDS = await prisma.languages.findMany({
 				select: {
@@ -192,9 +188,6 @@ const CreatePaymentPlan = async (req, res) => {
 					propertyUnits: true,
 				},
 			});
-			// const NewInstallment = prisma.installments.create({
-			// 	data: Installments,
-			// });
 			return NewPaymentPlan;
 		});
 		return res.status(201).send(results);
