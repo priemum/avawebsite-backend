@@ -374,6 +374,7 @@ const UpdatePaymentPlan = async (req, res) => {
 	const updates = Object.keys(req.body);
 	const Selected = { id: true };
 	let Units = [];
+
 	if (updates.PropertyUnits) {
 		updates.PropertyUnits.forEach((unit) =>
 			Units.push({
@@ -401,9 +402,9 @@ const UpdatePaymentPlan = async (req, res) => {
 				await prisma.installments.update({
 					where: { id: item.id },
 					data: {
-						Amount: item.Amount,
-						Number: item.Number,
-						PercentageOfPayment: item.PercentageOfPayment,
+						Amount: parseFloat(item.Amount),
+						Number: parseInt(item.Number),
+						PercentageOfPayment: parseFloat(item.PercentageOfPayment),
 						Date: item.Date,
 						Installments_Translation: {
 							updateMany: item.Installments_Translation.map((translation) => ({
@@ -431,14 +432,16 @@ const UpdatePaymentPlan = async (req, res) => {
 				id: id,
 			},
 			data: {
-				DownPayemnt: req.body.DownPayemnt,
-				DuringConstructionMonths: req.body.DuringConstructionMonths,
-				DuringConstructionPercentage: req.body.DuringConstructionPercentage,
-				TotalMonths: req.body.TotalMonths,
+				DownPayemnt: parseFloat(req.body.DownPayemnt),
+				DuringConstructionMonths: parseInt(req.body.DuringConstructionMonths),
+				DuringConstructionPercentage: parseFloat(
+					req.body.DuringConstructionPercentage,
+				),
+				TotalMonths: parseInt(req.body.TotalMonths),
 				Posthandover: req.body.Posthandover,
-				NoOfPosthandoverMonths: req.body.NoOfPosthandoverMonths,
-				PosthandoverPercentage: req.body.PosthandoverPercentage,
-				OnHandoverPercentage: req.body.OnHandoverPercentage,
+				NoOfPosthandoverMonths: parseInt(req.body.NoOfPosthandoverMonths),
+				PosthandoverPercentage: parseFloat(req.body.PosthandoverPercentage),
+				OnHandoverPercentage: parseFloat(req.body.OnHandoverPercentage),
 				HandoverDate: new Date(req.body.HandoverDate),
 				propertyUnits: {
 					connect: Units,
