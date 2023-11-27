@@ -151,23 +151,25 @@ const CreatePaymentPlan = async (req, res) => {
 			// });
 			const NewPaymentPlan = await prisma.paymentPlan.create({
 				data: {
-					DownPayemnt: data.DownPayemnt,
-					DuringConstructionMonths: data.DuringConstructionMonths,
-					DuringConstructionPercentage: data.DuringConstructionPercentage,
-					TotalMonths: data.TotalMonths,
+					DownPayemnt: parseFloat(data.DownPayemnt),
+					DuringConstructionMonths: parseInt(data.DuringConstructionMonths),
+					DuringConstructionPercentage: parseFloat(
+						data.DuringConstructionPercentage,
+					),
+					TotalMonths: parseInt(data.TotalMonths),
 					Posthandover: data.Posthandover,
-					NoOfPosthandoverMonths: data.NoOfPosthandoverMonths,
-					PosthandoverPercentage: data.PosthandoverPercentage,
-					OnHandoverPercentage: data.OnHandoverPercentage,
+					NoOfPosthandoverMonths: parseInt(data.NoOfPosthandoverMonths),
+					PosthandoverPercentage: parseFloat(data.PosthandoverPercentage),
+					OnHandoverPercentage: parseFloat(data.OnHandoverPercentage),
 					HandoverDate: new Date(data.HandoverDate),
 					propertyUnits: {
 						connect: Units,
 					},
 					Installments: {
 						create: Installments.map((item) => ({
-							Number: item.Number,
-							PercentageOfPayment: item.PercentageOfPayment,
-							Amount: item.Amount,
+							Number: parseInt(item.Number),
+							PercentageOfPayment: parseFloat(item.PercentageOfPayment),
+							Amount: parseFloat(item.Amount),
 							Date: new Date(data.HandoverDate),
 							Installments_Translation: {
 								createMany: item.Installments_Translation,

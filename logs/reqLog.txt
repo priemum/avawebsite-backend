@@ -3926,3 +3926,7 @@
 20231123	11:59:03	c8d0a112-8508-4971-8d01-49de7fc20870	POST	403	 Message: Forbidden 	/property
 20231123	11:59:08	25a9420b-f9f3-4651-a45b-2df3f7d17ddb	POST	201	 Message: Created 	/auth/login
 20231123	11:59:12	79f76ed9-2aed-4df8-8713-9705ac2d9c4a	POST	409	 Message: Conflict 	/property
+20231127	17:25:55	60543976-1625-45de-a697-be348ca68c3c	GET	200	 Message: OK 	/auth/refreshToken
+20231127	17:26:04	17b8ae15-cd26-4411-b38a-e49b82d932fe	POST	404	 Message: Not Found 	/paymentplan
+20231127	17:26:20	212cc70b-0111-464d-9d29-beb95f05cabc	GET	200	 Message: OK 	/property-active?page=1&limit=4
+20231127	17:26:35	72533fa6-5679-4ec0-8ac4-cd3a9868a2c8	POST	201	 Message: Created 	/paymentplan
