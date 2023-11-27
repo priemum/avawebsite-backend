@@ -23,6 +23,15 @@ const CreatePaymentPlan = async (req, res) => {
 				});
 			}
 		}
+		data.TotalMonths = parseInt(data.TotalMonths);
+		data.NoOfPosthandoverMonths = parseInt(data.TotalMonths);
+		data.DuringConstructionMonths = parseInt(data.TotalMonths);
+		data.DownPayemnt = parseFloat(data.DownPayemnt);
+		data.DuringConstructionPercentage = parseFloat(
+			data.DuringConstructionPercentage,
+		);
+		data.PosthandoverPercentage = parseFloat(data.PosthandoverPercentage);
+		data.OnHandoverPercentage = parseFloat(data.OnHandoverPercentage);
 		const results = await prisma.$transaction(async (prisma) => {
 			let Installments = [];
 			let handoverInstallmentNo = data.TotalMonths;
