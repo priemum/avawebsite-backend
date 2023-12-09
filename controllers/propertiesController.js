@@ -278,7 +278,7 @@ const GetAllProperties = async (req, res) => {
 			MaxPrice: aggregation._max.Price,
 			MinPrice: aggregation._min.Price,
 			MaxSize: aggregation._max.Size,
-			MaxSize: aggregation._min.Size,
+			MinSize: aggregation._min.Size,
 		});
 	} catch (error) {
 		return res.status(500).send(error.message);
