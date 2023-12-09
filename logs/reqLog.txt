@@ -3930,3 +3930,38 @@
 20231127	17:26:04	17b8ae15-cd26-4411-b38a-e49b82d932fe	POST	404	 Message: Not Found 	/paymentplan
 20231127	17:26:20	212cc70b-0111-464d-9d29-beb95f05cabc	GET	200	 Message: OK 	/property-active?page=1&limit=4
 20231127	17:26:35	72533fa6-5679-4ec0-8ac4-cd3a9868a2c8	POST	201	 Message: Created 	/paymentplan
+20231129	12:27:59	313ad895-8d21-4462-906e-61b1be20ca14	POST	201	 Message: Created 	/auth/login
+20231129	12:28:34	b565d340-5240-4281-bd10-ca6c707acd7c	GET	200	 Message: OK 	/auth/logout
+20231129	12:29:08	b2eef174-a1a8-4bb1-80df-ec2fda113fd5	POST	201	 Message: Created 	/auth/login
+20231129	12:31:15	0ae825fd-1487-4675-a990-0d5b4b1da9ca	POST	201	 Message: Created 	/users
+20231129	12:31:44	d9b325c0-683f-45da-8578-aa9d9d994685	GET	200	 Message: OK 	/role
+20231129	12:32:18	6c122684-7409-4391-949c-362b71ff9ba1	PUT	200	 Message: OK 	/users/41a4d92c-c798-4cc1-829c-c1eb464727b5
+20231129	12:32:33	1cc19da3-7e91-4daa-9d70-6f5069caa2a3	GET	200	 Message: OK 	/users/41a4d92c-c798-4cc1-829c-c1eb464727b5
+20231129	12:32:56	e11033cc-2851-484a-a2c5-bd5e9f270d7f	GET	200	 Message: OK 	/role/772e3b53-7103-4bb6-9599-fe9ebb306154
+20231201	11:28:31	9d5afdb2-94eb-4399-8040-ede318836959	POST	201	 Message: Created 	/auth/login
+20231201	11:29:17	23c9a900-d51e-4ac1-8bf8-df1a04ddb3cf	POST	400	 Message: Bad Request 	/address
+20231201	11:30:19	345c2660-88ac-4b2a-8fbc-49f00d654a68	POST	400	 Message: Bad Request 	/address
+20231201	11:30:46	9fb95e88-fd79-4165-8faf-ecfd11bb54fb	POST	400	 Message: Bad Request 	/address
+20231201	11:32:12	69a5fa69-75b0-48fe-9ebe-b09a12cafc28	POST	400	 Message: Bad Request 	/address
+20231201	11:41:37	3e51cec4-a321-4acf-83c9-4590ad972b9a	POST	403	 Message: Forbidden 	/address
+20231201	11:41:44	8302221d-a78d-42cf-bb04-6544da7113ee	GET	200	 Message: OK 	/auth/refreshToken
+20231201	11:41:48	ddce9442-9bd5-4e4e-bea2-d7d575e98516	POST	201	 Message: Created 	/address
+20231201	11:42:03	03607561-4ac1-4b75-b4af-5450d4a07274	DELETE	200	 Message: OK 	/address/32cb585b-81b7-4c15-b7d3-253b764a7f9c
+20231201	15:33:47	b4d61489-09c2-4cac-a12e-4a3218c13757	GET	200	 Message: OK 	/auth/refreshToken
+20231201	15:34:26	5fab3dba-d4a9-439b-8b61-5b83ae137773	POST	500	 Message: Internal Server Error 	/address
+20231201	15:35:28	fe40a37b-1093-4814-80b8-7d7809842aec	POST	500	 Message: Internal Server Error 	/address
+20231201	15:36:19	c2121ce2-5a12-4e55-8188-1b89541b29b8	POST	500	 Message: Internal Server Error 	/address
+20231201	15:36:58	518c5a26-bca7-48c3-9d68-0f4f8564c3e1	POST	500	 Message: Internal Server Error 	/address
+20231201	15:37:43	9aab34ad-8ce3-4f6c-baf6-1659c84d299b	POST	500	 Message: Internal Server Error 	/address
+20231201	15:39:59	f207a166-f886-447c-92a6-1d0828db004c	POST	403	 Message: Forbidden 	/address
+20231201	15:40:03	e255db63-5413-4d5a-a5f8-9eefc47a6c7c	GET	200	 Message: OK 	/auth/refreshToken
+20231201	15:40:08	c7e77ba3-b52a-4e04-88dd-621009017c6a	POST	500	 Message: Internal Server Error 	/address
+20231201	15:41:45	99dd3fb5-87f4-4c1c-9ffe-ad96c7938d2d	POST	500	 Message: Internal Server Error 	/address
+20231201	15:42:31	1f9140e4-370b-4593-9ad5-e9cc6255e022	POST	500	 Message: Internal Server Error 	/address
+20231209	15:06:56	6439a1a6-2223-462b-8768-14407f03896c	POST	201	 Message: Created 	/auth/login
+20231209	15:07:23	e1e8b62d-6995-4847-b830-e36987714014	POST	201	 Message: Created 	/address
+20231209	15:45:29	ba73148c-414c-43b4-8963-e17d48733f9d	GET	200	 Message: OK 	/auth/refreshToken
+20231209	15:45:34	6253204d-e39b-42c9-b8a2-fdf991cde2e9	GET	200	 Message: OK 	/property?page=1&limit=2
+20231209	15:46:19	25ec400f-d79c-4dad-8cda-1b1a63850743	POST	409	 Message: Conflict 	/property
+20231209	16:05:55	d4c67d1f-24ee-42c0-84d0-19e516a45a00	GET	200	 Message: OK 	/auth/refreshToken
+20231209	16:05:59	a791059f-c4bd-4129-a129-6bab9fee38cc	GET	200	 Message: OK 	/property?page=1&limit=2

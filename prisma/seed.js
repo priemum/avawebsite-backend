@@ -91,6 +91,25 @@ async function main() {
 			},
 		});
 	});
+	const AllRoles = await prisma.role.findMany({
+		where: {
+			id: {
+				not: SuperAdminID.id,
+			},
+		},
+	});
+	AllRoles.map(async (role) => {
+		await prisma.role_Resources.createMany({
+			data: AllResources.map((resource) => ({
+				roleID: role.id,
+				resourcesID: resource.id,
+				Create: false,
+				Update: false,
+				Read: false,
+				Delete: false,
+			})),
+		});
+	});
 	// ------ USER ---------
 	// await prisma.user.upsert({
 	// 	where: { email: "kanaan@avarealestate.ae" },

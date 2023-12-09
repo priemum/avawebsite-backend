@@ -261,9 +261,24 @@ const GetAllProperties = async (req, res) => {
 		if (!Properties) {
 			return res.status(404).send("No Properties Were Found!");
 		}
+		const aggregation = await prisma.propertyUnits.aggregate({
+			_max: {
+				Price: true,
+				Size: true,
+			},
+			_min: {
+				Price: true,
+				Size: true,
+			},
+		});
+
 		res.status(200).json({
 			count,
 			Properties,
+			MaxPrice: aggregation._max.Price,
+			MinPrice: aggregation._min.Price,
+			MaxSize: aggregation._max.Size,
+			MaxSize: aggregation._min.Size,
 		});
 	} catch (error) {
 		return res.status(500).send(error.message);
