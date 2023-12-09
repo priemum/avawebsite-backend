@@ -77,6 +77,7 @@ async function main() {
 	console.log("Super Aadmin ID: ", SuperAdminID.id);
 	const AllResources = await prisma.resources.findMany();
 	AllResources.map(async (resource) => {
+		console.log("Resource: ", resource.Name);
 		await prisma.resources.update({
 			where: { Name: resource.Name },
 			data: {
