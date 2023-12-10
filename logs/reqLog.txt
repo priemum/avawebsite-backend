@@ -3965,3 +3965,5 @@
 20231209	15:46:19	25ec400f-d79c-4dad-8cda-1b1a63850743	POST	409	 Message: Conflict 	/property
 20231209	16:05:55	d4c67d1f-24ee-42c0-84d0-19e516a45a00	GET	200	 Message: OK 	/auth/refreshToken
 20231209	16:05:59	a791059f-c4bd-4129-a129-6bab9fee38cc	GET	200	 Message: OK 	/property?page=1&limit=2
+20231210	23:13:52	c876e5a6-1e59-4233-889b-804ccb9d6cdf	GET	500	 Message: Internal Server Error 	/data
+20231210	23:14:08	bb0422b6-4655-4bca-8615-09398c794c20	GET	200	 Message: OK 	/data
