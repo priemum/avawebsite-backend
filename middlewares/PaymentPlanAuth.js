@@ -25,7 +25,10 @@ const CheckPaymentPlan = async (req, res, next) => {
 		}
 		console.log("Total Percentage: ", TotalPercentage);
 		if (TotalPercentage > 100) {
-			throw new Error("Error: Percentage Total Cannot Be Larger Than 100%!");
+			throw new Error(
+				"Error: Percentage Total Cannot Be Larger Than 100%! ," +
+					TotalPercentage,
+			);
 		}
 		console.log(TotalMonths);
 		if (TotalMonths <= 0) {
