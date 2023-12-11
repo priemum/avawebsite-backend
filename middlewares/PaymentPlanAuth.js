@@ -19,9 +19,11 @@ const CheckPaymentPlan = async (req, res, next) => {
 		} = req.body;
 
 		let TotalPercentage =
-			DownPayemnt + OnHandoverPercentage + DuringConstructionPercentage;
+			parseFloat(DownPayemnt) +
+			parseFloat(OnHandoverPercentage) +
+			parseFloat(DuringConstructionPercentage);
 		if (Posthandover) {
-			TotalPercentage += PosthandoverPercentage;
+			TotalPercentage += parseFloat(PosthandoverPercentage);
 		}
 		console.log("Total Percentage: ", TotalPercentage);
 		if (TotalPercentage > 100) {
