@@ -23,7 +23,8 @@ const CheckPaymentPlan = async (req, res, next) => {
 		if (Posthandover) {
 			TotalPercentage += PosthandoverPercentage;
 		}
-		if (TotalPercentage >= 100) {
+		console.log("Total Percentage: ", TotalPercentage);
+		if (TotalPercentage > 100) {
 			throw new Error("Error: Percentage Total Cannot Be Larger Than 100%!");
 		}
 		console.log(TotalMonths);
