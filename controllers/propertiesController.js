@@ -1303,6 +1303,24 @@ const FilterProperties = async (req, res) => {
 		page = parseInt(page) || 1;
 		limit = parseInt(limit);
 		const offset = (page - 1) * limit;
+		if (filter.Addresses?.length === 0) {
+			filter.Addresses = undefined;
+		}
+		if (filter.Bedrooms?.length === 0) {
+			filter.Bedrooms = undefined;
+		}
+		if (filter.Bathrooms?.length === 0) {
+			filter.Bathrooms = undefined;
+		}
+		if (filter.CategoryID === "") {
+			filter.CategoryID = undefined;
+		}
+		if (filter.rentFrequency === "") {
+			filter.rentFrequency = undefined;
+		}
+		if (filter.rentFrequency === "") {
+			filter.rentFrequency = undefined;
+		}
 		const query = {
 			AND: [
 				{

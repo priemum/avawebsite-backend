@@ -494,6 +494,7 @@ model Unit_Translation {
 model Currency_Translation {
   id          String    @id @default(uuid())
   Name        String
+  Symbol      String    @default("")
   Language    Languages @relation(fields: [languagesID], references: [id])
   languagesID String
   Currency    Currency  @relation(fields: [currencyID], references: [id])

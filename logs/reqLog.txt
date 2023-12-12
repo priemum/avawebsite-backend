@@ -3967,3 +3967,17 @@
 20231209	16:05:59	a791059f-c4bd-4129-a129-6bab9fee38cc	GET	200	 Message: OK 	/property?page=1&limit=2
 20231210	23:13:52	c876e5a6-1e59-4233-889b-804ccb9d6cdf	GET	500	 Message: Internal Server Error 	/data
 20231210	23:14:08	bb0422b6-4655-4bca-8615-09398c794c20	GET	200	 Message: OK 	/data
+20231212	17:27:55	8f5544d6-854c-4624-b94b-d0b75259127c	GET	403	 Message: Forbidden 	/currency?page=1&limit=4
+20231212	17:28:00	e002665d-0c8d-400f-a45a-5eb40f3acb42	GET	200	 Message: OK 	/currency-active?page=1&limit=4
+20231212	17:28:10	b6bf429d-1035-4945-8683-06c7cec7c88e	POST	201	 Message: Created 	/auth/login
+20231212	17:28:32	65703bcd-d35e-4625-8ead-1a695967334b	GET	200	 Message: OK 	/language
+20231212	17:30:16	6c586673-8d7c-4007-8580-f5ec8ca5aa28	POST	201	 Message: Created 	/currency
+20231212	17:35:24	799badeb-3663-429c-9a56-daa486dbf6e1	POST	403	 Message: Forbidden 	/currency
+20231212	17:35:30	fec6a329-b27e-490e-af5e-0e3d8febaeb2	GET	200	 Message: OK 	/auth/refreshToken
+20231212	17:35:33	5a808194-8c13-4891-8f04-99c89619ec43	POST	201	 Message: Created 	/currency
+20231212	17:40:19	4c89ba77-2b31-4095-b50a-d38b7506ac00	POST	200	 Message: OK 	/property/filter
+20231212	17:41:20	676a947e-67fb-4460-a3b5-8bf78d09bed7	POST	200	 Message: OK 	/property/filter
+20231212	17:41:39	07c34f4b-f19b-43dd-8b83-2d998399181b	POST	200	 Message: OK 	/property/filter
+20231212	17:42:19	7255fe24-7f87-4ed2-9d4c-e441d9ec08e3	POST	200	 Message: OK 	/property/filter
+20231212	17:44:06	5ed50fbf-e0c6-4970-babe-164a5264e24f	POST	200	 Message: OK 	/property/filter
+20231212	17:44:30	e520f44f-41d2-4659-a9a4-0e7c3e88bd33	POST	200	 Message: OK 	/property/filter

@@ -175,6 +175,7 @@ const UpdateCurrency = async (req, res) => {
 							},
 							data: {
 								Name: item.Name,
+								Symbol: item.Symbol,
 							},
 						});
 					}
