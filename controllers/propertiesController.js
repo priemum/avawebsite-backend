@@ -1321,6 +1321,9 @@ const FilterProperties = async (req, res) => {
 		if (filter.rentFrequency === "") {
 			filter.rentFrequency = undefined;
 		}
+		if (filter.EstimatedRent === 0) {
+			filter.EstimatedRent = undefined;
+		}
 		const query = {
 			AND: [
 				{
