@@ -1594,7 +1594,7 @@ const UpdateProperty = async (req, res) => {
 							Bedrooms: parseInt(unit.Bedrooms),
 							Bathrooms: parseInt(unit.Bathrooms),
 							Bacloney: unit.Bacloney === "true" ? true : false,
-							PricePerSQFT: unit.PricePerSQFT,
+							PricePerSQFT: parseFloat(unit.PricePerSQFT),
 							PermitNumber: unit.PermitNumber,
 							DEDNo: unit.DEDNo,
 						},
