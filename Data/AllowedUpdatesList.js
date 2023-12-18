@@ -18,7 +18,7 @@ const allowedUpdatesList = [
 	},
 	{ name: "resources", value: ["Name", "Description", "ActiveStatus"] },
 	{ name: "teams", value: ["Title", "Description", "ActiveStatus", "ViewTag"] },
-	{ name: "language", value: ["Name", "Code"] },
+	{ name: "language", value: ["Name", "Code", "Direction"] },
 	{ name: "role-resource", value: ["Create", "Update", "Delete", "Read"] },
 	{
 		name: "article",
