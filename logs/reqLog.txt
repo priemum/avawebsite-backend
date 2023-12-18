@@ -3981,3 +3981,12 @@
 20231212	17:42:19	7255fe24-7f87-4ed2-9d4c-e441d9ec08e3	POST	200	 Message: OK 	/property/filter
 20231212	17:44:06	5ed50fbf-e0c6-4970-babe-164a5264e24f	POST	200	 Message: OK 	/property/filter
 20231212	17:44:30	e520f44f-41d2-4659-a9a4-0e7c3e88bd33	POST	200	 Message: OK 	/property/filter
+20231218	13:48:41	04271707-d61c-4e76-b5f3-82fd5d1845e5	POST	201	 Message: Created 	/auth/login
+20231218	13:48:58	0a67b16d-8006-4db7-8f8c-5d3aaa61300a	GET	500	 Message: Internal Server Error 	/users
+20231218	13:49:43	c2d88cff-08e6-4fac-9c8d-aca725c55194	GET	200	 Message: OK 	/users
+20231218	13:50:28	d9d7cd05-da41-4338-a3d5-c98b79379eea	GET	200	 Message: OK 	/users
+20231218	13:52:17	44422e14-7fe4-4636-a05c-28247eeb35f7	GET	200	 Message: OK 	/users
+20231218	13:53:21	2e55480c-3efc-4f53-ad39-5bbb7e44db94	GET	200	 Message: OK 	/users/da70c9f3-0d0f-471f-b77d-bb3d84541c50
+20231218	13:54:56	e96287c9-c97b-4abd-ae98-e459c6ff3afe	GET	403	 Message: Forbidden 	/users/role/a1eb0975-3684-4c60-9730-e1b0158a4955
+20231218	13:55:03	5edaab6d-b24b-42f0-b4b5-c0ab10fd02a9	GET	200	 Message: OK 	/auth/refreshToken
+20231218	13:55:07	18d549bb-6413-42a0-8c1d-bbf6a6e7fbb0	GET	200	 Message: OK 	/users/role/a1eb0975-3684-4c60-9730-e1b0158a4955

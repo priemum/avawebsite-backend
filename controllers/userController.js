@@ -92,7 +92,11 @@ const Register = async (req, res) => {
 		res.status(500).send(error.message);
 	}
 };
-
+function exclude(user, keys) {
+	return Object.fromEntries(
+		Object.entries(user).filter(([key]) => !keys.includes(key)),
+	);
+}
 //Get All Users////Done
 const GetAllUsers = async (req, res) => {
 	try {
@@ -135,6 +139,9 @@ const GetAllUsers = async (req, res) => {
 		if (!Users) {
 			return res.status(404).send("No users were found!");
 		}
+		Users.map((user) => {
+			delete user.Password;
+		});
 		res.status(200).json({
 			count,
 			Users,
@@ -191,6 +198,9 @@ const GetAllActiveUsers = async (req, res) => {
 		if (!Users) {
 			return res.status(404).send("No users were found!");
 		}
+		Users.map((user) => {
+			delete user.Password;
+		});
 		res.status(200).json({
 			count,
 			Users,
@@ -231,7 +241,7 @@ const GetUserByID = async (req, res) => {
 			},
 		};
 		const user = await prisma.users.findUnique(query);
-
+		delete user.Password;
 		if (!user) {
 			return res.status(404).send("No users were found!");
 		}
@@ -335,6 +345,9 @@ const GetUsersByTeamID = async (req, res) => {
 		if (!Team) {
 			return res.status(404).send("Team was not found!");
 		}
+		Users.map((user) => {
+			delete user.Password;
+		});
 		return res.status(200).json({
 			count,
 			Users,
@@ -372,6 +385,9 @@ const GetUsersByRoleID = async (req, res) => {
 		if (!Role) {
 			return res.status(404).send("Role was not found!");
 		}
+		Users.map((user) => {
+			delete user.Password;
+		});
 		return res.status(200).json({
 			count,
 			Users,
