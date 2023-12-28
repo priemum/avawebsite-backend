@@ -87,6 +87,9 @@ const GetAllAnnouncements = async (req, res) => {
 			prisma.announcements.findMany({
 				skip: offset || undefined,
 				take: limit || undefined,
+				orderBy: {
+					Rank: "asc",
+				},
 				include: {
 					Image: true,
 					Announcements_Translation: {
@@ -120,6 +123,9 @@ const GetAllActiveAnnouncements = async (req, res) => {
 				where: { ActiveStatus: true },
 				skip: offset || undefined,
 				take: limit || undefined,
+				orderBy: {
+					Rank: "asc",
+				},
 				include: {
 					Image: true,
 					Announcements_Translation: {
