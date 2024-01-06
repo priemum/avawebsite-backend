@@ -24,8 +24,8 @@ const CreatePaymentPlan = async (req, res) => {
 			}
 		}
 		data.TotalMonths = parseInt(data.TotalMonths);
-		data.NoOfPosthandoverMonths = parseInt(data.TotalMonths);
-		data.DuringConstructionMonths = parseInt(data.TotalMonths);
+		data.NoOfPosthandoverMonths = parseInt(data.NoOfPosthandoverMonths);
+		data.DuringConstructionMonths = parseInt(data.DuringConstructionMonths);
 		data.DownPayemnt = parseFloat(data.DownPayemnt);
 		data.DuringConstructionPercentage = parseFloat(
 			data.DuringConstructionPercentage,
@@ -40,9 +40,12 @@ const CreatePaymentPlan = async (req, res) => {
 			if (data.Installments.length === 0 || data.Installments === undefined) {
 				if (data.Posthandover) {
 					handoverInstallmentNo -= data.NoOfPosthandoverMonths;
+					console.log("HandOVer Installment #: ", handoverInstallmentNo);
 					PostHandoverMonth = data.TotalMonths - handoverInstallmentNo;
+					console.log("PostHandoverMonth: ", PostHandoverMonth);
 					for (let i = 0; i < data.TotalMonths; i++) {
 						//if it is the first installment
+						console.log("Item: ", i);
 						if (i == 0) {
 							Installments[i] = {
 								Number: i + 1,

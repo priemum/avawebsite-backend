@@ -3990,3 +3990,11 @@
 20231218	13:54:56	e96287c9-c97b-4abd-ae98-e459c6ff3afe	GET	403	 Message: Forbidden 	/users/role/a1eb0975-3684-4c60-9730-e1b0158a4955
 20231218	13:55:03	5edaab6d-b24b-42f0-b4b5-c0ab10fd02a9	GET	200	 Message: OK 	/auth/refreshToken
 20231218	13:55:07	18d549bb-6413-42a0-8c1d-bbf6a6e7fbb0	GET	200	 Message: OK 	/users/role/a1eb0975-3684-4c60-9730-e1b0158a4955
+20240106	14:16:04	dd399edd-bc4d-4366-9c26-caf70d41adbe	POST	201	 Message: Created 	/auth/login
+20240106	14:17:24	6da06fce-f4b6-4de9-8a81-af5871bca3b4	POST	201	 Message: Created 	/paymentplan
+20240106	14:18:25	009510d3-a1dd-41cd-b5e2-c9230ddeeae9	DELETE	200	 Message: OK 	/paymentplan/1fb05733-bf63-4347-a5e9-9406679314bf
+20240106	14:19:13	f720aa0c-4b89-4854-a9c7-03271d17c9a0	POST	409	 Message: Conflict 	/paymentplan
+20240106	14:21:38	5660ead3-1c90-41c7-9e9c-fc0a0e31ec44	POST	403	 Message: Forbidden 	/paymentplan
+20240106	14:21:45	2d2f5794-3e5d-4f04-9b1e-caee4cf2e318	GET	200	 Message: OK 	/auth/refreshToken
+20240106	14:21:50	e44f30fa-eb61-4f15-949e-2ff79157a80d	POST	201	 Message: Created 	/paymentplan
+20240106	14:24:41	cfa24a8c-4642-454c-906c-a3dd0acdbf86	POST	201	 Message: Created 	/paymentplan
