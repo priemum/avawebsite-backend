@@ -1620,11 +1620,6 @@ const UpdateProperty = async (req, res) => {
 					Aminities: data?.Aminities && {
 						connect: amenities,
 					},
-					Property_Translation: {
-						createMany: {
-							data: data.Property_Translation,
-						},
-					},
 					Developer: data?.DeveloperID && {
 						connect: {
 							id: data?.DeveloperID,
