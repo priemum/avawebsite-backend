@@ -1617,11 +1617,6 @@ const UpdateProperty = async (req, res) => {
 					RentFrequency: data.RentFrequency || undefined,
 					CompletionStatus: data.CompletionStatus || undefined,
 					ReraNo: data.ReraNo || undefined,
-					Property_Translation: data?.Property_Translation && {
-						createMany: {
-							data: data.Property_Translation,
-						},
-					},
 					Aminities: data?.Aminities && {
 						connect: amenities,
 					},
