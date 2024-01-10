@@ -1568,19 +1568,11 @@ const UpdateProperty = async (req, res) => {
 			if (data.Property_Translation !== undefined) {
 				data.Property_Translation.map(async (item) => {
 					{
-						await prisma.property_Translation.upsert({
+						await prisma.property_Translation.updateMany({
 							where: {
-								AND: [
-									{ id: item.id },
-									{ languagesID: item.languagesID },
-									{ propertyID: id },
-								],
+								AND: [{ languagesID: item.languagesID }, { propertyID: id }],
 							},
-							create: {
-								Name: item.Name,
-								Description: item.Description,
-							},
-							update: {
+							data: {
 								Name: item.Name,
 								Description: item.Description,
 							},
