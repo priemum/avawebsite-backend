@@ -1570,7 +1570,11 @@ const UpdateProperty = async (req, res) => {
 					{
 						await prisma.property_Translation.upsert({
 							where: {
-								AND: [{ languagesID: item.languagesID }, { propertyID: id }],
+								AND: [
+									{ id: item.id },
+									{ languagesID: item.languagesID },
+									{ propertyID: id },
+								],
 							},
 							create: {
 								Name: item.Name,
