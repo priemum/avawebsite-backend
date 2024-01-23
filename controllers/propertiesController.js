@@ -1318,8 +1318,11 @@ const FilterProperties = async (req, res) => {
 		if (filter.rentFrequency === "") {
 			filter.rentFrequency = undefined;
 		}
-		if (filter.rentFrequency === "") {
-			filter.rentFrequency = undefined;
+		if (filter.purpose === "") {
+			filter.purpose = undefined;
+		}
+		if (filter.completionStatus === "") {
+			filter.completionStatus = undefined;
 		}
 		if (filter.EstimatedRent === 0) {
 			filter.EstimatedRent = undefined;
