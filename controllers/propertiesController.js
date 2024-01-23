@@ -1471,7 +1471,7 @@ const FilterProperties = async (req, res) => {
 				skip: offset || undefined,
 				take: limit || undefined,
 				include: {
-					// Images: true,
+					Images: true,
 					propertyUnits: {
 						include: {
 							Paymentplan: {
@@ -1480,60 +1480,59 @@ const FilterProperties = async (req, res) => {
 										orderBy: {
 											Number: "asc",
 										},
-
-										// include: {
-										// 	Installments_Translation: {
-										// 		include: {
-										// 			Language: true,
-										// 		},
-										// 	},
-										// },
+										include: {
+											Installments_Translation: {
+												include: {
+													Language: true,
+												},
+											},
+										},
 									},
 								},
 							},
 						},
 					},
-					// 	Aminities: {
-					// 		include: {
-					// 			Image: true,
-					// 			Aminities_Translation: {
-					// 				include: {
-					// 					Language: true,
-					// 				},
-					// 			},
-					// 		},
-					// 	},
-					// 	Category: {
-					// 		include: {
-					// 			Category_Translation: {
-					// 				include: {
-					// 					Language: true,
-					// 				},
-					// 			},
-					// 			Parent: true,
-					// 		},
-					// 	},
-					// 	Developer: {
-					// 		include: {
-					// 			Developer_Translation: {
-					// 				include: {
-					// 					Language: true,
-					// 				},
-					// 			},
-					// 		},
-					// 	},
-					// 	Address: {
-					// 		include: {
-					// 			Address_Translation: {
-					// 				include: { Language: true },
-					// 			},
-					// 		},
-					// 	},
-					// 	Property_Translation: {
-					// 		include: {
-					// 			Language: true,
-					// 		},
-					// 	},
+					Aminities: {
+						include: {
+							Image: true,
+							Aminities_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+						},
+					},
+					Category: {
+						include: {
+							Category_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+							Parent: true,
+						},
+					},
+					Developer: {
+						include: {
+							Developer_Translation: {
+								include: {
+									Language: true,
+								},
+							},
+						},
+					},
+					Address: {
+						include: {
+							Address_Translation: {
+								include: { Language: true },
+							},
+						},
+					},
+					Property_Translation: {
+						include: {
+							Language: true,
+						},
+					},
 				},
 			}),
 			prisma.property.count({
