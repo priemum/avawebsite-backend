@@ -1318,12 +1318,12 @@ const FilterProperties = async (req, res) => {
 		if (filter.rentFrequency === "") {
 			filter.rentFrequency = undefined;
 		}
-		if (filter.purpose === "") {
-			filter.purpose = undefined;
-		}
-		if (filter.completionStatus === "") {
-			filter.completionStatus = undefined;
-		}
+		// if (filter.purpose === "") {
+		// 	filter.purpose = undefined;
+		// }
+		// if (filter.completionStatus === "") {
+		// 	filter.completionStatus = undefined;
+		// }
 		if (filter.EstimatedRent === 0) {
 			filter.EstimatedRent = undefined;
 		}
@@ -1447,7 +1447,10 @@ const FilterProperties = async (req, res) => {
 					Purpose: Purpose.Buy,
 				});
 			}
+		} else {
+			query.AND.pop("Purpose");
 		}
+
 		if (filter.rentFrequency) {
 			const rentFrequency = Object.keys(RentFrequency);
 			rentFrequency.map((item) => {
@@ -1467,6 +1470,8 @@ const FilterProperties = async (req, res) => {
 					});
 				}
 			});
+		} else {
+			query.AND.pop("CompletionStatus");
 		}
 		const [Properties, count] = await prisma.$transaction([
 			prisma.property.findMany({
