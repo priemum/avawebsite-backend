@@ -137,6 +137,20 @@ const GetAllActiveAddresses = async (req, res) => {
 				skip: offset || undefined,
 				take: limit || undefined,
 				include: {
+					_count: {
+						select: {
+							Addresses: {
+								where: {
+									ActiveStatus: true,
+								},
+							},
+							Property: {
+								where: {
+									ActiveStatus: true,
+								},
+							},
+						},
+					},
 					Image: true,
 					Address_Translation: {
 						include: { Language: true },
@@ -146,6 +160,9 @@ const GetAllActiveAddresses = async (req, res) => {
 							Address_Translation: {
 								include: { Language: true },
 							},
+						},
+						where: {
+							ActiveStatus: true,
 						},
 					},
 				},
@@ -198,6 +215,7 @@ const GetAddressByParentID = async (req, res) => {
 		let { page, limit } = req.query;
 		page = parseInt(page) || 1;
 		limit = parseInt(limit);
+		const id = req.params.id;
 		const offset = (page - 1) * limit;
 		const [Address, count] = await prisma.$transaction([
 			prisma.address.findMany({
@@ -207,6 +225,68 @@ const GetAddressByParentID = async (req, res) => {
 				skip: offset || undefined,
 				take: limit || undefined,
 				include: {
+					Image: true,
+					Address_Translation: {
+						include: { Language: true },
+					},
+				},
+			}),
+			prisma.address.count({
+				where: {
+					addressID: id,
+				},
+			}),
+		]);
+		if (!Address) {
+			return res
+				.status(404)
+				.send("No Sub Addresses Were Found For this Address!");
+		}
+		res.status(200).json({
+			count,
+			Address,
+		});
+	} catch (error) {
+		return res.status(500).send(error.message);
+	}
+};
+//Active address by Parent ID
+const GetActiveAddressByParentID = async (req, res) => {
+	try {
+		let { page, limit } = req.query;
+		page = parseInt(page) || 1;
+		limit = parseInt(limit);
+		const offset = (page - 1) * limit;
+		const id = req.params.id;
+		const [Address, count] = await prisma.$transaction([
+			prisma.address.findMany({
+				where: {
+					AND: [
+						{
+							ActiveStatus: true,
+						},
+						{
+							addressID: id,
+						},
+					],
+				},
+				skip: offset || undefined,
+				take: limit || undefined,
+				include: {
+					_count: {
+						select: {
+							Addresses: {
+								where: {
+									ActiveStatus: true,
+								},
+							},
+							Property: {
+								where: {
+									ActiveStatus: true,
+								},
+							},
+						},
+					},
 					Image: true,
 					Address_Translation: {
 						include: { Language: true },
@@ -417,6 +497,7 @@ module.exports = {
 	GetAllAddresses,
 	GetAddressByID,
 	GetAddressByParentID,
+	GetActiveAddressByParentID,
 	GetAllActiveAddresses,
 	UpdateAddress,
 	DeleteAddress,

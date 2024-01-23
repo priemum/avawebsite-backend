@@ -13,6 +13,7 @@ const {
 	GetAllActiveAddresses,
 	UpdateAddress,
 	DeleteAddress,
+	GetActiveAddressByParentID,
 } = require("../../controllers/addressController");
 
 const addressRouter = express.Router();
@@ -27,6 +28,10 @@ addressRouter.post(
 addressRouter.get("/address", verifyJWT, VerifyRole, GetAllAddresses);
 addressRouter.get("/address/:id", GetAddressByID);
 addressRouter.get("/address/sub-address/:id", GetAddressByParentID);
+addressRouter.get(
+	"/address-active/sub-address/:id",
+	GetActiveAddressByParentID,
+);
 addressRouter.get("/address-active", GetAllActiveAddresses);
 addressRouter.put(
 	"/address/:id",

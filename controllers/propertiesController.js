@@ -1324,6 +1324,9 @@ const FilterProperties = async (req, res) => {
 		if (filter.EstimatedRent === 0) {
 			filter.EstimatedRent = undefined;
 		}
+		if (filter.Posthandover === "") {
+			filter.Posthandover = undefined;
+		}
 		const query = {
 			AND: [
 				{
@@ -1385,6 +1388,45 @@ const FilterProperties = async (req, res) => {
 										gte: filter.EstimatedRent,
 									},
 								},
+								{
+									Paymentplan: {
+										some: {
+											AND: [
+												{
+													Posthandover: filter.Posthandover,
+												},
+												{
+													DownPayemnt: {
+														lte: filter.DownPayemntMax,
+													},
+												},
+												{
+													DownPayemnt: {
+														gte: filter.DownPayemntMin,
+													},
+												},
+												{
+													Installments: {
+														some: {
+															AND: [
+																{
+																	PercentageOfPayment: {
+																		lte: filter.InstallmentMax,
+																	},
+																},
+																{
+																	PercentageOfPayment: {
+																		gte: filter.InstallmentMin,
+																	},
+																},
+															],
+														},
+													},
+												},
+											],
+										},
+									},
+								},
 							],
 						},
 					},
@@ -1429,7 +1471,7 @@ const FilterProperties = async (req, res) => {
 				skip: offset || undefined,
 				take: limit || undefined,
 				include: {
-					Images: true,
+					// Images: true,
 					propertyUnits: {
 						include: {
 							Paymentplan: {
@@ -1439,59 +1481,59 @@ const FilterProperties = async (req, res) => {
 											Number: "asc",
 										},
 
-										include: {
-											Installments_Translation: {
-												include: {
-													Language: true,
-												},
-											},
-										},
+										// include: {
+										// 	Installments_Translation: {
+										// 		include: {
+										// 			Language: true,
+										// 		},
+										// 	},
+										// },
 									},
 								},
 							},
 						},
 					},
-					Aminities: {
-						include: {
-							Image: true,
-							Aminities_Translation: {
-								include: {
-									Language: true,
-								},
-							},
-						},
-					},
-					Category: {
-						include: {
-							Category_Translation: {
-								include: {
-									Language: true,
-								},
-							},
-							Parent: true,
-						},
-					},
-					Developer: {
-						include: {
-							Developer_Translation: {
-								include: {
-									Language: true,
-								},
-							},
-						},
-					},
-					Address: {
-						include: {
-							Address_Translation: {
-								include: { Language: true },
-							},
-						},
-					},
-					Property_Translation: {
-						include: {
-							Language: true,
-						},
-					},
+					// 	Aminities: {
+					// 		include: {
+					// 			Image: true,
+					// 			Aminities_Translation: {
+					// 				include: {
+					// 					Language: true,
+					// 				},
+					// 			},
+					// 		},
+					// 	},
+					// 	Category: {
+					// 		include: {
+					// 			Category_Translation: {
+					// 				include: {
+					// 					Language: true,
+					// 				},
+					// 			},
+					// 			Parent: true,
+					// 		},
+					// 	},
+					// 	Developer: {
+					// 		include: {
+					// 			Developer_Translation: {
+					// 				include: {
+					// 					Language: true,
+					// 				},
+					// 			},
+					// 		},
+					// 	},
+					// 	Address: {
+					// 		include: {
+					// 			Address_Translation: {
+					// 				include: { Language: true },
+					// 			},
+					// 		},
+					// 	},
+					// 	Property_Translation: {
+					// 		include: {
+					// 			Language: true,
+					// 		},
+					// 	},
 				},
 			}),
 			prisma.property.count({
