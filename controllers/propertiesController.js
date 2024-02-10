@@ -1330,7 +1330,18 @@ const FilterProperties = async (req, res) => {
 		if (filter.Posthandover === "") {
 			filter.Posthandover = undefined;
 		}
-
+		if (filter.DownPayemntMax) {
+			filter.DownPayemntMax = parseFloat(filter.DownPayemntMax);
+		}
+		if (filter.DownPayemntMin) {
+			filter.DownPayemntMin = parseFloat(filter.DownPayemntMin);
+		}
+		if (filter.InstallmentMax) {
+			filter.InstallmentMax = parseFloat(filter.InstallmentMax);
+		}
+		if (filter.InstallmentMin) {
+			filter.InstallmentMin = parseFloat(filter.InstallmentMin);
+		}
 		const query = {
 			AND: [
 				{
@@ -1396,7 +1407,7 @@ const FilterProperties = async (req, res) => {
 									Paymentplan: {
 										some: {
 											DownPayemnt: {
-												lte: parseFloat(filter.DownPayemntMax),
+												lte: filter.DownPayemntMax,
 											},
 										},
 									},
@@ -1405,7 +1416,7 @@ const FilterProperties = async (req, res) => {
 									Paymentplan: {
 										some: {
 											DownPayemnt: {
-												gte: parseFloat(filter.DownPayemntMin),
+												gte: filter.DownPayemntMin,
 											},
 										},
 									},
@@ -1416,7 +1427,7 @@ const FilterProperties = async (req, res) => {
 											Installments: {
 												some: {
 													PercentageOfPayment: {
-														lte: parseFloat(filter.InstallmentMax),
+														lte: filter.InstallmentMax,
 													},
 												},
 											},
@@ -1429,7 +1440,7 @@ const FilterProperties = async (req, res) => {
 											Installments: {
 												some: {
 													PercentageOfPayment: {
-														gte: parseFloat(filter.InstallmentMin),
+														gte: filter.InstallmentMin,
 													},
 												},
 											},
