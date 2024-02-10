@@ -1451,10 +1451,7 @@ const FilterProperties = async (req, res) => {
 									Paymentplan: {
 										some: {
 											Posthandover: {
-												equals:
-													filter.Posthandover.toLowerCase() === "true"
-														? true
-														: false,
+												equals: filter.Posthandover,
 											},
 										},
 									},
