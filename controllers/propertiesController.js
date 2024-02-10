@@ -1412,41 +1412,47 @@ const FilterProperties = async (req, res) => {
 										},
 									},
 								},
-								filter.DownPayemntMin && {
-									Paymentplan: {
-										some: {
-											DownPayemnt: {
-												gte: filter.DownPayemntMin,
-											},
-										},
-									},
-								},
-								filter.InstallmentMax && {
-									Paymentplan: {
-										some: {
-											Installments: {
+								filter.DownPayemntMin
+									? ture
+									: false && {
+											Paymentplan: {
 												some: {
-													PercentageOfPayment: {
-														lte: filter.InstallmentMax,
+													DownPayemnt: {
+														gte: filter.DownPayemntMin,
 													},
 												},
 											},
-										},
-									},
-								},
-								filter.InstallmentMin && {
-									Paymentplan: {
-										some: {
-											Installments: {
+									  },
+								filter.InstallmentMax
+									? ture
+									: false && {
+											Paymentplan: {
 												some: {
-													PercentageOfPayment: {
-														gte: filter.InstallmentMin,
+													Installments: {
+														some: {
+															PercentageOfPayment: {
+																lte: filter.InstallmentMax,
+															},
+														},
 													},
 												},
 											},
-										},
-									},
-								},
+									  },
+								filter.InstallmentMin
+									? ture
+									: false && {
+											Paymentplan: {
+												some: {
+													Installments: {
+														some: {
+															PercentageOfPayment: {
+																gte: filter.InstallmentMin,
+															},
+														},
+													},
+												},
+											},
+									  },
 								filter.Posthandover && {
 									Paymentplan: {
 										some: {
