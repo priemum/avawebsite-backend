@@ -1315,21 +1315,27 @@ const FilterProperties = async (req, res) => {
 		if (filter.CategoryID === "") {
 			filter.CategoryID = undefined;
 		}
-		if (filter.rentFrequency === "") {
+		if (filter.rentFrequency === "" || filter.rentFrequency === null) {
+			console.log("Rent: ", filter.rentFrequency);
 			filter.rentFrequency = undefined;
 		}
-		// if (filter.purpose === "") {
-		// 	filter.purpose = undefined;
-		// }
-		// if (filter.completionStatus === "") {
-		// 	filter.completionStatus = undefined;
-		// }
+		if (filter.purpose === "" || filter.purpose === null) {
+			filter.purpose = undefined;
+		}
+		if (filter.completionStatus === "" || filter.completionStatus === null) {
+			filter.completionStatus = undefined;
+		}
 		if (filter.EstimatedRent === 0) {
 			filter.EstimatedRent = undefined;
 		}
 		if (filter.Posthandover === "") {
 			filter.Posthandover = undefined;
 		}
+		console.log("Post: ", filter.Posthandover);
+		// if (!filter.DownPayemntMax) {
+		// 	console.log("d: ", filter.DownPayemntMax);
+		// 	filter.DownPayemntMax = null;
+		// }
 		const query = {
 			AND: [
 				{
@@ -1391,42 +1397,59 @@ const FilterProperties = async (req, res) => {
 										gte: filter.EstimatedRent,
 									},
 								},
-								{
+								filter.DownPayemntMax && {
 									Paymentplan: {
 										some: {
-											AND: [
-												{
-													Posthandover: filter.Posthandover,
-												},
-												{
-													DownPayemnt: {
-														lte: filter.DownPayemntMax,
+											DownPayemnt: {
+												lte: filter.DownPayemntMax,
+											},
+										},
+									},
+								},
+								filter.DownPayemntMin && {
+									Paymentplan: {
+										some: {
+											DownPayemnt: {
+												gte: filter.DownPayemntMin,
+											},
+										},
+									},
+								},
+								filter.InstallmentMax && {
+									Paymentplan: {
+										some: {
+											Installments: {
+												some: {
+													PercentageOfPayment: {
+														lte: filter.InstallmentMax,
 													},
 												},
-												{
-													DownPayemnt: {
-														gte: filter.DownPayemntMin,
+											},
+										},
+									},
+								},
+								filter.InstallmentMin && {
+									Paymentplan: {
+										some: {
+											Installments: {
+												some: {
+													PercentageOfPayment: {
+														gte: filter.InstallmentMin,
 													},
 												},
-												{
-													Installments: {
-														some: {
-															AND: [
-																{
-																	PercentageOfPayment: {
-																		lte: filter.InstallmentMax,
-																	},
-																},
-																{
-																	PercentageOfPayment: {
-																		gte: filter.InstallmentMin,
-																	},
-																},
-															],
-														},
-													},
-												},
-											],
+											},
+										},
+									},
+								},
+								filter.Posthandover && {
+									Paymentplan: {
+										some: {
+											Posthandover: {
+												equals:
+													filter.Posthandover.toLowerCase() === "true"
+														? true
+														: false,
+											},
 										},
 									},
 								},
@@ -1436,7 +1459,7 @@ const FilterProperties = async (req, res) => {
 				},
 			],
 		};
-		console.log(filter);
+
 		if (filter.purpose) {
 			if (filter.purpose.toLowerCase() === Purpose.Rent.toLowerCase()) {
 				query.AND.push({
@@ -1447,8 +1470,6 @@ const FilterProperties = async (req, res) => {
 					Purpose: Purpose.Buy,
 				});
 			}
-		} else {
-			query.AND.pop("Purpose");
 		}
 
 		if (filter.rentFrequency) {
@@ -1470,8 +1491,6 @@ const FilterProperties = async (req, res) => {
 					});
 				}
 			});
-		} else {
-			query.AND.pop("CompletionStatus");
 		}
 		const [Properties, count] = await prisma.$transaction([
 			prisma.property.findMany({
