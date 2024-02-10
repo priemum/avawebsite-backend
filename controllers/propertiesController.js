@@ -1330,6 +1330,7 @@ const FilterProperties = async (req, res) => {
 		if (filter.Posthandover === "") {
 			filter.Posthandover = undefined;
 		}
+
 		const query = {
 			AND: [
 				{
@@ -1358,37 +1359,37 @@ const FilterProperties = async (req, res) => {
 								},
 								{
 									Size: {
-										lte: parseFloat(filter.AreaMax),
+										lte: filter.AreaMax,
 									},
 								},
 								{
 									Size: {
-										gte: parseFloat(filter.AreaMin),
+										gte: filter.AreaMin,
 									},
 								},
 								{
 									Price: {
-										lte: parseFloat(filter.PriceMax),
+										lte: filter.PriceMax,
 									},
 								},
 								{
 									Price: {
-										gte: parseFloat(filter.PriceMin),
+										gte: filter.PriceMin,
 									},
 								},
 								{
 									BalconySize: {
-										lte: parseFloat(filter.BalconySizeMax),
+										lte: filter.BalconySizeMax,
 									},
 								},
 								{
 									BalconySize: {
-										gte: parseFloat(filter.BalconySizeMin),
+										gte: filter.BalconySizeMin,
 									},
 								},
 								{
 									EstimatedRent: {
-										gte: parseFloat(filter.EstimatedRent),
+										gte: filter.EstimatedRent,
 									},
 								},
 								filter.DownPayemntMax && {
