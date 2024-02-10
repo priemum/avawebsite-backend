@@ -1316,7 +1316,6 @@ const FilterProperties = async (req, res) => {
 			filter.CategoryID = undefined;
 		}
 		if (filter.rentFrequency === "" || filter.rentFrequency === null) {
-			console.log("Rent: ", filter.rentFrequency);
 			filter.rentFrequency = undefined;
 		}
 		if (filter.purpose === "" || filter.purpose === null) {
@@ -1331,11 +1330,6 @@ const FilterProperties = async (req, res) => {
 		if (filter.Posthandover === "") {
 			filter.Posthandover = undefined;
 		}
-		console.log("Post: ", filter.Posthandover);
-		// if (!filter.DownPayemntMax) {
-		// 	console.log("d: ", filter.DownPayemntMax);
-		// 	filter.DownPayemntMax = null;
-		// }
 		const query = {
 			AND: [
 				{
@@ -1354,54 +1348,54 @@ const FilterProperties = async (req, res) => {
 							AND: [
 								{
 									Bedrooms: {
-										in: filter.Bedrooms,
+										in: parseFloat(filter.Bedrooms),
 									},
 								},
 								{
 									Bathrooms: {
-										in: filter.Bathrooms,
+										in: parseFloat(filter.Bathrooms),
 									},
 								},
 								{
 									Size: {
-										lte: filter.AreaMax,
+										lte: parseFloat(filter.AreaMax),
 									},
 								},
 								{
 									Size: {
-										gte: filter.AreaMin,
+										gte: parseFloat(filter.AreaMin),
 									},
 								},
 								{
 									Price: {
-										lte: filter.PriceMax,
+										lte: parseFloat(filter.PriceMax),
 									},
 								},
 								{
 									Price: {
-										gte: filter.PriceMin,
+										gte: parseFloat(filter.PriceMin),
 									},
 								},
 								{
 									BalconySize: {
-										lte: filter.BalconySizeMax,
+										lte: parseFloat(filter.BalconySizeMax),
 									},
 								},
 								{
 									BalconySize: {
-										gte: filter.BalconySizeMin,
+										gte: parseFloat(filter.BalconySizeMin),
 									},
 								},
 								{
 									EstimatedRent: {
-										gte: filter.EstimatedRent,
+										gte: parseFloat(filter.EstimatedRent),
 									},
 								},
 								filter.DownPayemntMax && {
 									Paymentplan: {
 										some: {
 											DownPayemnt: {
-												lte: filter.DownPayemntMax,
+												lte: parseFloat(filter.DownPayemntMax),
 											},
 										},
 									},
@@ -1410,7 +1404,7 @@ const FilterProperties = async (req, res) => {
 									Paymentplan: {
 										some: {
 											DownPayemnt: {
-												gte: filter.DownPayemntMin,
+												gte: parseFloat(filter.DownPayemntMin),
 											},
 										},
 									},
@@ -1421,7 +1415,7 @@ const FilterProperties = async (req, res) => {
 											Installments: {
 												some: {
 													PercentageOfPayment: {
-														lte: filter.InstallmentMax,
+														lte: parseFloat(filter.InstallmentMax),
 													},
 												},
 											},
@@ -1434,7 +1428,7 @@ const FilterProperties = async (req, res) => {
 											Installments: {
 												some: {
 													PercentageOfPayment: {
-														gte: filter.InstallmentMin,
+														gte: parseFloat(filter.InstallmentMin),
 													},
 												},
 											},
