@@ -1403,7 +1403,7 @@ const FilterProperties = async (req, res) => {
 										gte: filter.EstimatedRent,
 									},
 								},
-								filter.DownPayemntMax && {
+								filter?.DownPayemntMax && {
 									Paymentplan: {
 										some: {
 											DownPayemnt: {
@@ -1412,48 +1412,42 @@ const FilterProperties = async (req, res) => {
 										},
 									},
 								},
-								filter.DownPayemntMin
-									? ture
-									: false && {
-											Paymentplan: {
+								filter?.DownPayemntMin && {
+									Paymentplan: {
+										some: {
+											DownPayemnt: {
+												gte: filter.DownPayemntMin,
+											},
+										},
+									},
+								},
+								filter?.InstallmentMax && {
+									Paymentplan: {
+										some: {
+											Installments: {
 												some: {
-													DownPayemnt: {
-														gte: filter.DownPayemntMin,
+													PercentageOfPayment: {
+														lte: filter.InstallmentMax,
 													},
 												},
 											},
-									  },
-								filter.InstallmentMax
-									? ture
-									: false && {
-											Paymentplan: {
+										},
+									},
+								},
+								filter?.InstallmentMin && {
+									Paymentplan: {
+										some: {
+											Installments: {
 												some: {
-													Installments: {
-														some: {
-															PercentageOfPayment: {
-																lte: filter.InstallmentMax,
-															},
-														},
+													PercentageOfPayment: {
+														gte: filter.InstallmentMin,
 													},
 												},
 											},
-									  },
-								filter.InstallmentMin
-									? ture
-									: false && {
-											Paymentplan: {
-												some: {
-													Installments: {
-														some: {
-															PercentageOfPayment: {
-																gte: filter.InstallmentMin,
-															},
-														},
-													},
-												},
-											},
-									  },
-								filter.Posthandover && {
+										},
+									},
+								},
+								filter?.Posthandover && {
 									Paymentplan: {
 										some: {
 											Posthandover: {
