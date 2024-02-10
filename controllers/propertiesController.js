@@ -1348,12 +1348,12 @@ const FilterProperties = async (req, res) => {
 							AND: [
 								{
 									Bedrooms: {
-										in: parseInt(filter.Bedrooms),
+										in: filter.Bedrooms,
 									},
 								},
 								{
 									Bathrooms: {
-										in: parseInt(filter.Bathrooms),
+										in: filter.Bathrooms,
 									},
 								},
 								{
