@@ -1342,6 +1342,9 @@ const FilterProperties = async (req, res) => {
 		if (filter.InstallmentMin) {
 			filter.InstallmentMin = parseFloat(filter.InstallmentMin);
 		}
+		if (!filter.PaymentPlan || filter.PaymentPlan === false) {
+			filter.PaymentPlan = undefined;
+		}
 		const query = {
 			AND: [
 				{
@@ -1403,7 +1406,7 @@ const FilterProperties = async (req, res) => {
 										gte: filter.EstimatedRent,
 									},
 								},
-								filter?.DownPayemntMax && {
+								filter?.PaymentPlan && {
 									Paymentplan: {
 										some: {
 											DownPayemnt: {
@@ -1412,7 +1415,7 @@ const FilterProperties = async (req, res) => {
 										},
 									},
 								},
-								filter?.DownPayemntMin && {
+								filter?.PaymentPlan && {
 									Paymentplan: {
 										some: {
 											DownPayemnt: {
@@ -1421,7 +1424,7 @@ const FilterProperties = async (req, res) => {
 										},
 									},
 								},
-								filter?.InstallmentMax && {
+								filter?.PaymentPlan && {
 									Paymentplan: {
 										some: {
 											Installments: {
@@ -1434,7 +1437,7 @@ const FilterProperties = async (req, res) => {
 										},
 									},
 								},
-								filter?.InstallmentMin && {
+								filter?.PaymentPlan && {
 									Paymentplan: {
 										some: {
 											Installments: {
@@ -1447,7 +1450,7 @@ const FilterProperties = async (req, res) => {
 										},
 									},
 								},
-								filter?.Posthandover && {
+								filter?.PaymentPlan && {
 									Paymentplan: {
 										some: {
 											Posthandover: {
