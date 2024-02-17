@@ -1348,6 +1348,9 @@ const FilterProperties = async (req, res) => {
 		const query = {
 			AND: [
 				{
+					ActiveStatus: true,
+				},
+				{
 					addressId: {
 						in: filter.Addresses,
 					},
