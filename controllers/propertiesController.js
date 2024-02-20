@@ -1642,21 +1642,21 @@ const UpdateProperty = async (req, res) => {
 			);
 		}
 		const result = await prisma.$transaction(async (prisma) => {
-			// if (data.Property_Translation !== undefined) {
-			// 	data.Property_Translation.map(async (item) => {
-			// 		{
-			// 			await prisma.property_Translation.updateMany({
-			// 				where: {
-			// 					AND: [{ languagesID: item.languagesID }, { propertyID: id }],
-			// 				},
-			// 				data: {
-			// 					Name: item.Name,
-			// 					Description: item.Description,
-			// 				},
-			// 			});
-			// 		}
-			// 	});
-			// }
+			if (data.Property_Translation !== undefined) {
+				data.Property_Translation.map(async (item) => {
+					{
+						await prisma.property_Translation.updateMany({
+							where: {
+								AND: [{ languagesID: item.languagesID }, { propertyID: id }],
+							},
+							data: {
+								Name: item.Name,
+								Description: item.Description,
+							},
+						});
+					}
+				});
+			}
 			if (data.propertyUnits !== undefined) {
 				data.propertyUnits.map(async (unit) => {
 					await prisma.propertyUnits.upsert({
