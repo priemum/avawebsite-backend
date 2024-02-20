@@ -128,6 +128,7 @@ const allowedUpdatesList = [
 			"Aminities",
 			"CategoryID",
 			"AddressID",
+			"properyUnits",
 			"Images",
 			"Property_Translation",
 		],

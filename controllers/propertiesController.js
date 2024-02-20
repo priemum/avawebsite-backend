@@ -1642,28 +1642,28 @@ const UpdateProperty = async (req, res) => {
 			);
 		}
 		const result = await prisma.$transaction(async (prisma) => {
-			if (data.Property_Translation !== undefined) {
-				data.Property_Translation.map(async (item) => {
-					{
-						await prisma.property_Translation.updateMany({
-							where: {
-								AND: [{ languagesID: item.languagesID }, { propertyID: id }],
-							},
-							data: {
-								Name: item.Name,
-								Description: item.Description,
-							},
-						});
-					}
-				});
-			}
+			// if (data.Property_Translation !== undefined) {
+			// 	data.Property_Translation.map(async (item) => {
+			// 		{
+			// 			await prisma.property_Translation.updateMany({
+			// 				where: {
+			// 					AND: [{ languagesID: item.languagesID }, { propertyID: id }],
+			// 				},
+			// 				data: {
+			// 					Name: item.Name,
+			// 					Description: item.Description,
+			// 				},
+			// 			});
+			// 		}
+			// 	});
+			// }
 			if (data.propertyUnits !== undefined) {
 				data.propertyUnits.map(async (unit) => {
-					await prisma.propertyUnits.update({
+					await prisma.propertyUnits.upsert({
 						where: {
-							id: unit.id,
+							id: unit.id || "",
 						},
-						data: {
+						update: {
 							Price: parseFloat(unit.Price),
 							Size: parseFloat(unit.Size),
 							BalconySize: parseFloat(unit.BalconySize),
@@ -1674,6 +1674,23 @@ const UpdateProperty = async (req, res) => {
 							PricePerSQFT: parseFloat(unit.PricePerSQFT),
 							PermitNumber: unit.PermitNumber,
 							DEDNo: unit.DEDNo,
+						},
+						create: {
+							Price: parseFloat(unit.Price),
+							Size: parseFloat(unit.Size),
+							BalconySize: parseFloat(unit.BalconySize),
+							EstimatedRent: parseFloat(unit.EstimatedRent),
+							Bedrooms: parseInt(unit.Bedrooms),
+							Bathrooms: parseInt(unit.Bathrooms),
+							Bacloney: unit.Bacloney === "true" ? true : false,
+							PricePerSQFT: parseFloat(unit.PricePerSQFT),
+							PermitNumber: unit.PermitNumber,
+							DEDNo: unit.DEDNo,
+							Property: {
+								connect: {
+									id: id,
+								},
+							},
 						},
 					});
 				});
