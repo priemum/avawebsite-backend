@@ -131,6 +131,7 @@ const allowedUpdatesList = [
 			"properyUnits",
 			"Images",
 			"Property_Translation",
+			"CurrentImages",
 		],
 	},
 	{

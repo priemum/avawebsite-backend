@@ -1591,11 +1591,13 @@ const UpdateProperty = async (req, res) => {
 		const updates = Object.keys(req.body);
 		const images = req.files;
 		const Selected = { id: true };
+		const CurrentImages = req.body.CurrentImages;
 		updates.forEach((item) => {
 			if (
 				item !== "AddressID" &&
 				item !== "DeveloperID" &&
-				item !== "CategoryID"
+				item !== "CategoryID" &&
+				item !== "CurrentImages"
 			)
 				Selected[item] = true;
 		});
@@ -1641,6 +1643,7 @@ const UpdateProperty = async (req, res) => {
 				}),
 			);
 		}
+
 		const result = await prisma.$transaction(async (prisma) => {
 			if (data.Property_Translation !== undefined) {
 				data.Property_Translation.map(async (item) => {
@@ -1695,7 +1698,6 @@ const UpdateProperty = async (req, res) => {
 					});
 				});
 			}
-
 			const UpdatedProperty = await prisma.property.update({
 				where: { id: id },
 				data: {
@@ -1714,19 +1716,19 @@ const UpdateProperty = async (req, res) => {
 					Aminities: data?.Aminities && {
 						connect: amenities,
 					},
-					Developer: data?.DeveloperID && {
+					Developer: req.body["DeveloperID"] && {
 						connect: {
-							id: data?.DeveloperID,
+							id: req.body["DeveloperID"],
 						},
 					},
-					Category: data?.CategoryID && {
+					Category: req.body["CategoryID"] && {
 						connect: {
-							id: data?.CategoryID,
+							id: req.body["CategoryID"],
 						},
 					},
-					Address: data?.AddressID && {
+					Address: req.body["AddressID"] && {
 						connect: {
-							id: data?.AddressID,
+							id: req.body["AddressID"],
 						},
 					},
 					Images: {
