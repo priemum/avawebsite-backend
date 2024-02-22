@@ -98,6 +98,10 @@ const DeleteLanguage = async (req, res) => {
 				return res.status(404).send("Record Doesn't Exist!");
 			} else if (error.code === "P2021") {
 				return res.status(404).send("Table Doesn't Exist!");
+			} else if (error.code === "P2003") {
+				return res.status(400).send("Cannot Delete, Associated fields exist!");
+			} else {
+				return res.status(400).send("Something Went Wrong!");
 			}
 		}
 		return res.status(500).send(error.message);

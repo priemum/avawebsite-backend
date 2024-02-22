@@ -11,6 +11,11 @@ const GetGeneralData = async (req, res) => {
 				Price: true,
 				Size: true,
 			},
+			where: {
+				Property: {
+					ActiveStatus: true,
+				},
+			},
 		});
 		res.status(200).json({
 			MaxPrice: aggregation._max.Price,

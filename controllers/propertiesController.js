@@ -418,6 +418,7 @@ const GetPropertyByID = async (req, res) => {
 								Language: true,
 							},
 						},
+						Image: true,
 					},
 				},
 				Address: {
@@ -1592,6 +1593,7 @@ const UpdateProperty = async (req, res) => {
 		const images = req.files;
 		const Selected = { id: true };
 		const CurrentImages = req.body.CurrentImages;
+
 		updates.forEach((item) => {
 			if (
 				item !== "AddressID" &&
@@ -1601,17 +1603,25 @@ const UpdateProperty = async (req, res) => {
 			)
 				Selected[item] = true;
 		});
+		if (images) {
+			Selected["Images"] = true;
+		}
 		const data = await prisma.property.findUnique({
 			where: { id: id },
 			select: Selected,
 		});
-		console.log(data);
+
 		if (!data) {
 			return res.status(404).send("Property was not Found!");
 		}
 		if (images) {
 			data.Images = [];
 		}
+		// console.log("Current Images: ", CurrentImages);
+		// console.log(
+		// 	"_______________________________________________________________",
+		// );
+		// console.log("Data: ", data.Images);
 		updates.forEach((update) => (data[update] = req.body[update]));
 		data.RentMin = parseFloat(data?.RentMin);
 		data.RentMax = parseFloat(data?.RentMax);
