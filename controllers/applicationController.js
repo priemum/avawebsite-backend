@@ -56,16 +56,16 @@ const CreateApplication = async (req, res) => {
 				Applicant: true,
 				Job: {
 					include: {
+						Jobs_Translation: {
+							include: {
+								Language: true,
+							},
+						},
 						Author: {
 							include: {
 								Image: true,
 								Address: true,
 								Team: true,
-							},
-							Jobs_Translation: {
-								include: {
-									Language: true,
-								},
 							},
 						},
 					},
