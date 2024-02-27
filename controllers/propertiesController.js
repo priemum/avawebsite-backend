@@ -283,7 +283,11 @@ const GetAllActiveProperties = async (req, res) => {
 				skip: offset || undefined,
 				take: limit || undefined,
 				include: {
-					Images: true,
+					Images: {
+						orderBy: {
+							Index: "asc",
+						},
+					},
 					propertyUnits: {
 						include: {
 							Paymentplan: {
@@ -369,7 +373,11 @@ const GetPropertyByID = async (req, res) => {
 		const Property = await prisma.property.findUnique({
 			where: { id: id },
 			include: {
-				Images: true,
+				Images: {
+					orderBy: {
+						Index: "asc",
+					},
+				},
 				propertyUnits: {
 					include: {
 						Paymentplan: {
@@ -553,7 +561,11 @@ const GetActivePropertiesByCategoryID = async (req, res) => {
 				skip: offset || undefined,
 				take: limit || undefined,
 				include: {
-					Images: true,
+					Images: {
+						orderBy: {
+							Index: "asc",
+						},
+					},
 					propertyUnits: {
 						include: {
 							Paymentplan: {
@@ -649,7 +661,11 @@ const GetPropertiesByDeveloperID = async (req, res) => {
 				skip: offset || undefined,
 				take: limit || undefined,
 				include: {
-					Images: true,
+					Images: {
+						orderBy: {
+							Index: "asc",
+						},
+					},
 					propertyUnits: {
 						include: {
 							Paymentplan: {
@@ -744,7 +760,11 @@ const GetActivePropertiesByDeveloperID = async (req, res) => {
 				skip: offset || undefined,
 				take: limit || undefined,
 				include: {
-					Images: true,
+					Images: {
+						orderBy: {
+							Index: "asc",
+						},
+					},
 					propertyUnits: {
 						include: {
 							Paymentplan: {
@@ -841,7 +861,11 @@ const GetPropertiesByAddressID = async (req, res) => {
 				skip: offset || undefined,
 				take: limit || undefined,
 				include: {
-					Images: true,
+					Images: {
+						orderBy: {
+							Index: "asc",
+						},
+					},
 					propertyUnits: {
 						include: {
 							Paymentplan: {
@@ -936,7 +960,11 @@ const GetActivePropertiesByAddressID = async (req, res) => {
 				skip: offset || undefined,
 				take: limit || undefined,
 				include: {
-					Images: true,
+					Images: {
+						orderBy: {
+							Index: "asc",
+						},
+					},
 					propertyUnits: {
 						include: {
 							Paymentplan: {
@@ -1215,7 +1243,11 @@ const PropertySearch = async (req, res) => {
 				skip: offset || undefined,
 				take: limit || undefined,
 				include: {
-					Images: true,
+					Images: {
+						orderBy: {
+							Index: "asc",
+						},
+					},
 					propertyUnits: {
 						include: {
 							Paymentplan: {
@@ -1508,7 +1540,11 @@ const FilterProperties = async (req, res) => {
 				skip: offset || undefined,
 				take: limit || undefined,
 				include: {
-					Images: true,
+					Images: {
+						orderBy: {
+							Index: "asc",
+						},
+					},
 					propertyUnits: {
 						include: {
 							Paymentplan: {
@@ -1614,20 +1650,38 @@ const UpdateProperty = async (req, res) => {
 		if (!data) {
 			return res.status(404).send("Property was not Found!");
 		}
+
 		if (images) {
 			data.Images = [];
 		}
-		// console.log("Current Images: ", CurrentImages);
-		// console.log(
-		// 	"_______________________________________________________________",
-		// );
-		// console.log("Data: ", data.Images);
+		if (CurrentImages) {
+			CurrentImages.map(async (image, index) => {
+				await prisma.images.update({
+					where: {
+						id: image,
+					},
+					data: {
+						Index: index,
+					},
+				});
+			});
+		}
 		updates.forEach((update) => (data[update] = req.body[update]));
 		data.RentMin = parseFloat(data?.RentMin);
 		data.RentMax = parseFloat(data?.RentMax);
 		data.Longitude = parseFloat(data?.Longitude);
 		data.Latitude = parseFloat(data?.Latitude);
 		if (images) {
+			const MaxImageIndex = await prisma.images.aggregate({
+				_max: {
+					Index: true,
+				},
+				where: {
+					propertyId: id,
+				},
+			});
+			let NewImageIndex = MaxImageIndex._max.Index;
+			NewImageIndex++;
 			images.map(async (image) => {
 				data.Images.push({
 					URL: image.path,
@@ -1635,6 +1689,7 @@ const UpdateProperty = async (req, res) => {
 					Size: image.size,
 					Type: image.mimetype,
 					user: undefined,
+					Index: NewImageIndex++,
 				});
 			});
 		}
@@ -1748,7 +1803,11 @@ const UpdateProperty = async (req, res) => {
 					},
 				},
 				include: {
-					Images: true,
+					Images: {
+						orderBy: {
+							Index: "asc",
+						},
+					},
 					propertyUnits: {
 						include: {
 							Paymentplan: {

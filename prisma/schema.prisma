@@ -124,6 +124,7 @@ model Images {
   Address         Address[]
   propertyId      String?
   announcementsID String?        @unique
+  Index           Int?
   Developer       Developer[]
   Aminities       Aminities[]
   ListWithUs      ListWithUs?    @relation(fields: [listWithUsId], references: [id])
