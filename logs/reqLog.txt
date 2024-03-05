@@ -6810,3 +6810,35 @@
 20240227	13:15:40	208bbb9c-b2e1-45e0-8e66-306311235fe1	GET	304	 Message: Not Modified 	/images/property/1708612666-1.jpg
 20240227	13:15:41	7803eb50-7ede-4e5a-aaed-3b9f9832b5fa	GET	304	 Message: Not Modified 	/images/property/1708612666-2.jpg
 20240227	13:15:42	431c1c64-50ed-4880-bf7e-268133d52a99	GET	304	 Message: Not Modified 	/images/property/1708612666-3.jpg
+20240305	17:31:13	a25a0151-beb1-4c8f-8d59-a0502df30551	POST	201	 Message: Created 	/openHouse
+20240305	17:31:50	c769fb52-dc73-4afc-8c14-a28ee77fbf84	GET	200	 Message: OK 	/openHouse
+20240305	17:31:57	8975c8c3-e914-44a9-83df-db3a726298b5	POST	404	 Message: Not Found 	/openHouse
+20240305	17:34:00	77002e48-cd94-41a6-aa18-857154385d3e	POST	404	 Message: Not Found 	/openHouse
+20240305	17:34:53	34b9480c-5911-4ace-80a3-3876ae46f0f3	POST	404	 Message: Not Found 	/openHouse
+20240305	17:35:26	e21cff7d-1107-4dcb-86a5-7cdf57ca47c7	POST	404	 Message: Not Found 	/openHouse
+20240305	17:35:37	b241604c-7ac2-4816-9544-93f0309e5928	POST	201	 Message: Created 	/openHouse
+20240305	17:36:03	cb331abf-65a4-4a3b-9922-6a143ed2fead	GET	200	 Message: OK 	/openHouse
+20240305	17:36:18	138bffc0-0f25-4be9-9812-7fae83a9ac52	GET	200	 Message: OK 	/openHouse/efa1e396-55ac-4cc7-9775-8055bcad7990
+20240305	17:36:41	4c207842-de9b-4538-91f2-f79d0b0c41cb	DELETE	200	 Message: OK 	/openHouse/efa1e396-55ac-4cc7-9775-8055bcad7990
+20240305	17:48:43	e32375fe-7786-4f32-a840-2ec620683d8a	DELETE	403	 Message: Forbidden 	/openHouse/efa1e396-55ac-4cc7-9775-8055bcad7990
+20240305	17:49:09	cfd8b3ee-68ff-4748-87fe-7c13c269168f	POST	201	 Message: Created 	/auth/login
+20240305	17:49:13	8585d538-1dc5-4bd4-9fbc-0762cf91ce32	GET	401	 Message: Unauthorized 	/openHouse
+20240305	17:49:44	0479a751-b2d1-4159-b477-af826c41d3e5	POST	201	 Message: Created 	/resource
+20240305	17:49:50	e6cf4f8f-5658-4e52-954e-b7632c0cc209	GET	401	 Message: Unauthorized 	/openHouse
+20240305	17:51:13	6e9a1f42-6c95-4fe1-a254-6c3ff980631d	GET	200	 Message: OK 	/role-resource
+20240305	17:52:53	22e919fd-9caa-4977-a045-d381a42e85d8	GET	200	 Message: OK 	/resource/4ddb3241-916d-4595-971d-d5c1bb24093a
+20240305	17:53:55	59f7579a-729a-4017-a260-e1def961c028	GET	200	 Message: OK 	/resource/4ddb3241-916d-4595-971d-d5c1bb24093a
+20240305	17:54:19	5f59fa5e-b69c-44c0-9e2f-8ac8d11d5f2c	GET	403	 Message: Forbidden 	/resource/6c659e1e-bb53-444d-87f3-e2fc065e777f
+20240305	17:54:25	4c35a21a-7136-4714-a6c5-8b4c9036c756	GET	200	 Message: OK 	/auth/refreshToken
+20240305	17:54:29	8e1c9f64-22c5-48c5-8dc4-31287aca31eb	GET	200	 Message: OK 	/resource/6c659e1e-bb53-444d-87f3-e2fc065e777f
+20240305	17:57:23	42dd9bef-e263-4f22-9638-e22b1d4d48c8	POST	201	 Message: Created 	/role-resource
+20240305	17:57:36	36bb414c-cffa-4938-9980-4b05c46b815a	GET	401	 Message: Unauthorized 	/openHouse
+20240305	17:57:44	f209143a-5245-44a6-8ec0-edd315e83a38	GET	401	 Message: Unauthorized 	/openHouse
+20240305	17:58:47	db38270a-fca4-44c0-aac9-941d1ee02078	GET	200	 Message: OK 	/role-resource/role/74b61407-4936-4a76-ab51-cd55b62c2294
+20240305	18:00:02	7fd7bb7a-cd10-4d3a-b4c5-7a3a46894f43	GET	403	 Message: Forbidden 	/role-resource
+20240305	18:00:09	c838443f-3f4c-4f1f-a24f-fc0ca832b217	GET	200	 Message: OK 	/auth/refreshToken
+20240305	18:00:16	f3a9aec9-5988-4d93-831f-70ba4bda789e	GET	401	 Message: Unauthorized 	/openHouse
+20240305	18:00:39	ddf07af9-6bb6-4f29-b458-be596e02749a	GET	401	 Message: Unauthorized 	/openHouse/efa1e396-55ac-4cc7-9775-8055bcad7990
+20240305	18:14:12	7b37e551-2273-4b15-b67d-7508b6c9eebb	GET	200	 Message: OK 	/auth/refreshToken
+20240305	18:14:18	c7587a9f-4fc8-4c91-8bb7-02b38f321a52	GET	401	 Message: Unauthorized 	/openHouse
+20240305	18:14:43	c24b32bf-e30f-4f38-9dd6-7323cf27c65d	GET	200	 Message: OK 	/openhouse

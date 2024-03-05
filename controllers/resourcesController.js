@@ -72,6 +72,9 @@ const GetResourceByID = async (req, res) => {
 		const id = req.params.id;
 		const Resource = await prisma.resources.findUnique({
 			where: { id: id },
+			include: {
+				Role_Resources: true,
+			},
 		});
 		if (!Resource) {
 			return res.status(404).send("No Resource Were Found!");

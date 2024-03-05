@@ -125,10 +125,17 @@ model Images {
   propertyId      String?
   announcementsID String?        @unique
   Index           Int?
+  Class           ClassType?     @default(General)
   Developer       Developer[]
   Aminities       Aminities[]
   ListWithUs      ListWithUs?    @relation(fields: [listWithUsId], references: [id])
   listWithUsId    String?
+}
+
+enum ClassType {
+  General
+  FloorPlan
+  Interior
 }
 
 model Address {
@@ -428,6 +435,19 @@ model MetaData {
   UpdatedAt  DateTime  @updatedAt
   propertyId String?
   articlesId String?
+}
+
+//Open House Table
+model OpenHouse {
+  id           String   @id @default(uuid())
+  FullName     String
+  PhoneNo      String
+  Email        String   @unique
+  Agent        String
+  OtherDetails String?
+  isSent       Boolean  @default(false)
+  CreatedAt    DateTime @default(now())
+  UpdatedAt    DateTime @updatedAt
 }
 
 //Localization Sub-Schema 
