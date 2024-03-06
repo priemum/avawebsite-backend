@@ -55,7 +55,7 @@ const CreateAppointment = async (req, res) => {
 			} else if (error.code === "P2021") {
 				return res.status(404).send("Table Doesn't Exist!");
 			} else if (error.code === "P2002") {
-				return res.status(404).send("Email Already Exist!");
+				return res.status(400).send("Email Already Exist!");
 			} else if (error.code === "P2003") {
 				return res
 					.status(404)
