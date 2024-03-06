@@ -7,13 +7,13 @@ const sendMail = async (FullName, Email, PhoneNo, Agent) => {
 	let sent = false;
 	let status = "";
 	const __dirname = path.resolve();
-	console.log("User: ", process.env.USER);
+	console.log("User: ", process.env.Mail_USER);
 	console.log("Pass: ", process.env.PASSWORD);
 	const transporter = nodemailer.createTransport({
 		host: "mail.avarealestate.ae",
 		port: 465,
 		secure: true,
-		auth: { user: process.env.USER, pass: process.env.PASSWORD },
+		auth: { user: process.env.Mail_USER, pass: process.env.PASSWORD },
 	});
 	transporter.use(
 		"compile",
@@ -24,7 +24,7 @@ const sendMail = async (FullName, Email, PhoneNo, Agent) => {
 	);
 
 	const mailOptions = {
-		from: process.env.USER,
+		from: process.env.Mail_USER,
 		to: Email,
 		subject: "E-Invite for Open House - AVA Real Estate",
 		template: "sample",
