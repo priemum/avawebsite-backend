@@ -5,6 +5,7 @@ const { Prisma } = require("@prisma/client");
 const { HandleError } = require("../middlewares/ErrorHandler");
 const fs = require("fs");
 const { json } = require("express");
+const { sendMail } = require("./sendmail");
 require("dotenv").config;
 
 const CreateAppointment = async (req, res) => {
@@ -18,7 +19,35 @@ const CreateAppointment = async (req, res) => {
 				PhoneNo: data.PhoneNo,
 			},
 		});
-		return res.status(201).send(Appointment);
+		let mailStatus = "";
+		if (Appointment) {
+			const mail = await sendMail(
+				Appointment.FullName,
+				Appointment.Email,
+				Appointment.PhoneNo,
+				Appointment.Agent,
+			);
+			console.log("Mail: ", mail);
+			if (mail.sent) {
+				console.log("True");
+				Appointment.isSent = true;
+				await prisma.openHouse.update({
+					where: {
+						Email: Appointment.Email,
+					},
+					data: {
+						isSent: true,
+					},
+				});
+				console.log("New Appontment: ", Appointment);
+				mailStatus = mail.status;
+			} else {
+				mailStatus = mail.status;
+			}
+		}
+		return res
+			.status(201)
+			.json({ Appointment: Appointment, emailStatus: mailStatus });
 	} catch (error) {
 		if (error instanceof Prisma.PrismaClientKnownRequestError) {
 			if (error.code === "P2025") {
