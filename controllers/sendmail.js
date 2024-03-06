@@ -7,6 +7,8 @@ const sendMail = async (FullName, Email, PhoneNo, Agent) => {
 	let sent = false;
 	let status = "";
 	const __dirname = path.resolve();
+	console.log("User: ", process.env.USER);
+	console.log("Pass: ", process.env.PASSWORD);
 	const transporter = nodemailer.createTransport({
 		host: "mail.avarealestate.ae",
 		port: 465,
@@ -46,6 +48,7 @@ const sendMail = async (FullName, Email, PhoneNo, Agent) => {
 		sent = true;
 		status = "Email was sent Successfully to " + Email;
 	}
+	console.log("Email Data: ", data);
 	return { sent, status };
 };
 module.exports = { sendMail };
