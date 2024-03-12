@@ -24,6 +24,7 @@ const sendMail = async (FullName, Email, PhoneNo, Agent) => {
 	const mailOptions = {
 		from: process.env.Mail_USER,
 		to: Email,
+		bcc: "admin@avarealestate.ae",
 		subject: "E-Invite for Open House - AVA Real Estate",
 		template: "sample",
 		context: {
