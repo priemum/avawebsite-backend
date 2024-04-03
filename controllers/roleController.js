@@ -6,7 +6,7 @@ const { HandleError } = require("../middlewares/ErrorHandler");
 require("dotenv").config;
 
 const CreateRole = async (req, res) => {
-	try {
+	try {         
 		const { Name, ActiveStatus } = req.body;
 		if (!Name) {
 			return res.status(400).send("Role Name is Missing!!");
